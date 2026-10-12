@@ -39,6 +39,7 @@ export default function HomeDashboard({
   const { showToast } = useToast();
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
   const [activeTab, setActiveTab] = useState('overview'); // overview | milestones | proofs
+  const [copiedPassport, setCopiedPassport] = useState(false);
 
   // Calculate stats based on persona or defaults
   const provenCount = currentPersona?.provenCount || 12;
@@ -50,7 +51,9 @@ export default function HomeDashboard({
     if (navigator.clipboard) {
       navigator.clipboard.writeText('https://qudra.sa/p/did:qudra:sa:0x71c828e678a192ec492a');
     }
+    setCopiedPassport(true);
     showToast(isRtl ? 'تم نسخ رابط جواز القدرات الموثق للمشاركة!' : 'Public Passport link copied to clipboard!', 'success');
+    setTimeout(() => setCopiedPassport(false), 2200);
   };
 
   return (
@@ -121,17 +124,18 @@ export default function HomeDashboard({
               onClick={handleSharePassport}
               className="btn btn-primary"
               style={{
-                backgroundColor: '#008B8B',
-                borderColor: '#008B8B',
+                backgroundColor: copiedPassport ? '#059669' : '#008B8B',
+                borderColor: copiedPassport ? '#059669' : '#008B8B',
                 color: '#ffffff',
                 fontWeight: '700',
                 gap: '8px',
                 padding: '9px 16px',
-                boxShadow: '0 2px 6px rgba(0, 139, 139, 0.2)'
+                boxShadow: copiedPassport ? '0 2px 10px rgba(5, 150, 105, 0.3)' : '0 2px 6px rgba(0, 139, 139, 0.2)',
+                transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
               }}
             >
-              <Share2 size={15} />
-              <span>{isRtl ? 'مشاركة الجواز' : 'Share Passport'}</span>
+              {copiedPassport ? <Check size={15} /> : <Share2 size={15} />}
+              <span>{copiedPassport ? (isRtl ? 'تم النسخ بنجاح!' : 'Copied!') : (isRtl ? 'مشاركة الجواز' : 'Share Passport')}</span>
             </button>
 
             <button

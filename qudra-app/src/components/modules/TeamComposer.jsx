@@ -155,14 +155,19 @@ export default function TeamComposer({ onNavigate, onOpenExplain, isRtl = true }
             <div style={{ width: '1px', backgroundColor: 'var(--border-color)' }} />
 
             <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '26px', fontWeight: '900', color: 'var(--slate-900)', fontFamily: 'monospace' }}>
-                60K
+              <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: '3px' }}>
+                <span style={{ fontSize: '26px', fontWeight: '900', color: '#1A1A1A', fontVariantNumeric: 'tabular-nums' }}>
+                  60K
+                </span>
+                <span style={{ fontSize: '11px', fontWeight: '800', color: '#008B8B' }}>
+                  {isRtl ? 'ر.س' : 'SAR'}
+                </span>
               </div>
               <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--slate-500)', marginTop: '2px' }}>
-                {isRtl ? 'ر.س الضمان' : 'SAR Escrow'}
+                {isRtl ? 'الضمان المالي' : 'SAR Escrow'}
               </div>
-              <div style={{ fontSize: '10px', color: 'var(--slate-500)', marginTop: '1px' }}>
-                {isRtl ? 'مقسم بالتراضي' : 'Contract Split'}
+              <div style={{ fontSize: '10px', color: '#16a34a', fontWeight: '700', marginTop: '1px' }}>
+                {isRtl ? 'صافي 100% للفريق' : '100% Net Split'}
               </div>
             </div>
           </div>
@@ -327,11 +332,16 @@ export default function TeamComposer({ onNavigate, onOpenExplain, isRtl = true }
                       <strong style={{ color: 'var(--qudra-teal, #008B8B)', fontSize: '14px' }}>%{member.matchRate}</strong>
                     </div>
 
-                    <div style={{ textAlign: 'end' }}>
-                      <span style={{ color: 'var(--slate-500)', display: 'block' }}>{isRtl ? 'حصة الضمان المالي:' : 'Escrow Split:'}</span>
-                      <strong style={{ color: 'var(--slate-900)', fontSize: '13px' }}>
-                        {shareAmount.toLocaleString()} ر.س ({sharePercent}%)
-                      </strong>
+                    <div style={{ textAlign: isRtl ? 'left' : 'right' }}>
+                      <span style={{ color: 'var(--slate-500)', display: 'block', fontSize: '11px' }}>{isRtl ? 'حصة الضمان المالي:' : 'Escrow Split:'}</span>
+                      <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px', justifyContent: isRtl ? 'flex-start' : 'flex-end', marginTop: '2px' }}>
+                        <strong style={{ color: '#1A1A1A', fontSize: '14px', fontVariantNumeric: 'tabular-nums' }}>
+                          {shareAmount.toLocaleString()} {isRtl ? 'ر.س' : 'SAR'}
+                        </strong>
+                        <span style={{ fontSize: '10.5px', fontWeight: '800', color: '#008B8B', backgroundColor: '#E6FFFA', padding: '1px 5px', borderRadius: '4px' }}>
+                          {sharePercent}%
+                        </span>
+                      </div>
                     </div>
                   </div>
 

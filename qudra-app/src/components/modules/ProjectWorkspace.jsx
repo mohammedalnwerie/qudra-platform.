@@ -184,8 +184,13 @@ export default function ProjectWorkspace({ onNavigate, isRtl = true }) {
               </span>
             </div>
 
-            <div style={{ fontSize: '26px', fontWeight: '900', color: 'var(--slate-900)', fontFamily: 'monospace', lineHeight: 1.2 }}>
-              {totalBudget.toLocaleString()} ر.س
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', margin: '4px 0 8px' }}>
+              <span style={{ fontSize: '28px', fontWeight: '900', color: '#1A1A1A', fontVariantNumeric: 'tabular-nums', letterSpacing: '-0.02em', lineHeight: 1 }}>
+                {totalBudget.toLocaleString()}
+              </span>
+              <span style={{ fontSize: '12px', fontWeight: '800', color: '#008B8B', backgroundColor: '#E6FFFA', padding: '2px 8px', borderRadius: '6px', border: '1px solid #B2F5EA' }}>
+                {isRtl ? 'ر.س SAR' : 'SAR'}
+              </span>
             </div>
 
             {/* Progress bar */}
@@ -346,12 +351,18 @@ export default function ProjectWorkspace({ onNavigate, isRtl = true }) {
 
                 {/* Right side: Amount and Action */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                  <div style={{ textAlign: 'end' }}>
-                    <div style={{ fontSize: '17px', fontWeight: '900', color: 'var(--slate-900)', fontFamily: 'monospace' }}>
-                      {m.amount}
+                  <div style={{ textAlign: isRtl ? 'left' : 'right' }}>
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px', justifyContent: isRtl ? 'flex-start' : 'flex-end' }}>
+                      <span style={{ fontSize: '18px', fontWeight: '900', color: '#1A1A1A', fontVariantNumeric: 'tabular-nums', letterSpacing: '-0.01em' }}>
+                        {m.amountNum ? m.amountNum.toLocaleString() : m.amount}
+                      </span>
+                      <span style={{ fontSize: '11px', fontWeight: '700', color: '#64748B' }}>
+                        {isRtl ? 'ر.س' : 'SAR'}
+                      </span>
                     </div>
-                    <div style={{ fontSize: '10.5px', color: '#16a34a', fontWeight: '700' }}>
-                      {isRtl ? 'صافي بدون خصم' : 'Net Escrow'}
+                    <div style={{ fontSize: '10.5px', color: '#16a34a', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '3px', justifyContent: isRtl ? 'flex-start' : 'flex-end', marginTop: '2px' }}>
+                      <ShieldCheck size={11} color="#16a34a" />
+                      <span>{isRtl ? 'ضمان 0% عمولة' : '0% Fee Escrow'}</span>
                     </div>
                   </div>
 
