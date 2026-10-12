@@ -14,9 +14,45 @@ import { useToast } from '../common/ToastContext';
 export default function PracticeChallenge({ onEvidenceGenerated, isRtl = true }) {
   const { showToast } = useToast();
   const [code, setCode] = useState(MOCK_INTERACTIVE_CHALLENGE.starterCode);
+  const [activeFileTab, setActiveFileTab] = useState('editor'); // 'editor' | 'spec'
   const [isRunning, setIsRunning] = useState(false);
   const [hasRun, setHasRun] = useState(false);
   const [isMinted, setIsMinted] = useState(false);
+
+  const testSpecCode = `// test/security.spec.js - Automated Sandbox Suite
+const { fetchRemoteAvatar } = require('./avatarFetcher');
+
+describe('Anti-SSRF & Secure Ingestion Suite', () => {
+  test('TC-01: Rejects 127.0.0.1 localhost loopback', async () => {
+    await expect(fetchRemoteAvatar('http://127.0.0.1:8080/flag'))
+      .rejects.toThrow('Disallowed');
+  });
+
+  test('TC-02: Blocks AWS Cloud Metadata 169.254.169.254', async () => {
+    await expect(fetchRemoteAvatar('http://169.254.169.254/latest/meta-data'))
+      .rejects.toThrow('Disallowed');
+  });
+
+  test('TC-03: Blocks Private RFC-1918 CIDR 10.0.0.0/8', async () => {
+    await expect(fetchRemoteAvatar('http://10.0.4.15/internal-api'))
+      .rejects.toThrow('Disallowed');
+  });
+
+  test('TC-04: Disallows file:// and gopher:// schemas', async () => {
+    await expect(fetchRemoteAvatar('file:///etc/passwd'))
+      .rejects.toThrow('Invalid Protocol');
+  });
+
+  test('TC-05: Enforces Max Content-Length <= 2MB', async () => {
+    // Verified via axios stream buffer threshold
+    expect(true).toBe(true);
+  });
+
+  test('TC-06: Successfully fetches verified public avatar', async () => {
+    const res = await fetchRemoteAvatar('https://images.unsplash.com/photo-test');
+    expect(res).toBeDefined();
+  });
+});`;
 
   const handleRunTests = () => {
     setIsRunning(true);
@@ -132,8 +168,9 @@ module.exports = { fetchRemoteAvatar };`
       <div className="grid-2">
         {/* Left: Code Sandbox */}
         <div className="card" style={{ padding: '0', overflow: 'hidden', display: 'flex', flexDirection: 'column', border: '1px solid var(--slate-300)' }}>
+          {/* File Tabs & Quick Actions */}
           <div style={{
-            padding: '10px 16px',
+            padding: '8px 14px',
             backgroundColor: '#0f172a',
             color: '#94a3b8',
             fontSize: '12px',
@@ -141,42 +178,141 @@ module.exports = { fetchRemoteAvatar };`
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            borderBottom: '1px solid #1e293b'
+            borderBottom: '1px solid #1e293b',
+            flexWrap: 'wrap',
+            gap: '8px'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Code2 size={14} color="#38bdf8" />
-              <span>server/avatarFetcher.js</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <button
+                onClick={() => setActiveFileTab('editor')}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '5px 12px',
+                  borderRadius: 'var(--radius-sm)',
+                  backgroundColor: activeFileTab === 'editor' ? '#1e293b' : 'transparent',
+                  color: activeFileTab === 'editor' ? '#38bdf8' : '#64748b',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontWeight: activeFileTab === 'editor' ? '700' : '500',
+                  fontSize: '12px',
+                  fontFamily: 'monospace'
+                }}
+              >
+                <Code2 size={13} color={activeFileTab === 'editor' ? '#38bdf8' : '#64748b'} />
+                <span>server/avatarFetcher.js</span>
+              </button>
+
+              <button
+                onClick={() => setActiveFileTab('spec')}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '5px 12px',
+                  borderRadius: 'var(--radius-sm)',
+                  backgroundColor: activeFileTab === 'spec' ? '#1e293b' : 'transparent',
+                  color: activeFileTab === 'spec' ? '#a78bfa' : '#64748b',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontWeight: activeFileTab === 'spec' ? '700' : '500',
+                  fontSize: '12px',
+                  fontFamily: 'monospace'
+                }}
+              >
+                <Terminal size={13} color={activeFileTab === 'spec' ? '#a78bfa' : '#64748b'} />
+                <span>test/security.spec.js</span>
+              </button>
             </div>
-            <button
-              onClick={handleApplySolution}
-              className="btn btn-secondary btn-sm"
-              style={{ padding: '3px 10px', fontSize: '11px', color: '#38bdf8', borderColor: '#334155', backgroundColor: '#1e293b' }}
-            >
-              {isRtl ? 'استعراض الحل المقترح' : 'Paste Solution'}
-            </button>
+
+            {activeFileTab === 'editor' && (
+              <button
+                onClick={handleApplySolution}
+                className="btn btn-secondary btn-sm"
+                style={{ padding: '3px 10px', fontSize: '11px', color: '#38bdf8', borderColor: '#334155', backgroundColor: '#1e293b' }}
+              >
+                {isRtl ? 'استعراض الحل المقترح' : 'Paste Solution'}
+              </button>
+            )}
           </div>
 
-          <textarea
-            className="form-textarea"
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            style={{
+          {/* Active File View */}
+          {activeFileTab === 'editor' ? (
+            <textarea
+              className="form-textarea"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              style={{
+                fontFamily: 'monospace',
+                fontSize: '13px',
+                minHeight: '290px',
+                backgroundColor: '#020617',
+                color: '#e2e8f0',
+                border: 'none',
+                borderRadius: '0',
+                padding: '16px',
+                lineHeight: 1.6,
+                resize: 'vertical'
+              }}
+            />
+          ) : (
+            <pre style={{
               fontFamily: 'monospace',
-              fontSize: '13px',
-              minHeight: '340px',
+              fontSize: '12.5px',
+              minHeight: '290px',
               backgroundColor: '#020617',
-              color: '#e2e8f0',
-              border: 'none',
-              borderRadius: '0',
-              padding: '18px',
+              color: '#94a3b8',
+              margin: '0',
+              padding: '16px',
               lineHeight: 1.6,
-              resize: 'vertical'
-            }}
-          />
+              overflowX: 'auto'
+            }}>
+              {testSpecCode}
+            </pre>
+          )}
 
+          {/* Terminal Output Console if Running or Run */}
+          {(isRunning || hasRun) && (
+            <div style={{
+              backgroundColor: '#000000',
+              borderTop: '1px solid #1e293b',
+              padding: '12px 16px',
+              fontFamily: 'monospace',
+              fontSize: '11.5px',
+              color: '#e2e8f0',
+              maxHeight: '140px',
+              overflowY: 'auto'
+            }}>
+              <div style={{ color: '#64748b', marginBottom: '4px' }}>
+                $ jest test/security.spec.js --runInBand
+              </div>
+              {isRunning ? (
+                <div style={{ color: '#38bdf8' }}>
+                  ⏳ Executing sandbox test suite against Node 22 environment...
+                </div>
+              ) : (
+                <div>
+                  <div style={{ color: '#4ade80' }}>PASS test/security.spec.js (1.42s)</div>
+                  <div style={{ color: '#94a3b8' }}>  ✓ [TC-01] Rejects 127.0.0.1 loopback calls (4ms)</div>
+                  <div style={{ color: '#94a3b8' }}>  ✓ [TC-02] Blocks AWS Cloud Metadata 169.254.169.254 (3ms)</div>
+                  <div style={{ color: '#94a3b8' }}>  ✓ [TC-03] Blocks Private RFC-1918 CIDR 10.0.0.0/8 (3ms)</div>
+                  <div style={{ color: '#94a3b8' }}>  ✓ [TC-04] Disallows file:// protocol (2ms)</div>
+                  <div style={{ color: '#94a3b8' }}>  ✓ [TC-05] Enforces response size limit &lt;= 2MB (5ms)</div>
+                  <div style={{ color: '#94a3b8' }}>  ✓ [TC-06] Successfully fetches verified public avatar (68ms)</div>
+                  <div style={{ color: '#4ade80', fontWeight: 'bold', marginTop: '4px' }}>
+                    Test Suites: 1 passed, 1 total | Tests: 6 passed, 6 total
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Bottom Execution Bar */}
           <div style={{ padding: '12px 16px', backgroundColor: '#0f172a', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '12px', color: '#64748b' }}>
-              {isRtl ? 'بيئة تشغيل معزولة (Node 22 Sandbox)' : 'Isolated Node 22 Sandbox'}
+            <span style={{ fontSize: '12px', color: '#64748b', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Terminal size={13} color="#38bdf8" />
+              <span>{isRtl ? 'بيئة تشغيل معزولة (Node 22 Sandbox)' : 'Isolated Node 22 Sandbox'}</span>
             </span>
             <button
               onClick={handleRunTests}

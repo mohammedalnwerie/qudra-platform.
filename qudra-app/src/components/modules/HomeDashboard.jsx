@@ -89,8 +89,17 @@ export default function HomeDashboard({
               <ShieldCheck size={18} />
             </div>
           </div>
-          <div className="stat-value" style={{ color: 'var(--proven-color)' }}>
-            {currentPersona.provenCount || 12}
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+            <span className="stat-value" style={{ color: 'var(--proven-color)' }}>
+              {currentPersona.provenCount || 12}
+            </span>
+            <span style={{ fontSize: '12px', color: 'var(--slate-500)', fontWeight: '600' }}>
+              / 16 {isRtl ? 'كفاءة' : 'skills'}
+            </span>
+          </div>
+          {/* Progress Mini Bar */}
+          <div style={{ width: '100%', height: '5px', backgroundColor: 'var(--slate-100)', borderRadius: '9999px', overflow: 'hidden', margin: '6px 0 2px' }}>
+            <div style={{ width: `${((currentPersona.provenCount || 12) / 16) * 100}%`, height: '100%', backgroundColor: 'var(--proven-color)', borderRadius: '9999px' }} />
           </div>
           <div className="stat-subtext" style={{ color: 'var(--proven-text)' }}>
             ✓ {isRtl ? 'موثقة برمجياً بروابط رسمية' : 'Verified via official sources'}
@@ -133,7 +142,7 @@ export default function HomeDashboard({
           </div>
         </div>
 
-        {/* Card 4: Trust Score */}
+        {/* Card 4: Trust Score (Upwork / Behance Circular Radial Gauge) */}
         <div className="stat-card">
           <div className="stat-header">
             <span className="stat-label">
@@ -143,11 +152,33 @@ export default function HomeDashboard({
               <Award size={18} />
             </div>
           </div>
-          <div className="stat-value" style={{ color: 'var(--indigo-700)' }}>
-            {currentPersona.trustScore || 94}%
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', margin: '2px 0' }}>
+            <div className="stat-value" style={{ color: 'var(--indigo-700)', margin: 0 }}>
+              {currentPersona.trustScore || 94}%
+            </div>
+            <div style={{ position: 'relative', width: '46px', height: '46px', flexShrink: 0 }}>
+              <svg width="46" height="46" viewBox="0 0 48 48" style={{ transform: 'rotate(-90deg)' }}>
+                <circle cx="24" cy="24" r="19" stroke="var(--slate-200)" strokeWidth="4" fill="transparent" />
+                <circle
+                  cx="24"
+                  cy="24"
+                  r="19"
+                  stroke="var(--indigo-600)"
+                  strokeWidth="4"
+                  fill="transparent"
+                  strokeDasharray="119.38"
+                  strokeDashoffset={119.38 * (1 - (currentPersona.trustScore || 94) / 100)}
+                  strokeLinecap="round"
+                  style={{ transition: 'stroke-dashoffset 1s ease' }}
+                />
+              </svg>
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: '800', color: 'var(--indigo-700)' }}>
+                ★
+              </div>
+            </div>
           </div>
           <div className="stat-subtext" style={{ color: 'var(--indigo-600)' }}>
-            ★ {isRtl ? 'اكتمال الملف بنسبة 88%' : '88% Profile Completeness'}
+            ★ {isRtl ? 'الفئة الموثوقة الأولى (Top Tier)' : 'Top-Tier Trust Rating'}
           </div>
         </div>
       </div>

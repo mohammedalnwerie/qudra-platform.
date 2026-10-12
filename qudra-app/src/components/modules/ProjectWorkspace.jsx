@@ -38,6 +38,13 @@ export default function ProjectWorkspace({ isRtl = true }) {
     }
   ]);
 
+  const totalBudget = 55000;
+  const releasedAmount = milestones
+    .filter((m) => m.status === 'completed')
+    .reduce((acc, m) => acc + parseInt(m.amount.replace(/[^0-9]/g, ''), 10), 0);
+  const remainingEscrow = totalBudget - releasedAmount;
+  const releasePercentage = Math.round((releasedAmount / totalBudget) * 100);
+
   const handleCompleteMilestone = (id) => {
     setMilestones((prev) =>
       prev.map((m) => (m.id === id ? { ...m, status: 'completed' } : m))
@@ -76,23 +83,36 @@ export default function ProjectWorkspace({ isRtl = true }) {
           </p>
         </div>
 
+        {/* Escrow Deposit Summary Card */}
         <div style={{
           backgroundColor: '#ffffff',
-          padding: '16px 24px',
+          padding: '18px 24px',
           borderRadius: 'var(--radius-lg)',
           border: '1px solid var(--teal-200)',
-          textAlign: isRtl ? 'left' : 'right',
+          minWidth: '280px',
           boxShadow: 'var(--shadow-subtle)'
         }}>
-          <span style={{ fontSize: '12px', color: 'var(--slate-500)', fontWeight: '600' }}>
-            {isRtl ? 'الضمان المالي المحجوز' : 'Escrow Deposit'}
-          </span>
-          <div style={{ fontSize: '26px', fontWeight: '800', color: 'var(--teal-800)', lineHeight: 1.1 }}>
-            55,000 ر.س
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+            <span style={{ fontSize: '12px', color: 'var(--slate-500)', fontWeight: '600' }}>
+              {isRtl ? 'إجمالي ميزانية المشروع' : 'Total Budget'}
+            </span>
+            <span style={{ fontSize: '11px', color: 'var(--teal-700)', fontWeight: '700' }}>
+              {releasePercentage}% {isRtl ? 'مُفرج عنه' : 'Released'}
+            </span>
           </div>
-          <span style={{ fontSize: '11px', color: 'var(--proven-text)', fontWeight: '600' }}>
-            ✓ {isRtl ? 'رسوم صافية وشفافة' : 'Transparent 0% Hidden Fees'}
-          </span>
+          <div style={{ fontSize: '24px', fontWeight: '800', color: 'var(--teal-800)', lineHeight: 1.2 }}>
+            {totalBudget.toLocaleString()} ر.س
+          </div>
+
+          {/* Dual Escrow Progress Bar */}
+          <div style={{ width: '100%', height: '7px', backgroundColor: 'var(--slate-100)', borderRadius: '9999px', overflow: 'hidden', margin: '10px 0 8px' }}>
+            <div style={{ width: `${releasePercentage}%`, height: '100%', backgroundColor: 'var(--proven-color)', transition: 'width 0.5s ease' }} />
+          </div>
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--slate-500)', fontWeight: '500' }}>
+            <span>✓ {releasedAmount.toLocaleString()} ر.س {isRtl ? 'مستلم' : 'Paid'}</span>
+            <span>🔒 {remainingEscrow.toLocaleString()} ر.س {isRtl ? 'محجوز بالضمان' : 'In Escrow'}</span>
+          </div>
         </div>
       </div>
 

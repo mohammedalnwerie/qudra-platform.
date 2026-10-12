@@ -5,7 +5,9 @@ import {
   Layers,
   ShieldCheck,
   Menu,
-  ChevronDown
+  ChevronDown,
+  Sun,
+  Moon
 } from 'lucide-react';
 
 export default function Navbar({
@@ -13,6 +15,8 @@ export default function Navbar({
   onRoleChange,
   isRtl,
   onToggleRtl,
+  theme = 'light',
+  onToggleTheme,
   onOpenExplain,
   onOpenScreenExplorer,
   onOpenSidebar,
@@ -107,6 +111,16 @@ export default function Navbar({
         >
           <Globe size={14} />
           <span style={{ fontWeight: '600' }}>{isRtl ? 'EN' : 'عربي'}</span>
+        </button>
+
+        {/* Eye-Comfort Dark Mode Toggle */}
+        <button
+          onClick={onToggleTheme}
+          className="btn btn-ghost btn-sm"
+          style={{ padding: '6px', color: 'var(--slate-600)' }}
+          title={theme === 'dark' ? (isRtl ? 'الوضع النهاري' : 'Light Mode') : (isRtl ? 'وضع الراحة البصرية الليلي' : 'Eye-Comfort Dark Mode')}
+        >
+          {theme === 'dark' ? <Sun size={15} color="#fbbf24" /> : <Moon size={15} />}
         </button>
 
         {/* User Mini Profile */}

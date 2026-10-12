@@ -33,12 +33,19 @@ export default function App() {
   const [isScreenNavOpen, setIsScreenNavOpen] = useState(false);
   const [showDevPill, setShowDevPill] = useState(true);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [theme, setTheme] = useState(() => localStorage.getItem('qudra_theme') || 'light');
 
   // Sync RTL and lang attributes
   useEffect(() => {
     document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
     document.documentElement.lang = isRtl ? 'ar' : 'en';
   }, [isRtl]);
+
+  // Sync Eye-Comfort theme attribute
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('qudra_theme', theme);
+  }, [theme]);
 
   const currentPersona = USER_PERSONAS[currentRole] || USER_PERSONAS.freelancer;
 
@@ -99,6 +106,8 @@ export default function App() {
           onRoleChange={setCurrentRole}
           isRtl={isRtl}
           onToggleRtl={() => setIsRtl(!isRtl)}
+          theme={theme}
+          onToggleTheme={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}
           onOpenExplain={() => setIsExplainOpen(true)}
           onOpenScreenExplorer={() => setIsScreenNavOpen(true)}
           onOpenSidebar={() => setIsMobileSidebarOpen(true)}
