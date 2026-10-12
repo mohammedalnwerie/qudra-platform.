@@ -39,11 +39,11 @@ export default function Navbar({
             <ShieldCheck size={20} />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.25 }}>
-            <span style={{ fontSize: '18px', fontWeight: '800', color: 'var(--slate-900)' }}>
-              قُدرة <span style={{ fontSize: '12px', fontWeight: '600', color: 'var(--teal-700)', marginInlineStart: '2px' }}>QUDRA</span>
+            <span style={{ fontSize: '18px', fontWeight: '800', color: 'var(--qudra-obsidian)' }}>
+              قُدرة <span style={{ fontSize: '11.5px', fontWeight: '700', color: 'var(--qudra-teal-deep)', backgroundColor: 'var(--qudra-teal-light)', padding: '1px 6px', borderRadius: '4px', marginInlineStart: '4px' }}>QUDRA</span>
             </span>
-            <span className="brand-subtitle" style={{ fontSize: '11px', color: 'var(--slate-400)', fontWeight: '500' }}>
-              {isRtl ? 'محرك الأدلة وجواز الكفاءات' : 'Evidence-Backed Capabilities'}
+            <span className="brand-subtitle" style={{ fontSize: '11px', color: 'var(--slate-500)', fontWeight: '500' }}>
+              {isRtl ? 'محرك الأدلة وجواز القدرات المعتمد' : 'Evidence-Backed Capabilities'}
             </span>
           </div>
         </div>
@@ -56,15 +56,16 @@ export default function Navbar({
           onClick={onOpenExplain}
           className="btn btn-secondary btn-sm nav-explain-btn"
           style={{
-            color: 'var(--indigo-700)',
-            backgroundColor: 'var(--indigo-50)',
-            borderColor: 'var(--indigo-100)',
-            gap: '6px'
+            color: 'var(--qudra-obsidian)',
+            backgroundColor: 'var(--qudra-yellow-light)',
+            borderColor: 'var(--qudra-yellow-border)',
+            gap: '6px',
+            fontWeight: '700'
           }}
           title={isRtl ? 'عرض لوحة تفسير قرارات الذكاء الاصطناعي' : 'Open Explainable AI Drawer'}
         >
-          <Sparkles size={14} />
-          <span className="hide-on-mobile">{isRtl ? 'لوحة التفسير الشفاف' : 'Explain Decision'}</span>
+          <Sparkles size={14} color="#b45309" />
+          <span className="hide-on-mobile">{isRtl ? 'محرك التفسير' : 'Explain XAI'}</span>
         </button>
 
         {/* 1,040 Screen Explorer Shortcut */}

@@ -375,23 +375,23 @@ module.exports = { fetchRemoteAvatar };`
             <div style={{
               marginTop: '20px',
               padding: '18px',
-              backgroundColor: 'var(--teal-50)',
-              border: '1px solid var(--teal-300)',
+              backgroundColor: 'var(--qudra-yellow-light)',
+              border: '1px solid var(--qudra-yellow-border)',
               borderRadius: 'var(--radius-md)'
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--teal-800)', fontWeight: '800', marginBottom: '6px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--qudra-yellow-dark)', fontWeight: '800', marginBottom: '6px' }}>
                 <Award size={18} />
                 <span>{isRtl ? 'اكتملت جميع الاختبارات بنجاح!' : 'All Tests Passed!'}</span>
               </div>
-              <p style={{ fontSize: '12.5px', color: 'var(--slate-700)', marginBottom: '14px', lineHeight: 1.5 }}>
+              <p style={{ fontSize: '12.5px', color: 'var(--qudra-obsidian)', marginBottom: '14px', lineHeight: 1.5 }}>
                 {isRtl
-                  ? 'تم التحقق من الكود والتأكد من سد الثغرة. انقر لإصدار الدليل الموثق وترقية مهاراتك في الجواز.'
+                  ? 'تم التحقق من الكود والتأكد من سد الثغرة. انقر لإصدار الدليل الموثق وترقية مهاراتك في الجواز فورياً.'
                   : 'Your secure code has been validated. Mint verified evidence to upgrade your capability passport.'}
               </p>
               <button
                 onClick={handleMintEvidence}
                 disabled={isMinted}
-                className="btn btn-primary"
+                className="btn btn-gold"
                 style={{ width: '100%', gap: '6px' }}
               >
                 <ShieldCheck size={16} />

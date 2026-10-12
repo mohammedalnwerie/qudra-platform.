@@ -5,31 +5,35 @@
    ========================================================================== */
 
 :root {
-  /* Brand Palette — Calming Emerald & Deep Teal */
-  --teal-50: #f0fdfa;
-  --teal-100: #ccfbf1;
-  --teal-200: #99f6e4;
-  --teal-300: #5eead4;
-  --teal-400: #2dd4bf;
-  --teal-500: #14b8a6;
-  --teal-600: #0d9488;
-  --teal-700: #0f766e;
-  --teal-800: #115e59;
-  --teal-900: #134e4a;
+  /* ==========================================================================
+     QUDRA Brand Triad (Non-Negotiable Brand Identity)
+     Yellow: #FFC107 | Teal: #00B8B8 | Obsidian: #1A1A1A
+     Light-First Architecture
+     ========================================================================== */
+  --qudra-yellow: #FFC107;
+  --qudra-yellow-hover: #ffca28;
+  --qudra-yellow-light: #fff9e6;
+  --qudra-yellow-border: #ffe082;
+  --qudra-yellow-text: #1a1a1a; /* WCAG AAA 11.2:1 contrast */
+  --qudra-yellow-dark: #b45309;
 
-  /* Indigo Accents (Explainable AI & Trust) */
-  --indigo-50: #eef2ff;
-  --indigo-100: #e0e7ff;
-  --indigo-200: #c7d2fe;
-  --indigo-600: #4f46e5;
-  --indigo-700: #4338ca;
-  --indigo-800: #3730a3;
+  --qudra-teal: #00B8B8;
+  --qudra-teal-hover: #00a3a3;
+  --qudra-teal-dark: #008b8b; /* Accessible on white surfaces */
+  --qudra-teal-deep: #006666; /* High contrast text (WCAG AAA) */
+  --qudra-teal-light: #e6f8f8;
+  --qudra-teal-border: #99e2e2;
 
-  /* Semantic Evidence Colors — Soft, Eye-Comfortable Tones */
-  --proven-color: #059669;
-  --proven-bg: #ecfdf5;
-  --proven-border: #a7f3d0;
-  --proven-text: #065f46;
+  --qudra-obsidian: #1A1A1A;
+  --qudra-obsidian-hover: #262626;
+  --qudra-obsidian-subtle: #2d3748;
+  --qudra-obsidian-border: rgba(26, 26, 26, 0.12);
+
+  /* Semantic Evidence Colors */
+  --proven-color: var(--qudra-teal-dark);
+  --proven-bg: var(--qudra-teal-light);
+  --proven-border: var(--qudra-teal-border);
+  --proven-text: var(--qudra-teal-deep);
 
   --claimed-color: #0284c7;
   --claimed-bg: #f0f9ff;
@@ -46,13 +50,13 @@
   --danger-border: #fecdd3;
   --danger-text: #9f1239;
 
-  /* Surfaces & Eye-Comfort Warm Neutrals */
+  /* Surfaces & Pure Light-First Canvas */
   --canvas-bg: #f8fafc;
   --surface-card: #ffffff;
   --surface-subtle: #f8fafc;
   --surface-hover: #f1f5f9;
 
-  /* Slate Neutrals — Carefully Graded for Contrast without Eye Strain */
+  /* Slate Neutrals — Graded for Natural Reading Ergonomics */
   --slate-50: #f8fafc;
   --slate-100: #f1f5f9;
   --slate-200: #e2e8f0;
@@ -76,12 +80,12 @@
   --radius-xl: 18px;
   --radius-full: 9999px;
 
-  /* Ultra-Soft Shadows (Zero harsh outlines) */
-  --shadow-subtle: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
-  --shadow-card: 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 4px 12px -2px rgba(15, 23, 42, 0.03);
-  --shadow-hover: 0 4px 16px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
-  --shadow-drawer: -12px 0 32px rgba(15, 23, 42, 0.1);
-  --shadow-modal: 0 20px 40px -10px rgba(15, 23, 42, 0.14), 0 0 0 1px rgba(15, 23, 42, 0.05);
+  /* Tactile Subtle Shadows */
+  --shadow-subtle: 0 1px 2px 0 rgba(26, 26, 26, 0.04);
+  --shadow-card: 0 1px 3px 0 rgba(26, 26, 26, 0.04), 0 4px 12px -2px rgba(26, 26, 26, 0.03);
+  --shadow-hover: 0 4px 16px -2px rgba(26, 26, 26, 0.07), 0 2px 6px -1px rgba(26, 26, 26, 0.04);
+  --shadow-drawer: -12px 0 32px rgba(26, 26, 26, 0.1);
+  --shadow-modal: 0 20px 40px -10px rgba(26, 26, 26, 0.14), 0 0 0 1px rgba(26, 26, 26, 0.06);
 
   --transition-smooth: 0.18s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -260,13 +264,27 @@ p {
 .brand-icon-box {
   width: 38px;
   height: 38px;
-  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+  background: var(--qudra-obsidian);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  box-shadow: 0 2px 8px rgba(13, 148, 136, 0.22);
+  color: var(--qudra-teal);
+  position: relative;
+  box-shadow: 0 2px 8px rgba(26, 26, 26, 0.18);
+}
+
+.brand-icon-box::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  inset-inline-end: 5px;
+  width: 6px;
+  height: 6px;
+  background-color: var(--qudra-yellow);
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(255, 193, 7, 0.6);
 }
 
 .nav-actions {
@@ -463,29 +481,59 @@ p {
 }
 
 .btn-primary {
-  background: linear-gradient(180deg, #0d9488 0%, #0f766e 100%);
+  background-color: var(--qudra-obsidian);
   color: #ffffff;
-  border-color: #0f766e;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(13, 148, 136, 0.18);
+  border-color: var(--qudra-obsidian);
+  box-shadow: 0 1px 3px rgba(26, 26, 26, 0.16), 0 2px 6px rgba(26, 26, 26, 0.08);
 }
 
 .btn-primary:hover {
-  background: #0f766e;
-  border-color: #115e59;
-  box-shadow: 0 3px 10px rgba(13, 148, 136, 0.28);
+  background-color: var(--qudra-obsidian-hover);
+  border-color: #000000;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(26, 26, 26, 0.22);
+}
+
+.btn-teal {
+  background-color: var(--qudra-teal-dark);
+  color: #ffffff;
+  border-color: var(--qudra-teal-deep);
+  box-shadow: 0 1px 2px rgba(0, 184, 184, 0.12), 0 2px 6px rgba(0, 139, 139, 0.2);
+}
+
+.btn-teal:hover {
+  background-color: var(--qudra-teal-deep);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 139, 139, 0.3);
+}
+
+.btn-gold {
+  background-color: var(--qudra-yellow);
+  color: var(--qudra-obsidian);
+  border-color: var(--qudra-yellow-border);
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(255, 193, 7, 0.3);
+}
+
+.btn-gold:hover {
+  background-color: var(--qudra-yellow-hover);
+  border-color: #f59e0b;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(255, 193, 7, 0.4);
 }
 
 .btn-secondary {
   background-color: #ffffff;
-  color: var(--slate-700);
+  color: var(--slate-800);
   border-color: var(--slate-300);
   box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
 }
 
 .btn-secondary:hover {
   background-color: var(--slate-50);
-  color: var(--slate-900);
+  color: var(--qudra-obsidian);
   border-color: var(--slate-400);
+  transform: translateY(-1px);
 }
 
 .btn-ghost {
@@ -497,6 +545,46 @@ p {
 .btn-ghost:hover {
   background-color: var(--slate-100);
   color: var(--slate-900);
+}
+
+/* Badge Utilities for Direction C */
+.badge-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background-color: var(--qudra-yellow-light);
+  color: var(--qudra-yellow-dark);
+  border: 1px solid var(--qudra-yellow-border);
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.badge-teal {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background-color: var(--qudra-teal-light);
+  color: var(--qudra-teal-deep);
+  border: 1px solid var(--qudra-teal-border);
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.badge-obsidian {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background-color: #f1f5f9;
+  color: var(--qudra-obsidian);
+  border: 1px solid var(--slate-300);
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-size: 11.5px;
+  font-weight: 600;
 }
 
 .btn-sm {

@@ -148,22 +148,22 @@ export default function HomeDashboard({
             <span className="stat-label">
               {isRtl ? 'مؤشر الموثوقية' : 'Trust Score'}
             </span>
-            <div className="stat-icon-wrapper" style={{ backgroundColor: 'var(--indigo-50)', color: 'var(--indigo-600)' }}>
+            <div className="stat-icon-wrapper" style={{ backgroundColor: 'var(--qudra-yellow-light)', color: 'var(--qudra-yellow-dark)' }}>
               <Award size={18} />
             </div>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', margin: '2px 0' }}>
-            <div className="stat-value" style={{ color: 'var(--indigo-700)', margin: 0 }}>
+            <div className="stat-value" style={{ color: 'var(--qudra-obsidian)', margin: 0 }}>
               {currentPersona.trustScore || 94}%
             </div>
-            <div style={{ position: 'relative', width: '46px', height: '46px', flexShrink: 0 }}>
-              <svg width="46" height="46" viewBox="0 0 48 48" style={{ transform: 'rotate(-90deg)' }}>
+            <div style={{ position: 'relative', width: '48px', height: '48px', flexShrink: 0 }}>
+              <svg width="48" height="48" viewBox="0 0 48 48" style={{ transform: 'rotate(-90deg)' }}>
                 <circle cx="24" cy="24" r="19" stroke="var(--slate-200)" strokeWidth="4" fill="transparent" />
                 <circle
                   cx="24"
                   cy="24"
                   r="19"
-                  stroke="var(--indigo-600)"
+                  stroke="var(--qudra-teal)"
                   strokeWidth="4"
                   fill="transparent"
                   strokeDasharray="119.38"
@@ -172,13 +172,15 @@ export default function HomeDashboard({
                   style={{ transition: 'stroke-dashoffset 1s ease' }}
                 />
               </svg>
-              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: '800', color: 'var(--indigo-700)' }}>
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: '800', color: 'var(--qudra-teal-deep)' }}>
                 ★
               </div>
             </div>
           </div>
-          <div className="stat-subtext" style={{ color: 'var(--indigo-600)' }}>
-            ★ {isRtl ? 'الفئة الموثوقة الأولى (Top Tier)' : 'Top-Tier Trust Rating'}
+          <div className="stat-subtext">
+            <span className="badge-gold">
+              ★ {isRtl ? 'نخبة القدرات المعتمدة (Top Verified)' : 'Top Verified'}
+            </span>
           </div>
         </div>
       </div>
@@ -190,12 +192,12 @@ export default function HomeDashboard({
           <div>
             <div className="card-header">
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <TrendingUp size={18} color="var(--teal-600)" />
+                <TrendingUp size={18} color="var(--qudra-teal-dark)" />
                 <h3 className="card-title">
                   {isRtl ? 'الخطوة القادمة الأكثر تأثيراً' : 'Recommended Next Step'}
                 </h3>
               </div>
-              <span style={{ fontSize: '12px', fontWeight: '700', color: 'var(--gap-text)', backgroundColor: 'var(--gap-bg)', padding: '2px 8px', borderRadius: 'var(--radius-sm)' }}>
+              <span className="badge-gold">
                 {isRtl ? 'سد فجوة' : 'Close Gap'}
               </span>
             </div>
@@ -208,7 +210,7 @@ export default function HomeDashboard({
               marginBottom: '16px'
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                <h4 style={{ fontSize: '14.5px', fontWeight: '700', color: 'var(--slate-900)' }}>
+                <h4 style={{ fontSize: '14.5px', fontWeight: '700', color: 'var(--qudra-obsidian)' }}>
                   {isRtl ? 'سد فجوة Apache Kafka وتأمين خطوط البيانات' : 'Close Apache Kafka Streaming Gap'}
                 </h4>
                 <EvidenceBadge status="gap" labelOverride={isRtl ? 'فجوة' : 'Gap'} isRtl={isRtl} />
@@ -235,7 +237,7 @@ export default function HomeDashboard({
               className="btn btn-secondary"
               title={isRtl ? 'عرض تفسير الذكاء الاصطناعي' : 'Explain why'}
             >
-              <Sparkles size={15} color="var(--indigo-600)" />
+              <Sparkles size={15} color="var(--qudra-yellow-dark)" />
               <span>{isRtl ? 'لماذا؟' : 'Why?'}</span>
             </button>
           </div>
@@ -246,7 +248,7 @@ export default function HomeDashboard({
           <div>
             <div className="card-header">
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Award size={18} color="var(--indigo-600)" />
+                <Award size={18} color="var(--qudra-teal-dark)" />
                 <h3 className="card-title">
                   {isRtl ? 'أقوى مطابقة حالية' : 'Top Explainable Match'}
                 </h3>
@@ -254,18 +256,24 @@ export default function HomeDashboard({
               <div
                 className="match-chip"
                 onClick={onOpenExplain}
+                style={{
+                  backgroundColor: 'var(--qudra-yellow-light)',
+                  border: '1px solid var(--qudra-yellow-border)',
+                  color: 'var(--qudra-yellow-dark)',
+                  cursor: 'pointer'
+                }}
                 title={isRtl ? 'انقر لفتح لوحة التفسير' : 'Click to inspect breakdown'}
               >
-                <Sparkles size={13} color="var(--teal-700)" />
+                <Sparkles size={13} color="var(--qudra-yellow-dark)" />
                 <span>{MOCK_PROBLEM.matchScore}% {isRtl ? 'تطابق' : 'Match'}</span>
               </div>
             </div>
 
             <div style={{ marginBottom: '14px' }}>
-              <h4 style={{ fontSize: '14.5px', fontWeight: '700', color: 'var(--slate-900)', marginBottom: '4px' }}>
+              <h4 style={{ fontSize: '14.5px', fontWeight: '700', color: 'var(--qudra-obsidian)', marginBottom: '4px' }}>
                 {MOCK_PROBLEM.title}
               </h4>
-              <div style={{ fontSize: '12.5px', color: 'var(--teal-700)', fontWeight: '600', marginBottom: '8px' }}>
+              <div style={{ fontSize: '12.5px', color: 'var(--qudra-teal-deep)', fontWeight: '600', marginBottom: '8px' }}>
                 {MOCK_PROBLEM.author} · {MOCK_PROBLEM.budget}
               </div>
               <p style={{ fontSize: '13px', color: 'var(--slate-600)', lineHeight: 1.6 }}>
@@ -283,7 +291,7 @@ export default function HomeDashboard({
                     backgroundColor: 'var(--slate-100)',
                     fontSize: '11.5px',
                     fontWeight: '600',
-                    color: 'var(--slate-700)'
+                    color: 'var(--qudra-obsidian)'
                   }}
                 >
                   ✓ {cap.name}
@@ -304,7 +312,7 @@ export default function HomeDashboard({
             <button
               onClick={() => onNavigate('M20')}
               className="btn btn-primary btn-sm"
-              style={{ backgroundColor: 'var(--indigo-600)', flex: 1 }}
+              style={{ flex: 1 }}
             >
               <span>{isRtl ? 'الفريق المقترح' : 'Squad Composer'}</span>
             </button>

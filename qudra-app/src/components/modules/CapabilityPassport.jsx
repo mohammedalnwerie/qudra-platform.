@@ -85,7 +85,7 @@ export default function CapabilityPassport({ currentPersona, isRtl = true }) {
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <button
             onClick={handleCopy}
-            className="btn btn-primary"
+            className="btn btn-gold"
             style={{ gap: '6px', padding: '10px 18px' }}
           >
             {copied ? <Check size={16} /> : <Copy size={16} />}
@@ -108,15 +108,15 @@ export default function CapabilityPassport({ currentPersona, isRtl = true }) {
           padding: '10px 16px',
           backgroundColor: '#ffffff',
           borderRadius: 'var(--radius-md)',
-          border: '1px solid var(--slate-200)',
+          border: '1px solid var(--qudra-teal-border)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           fontSize: '13px',
           fontFamily: 'monospace'
         }}>
-          <span style={{ color: 'var(--teal-800)', fontWeight: '700' }}>{passportUrl}</span>
-          <span style={{ fontSize: '11.5px', color: 'var(--proven-text)', fontWeight: '600' }}>
+          <span style={{ color: 'var(--qudra-teal-deep)', fontWeight: '700' }}>{passportUrl}</span>
+          <span className="badge-teal">
             ✓ {isRtl ? 'مشفر وموثق بواسطة بروتوكول قُدرة' : 'Encrypted & Signed'}
           </span>
         </div>
@@ -163,16 +163,17 @@ export default function CapabilityPassport({ currentPersona, isRtl = true }) {
             width: '60px',
             height: '60px',
             borderRadius: '50%',
-            background: 'linear-gradient(135deg, var(--teal-600), var(--teal-700))',
-            color: '#fff',
+            background: 'var(--qudra-obsidian)',
+            border: '2px solid var(--qudra-yellow)',
+            color: 'var(--qudra-teal)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 4px 14px rgba(13,148,136,0.25)'
+            boxShadow: '0 4px 14px rgba(26,26,26,0.2)'
           }}>
-            <ShieldCheck size={32} />
+            <ShieldCheck size={30} />
           </div>
-          <span style={{ fontSize: '10px', fontWeight: '800', color: 'var(--teal-800)', letterSpacing: '0.05em' }}>
+          <span style={{ fontSize: '10px', fontWeight: '800', color: 'var(--qudra-yellow-dark)', letterSpacing: '0.08em' }}>
             QUDRA SEAL
           </span>
         </div>

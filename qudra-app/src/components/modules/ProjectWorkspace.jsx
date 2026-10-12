@@ -88,7 +88,7 @@ export default function ProjectWorkspace({ isRtl = true }) {
           backgroundColor: '#ffffff',
           padding: '18px 24px',
           borderRadius: 'var(--radius-lg)',
-          border: '1px solid var(--teal-200)',
+          border: '1px solid var(--qudra-teal-border)',
           minWidth: '280px',
           boxShadow: 'var(--shadow-subtle)'
         }}>
@@ -96,17 +96,17 @@ export default function ProjectWorkspace({ isRtl = true }) {
             <span style={{ fontSize: '12px', color: 'var(--slate-500)', fontWeight: '600' }}>
               {isRtl ? 'إجمالي ميزانية المشروع' : 'Total Budget'}
             </span>
-            <span style={{ fontSize: '11px', color: 'var(--teal-700)', fontWeight: '700' }}>
+            <span style={{ fontSize: '11px', color: 'var(--qudra-teal-deep)', fontWeight: '700' }}>
               {releasePercentage}% {isRtl ? 'مُفرج عنه' : 'Released'}
             </span>
           </div>
-          <div style={{ fontSize: '24px', fontWeight: '800', color: 'var(--teal-800)', lineHeight: 1.2 }}>
+          <div style={{ fontSize: '24px', fontWeight: '800', color: 'var(--qudra-obsidian)', lineHeight: 1.2 }}>
             {totalBudget.toLocaleString()} ر.س
           </div>
 
           {/* Dual Escrow Progress Bar */}
           <div style={{ width: '100%', height: '7px', backgroundColor: 'var(--slate-100)', borderRadius: '9999px', overflow: 'hidden', margin: '10px 0 8px' }}>
-            <div style={{ width: `${releasePercentage}%`, height: '100%', backgroundColor: 'var(--proven-color)', transition: 'width 0.5s ease' }} />
+            <div style={{ width: `${releasePercentage}%`, height: '100%', backgroundColor: 'var(--qudra-teal-dark)', transition: 'width 0.5s ease' }} />
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--slate-500)', fontWeight: '500' }}>
@@ -122,7 +122,7 @@ export default function ProjectWorkspace({ isRtl = true }) {
           <h3 className="card-title">
             {isRtl ? 'مراحل العمل والتسليمات المعتمدة' : 'Work Milestones & Deliverables'}
           </h3>
-          <span className="badge-pill" style={{ backgroundColor: 'var(--teal-50)', color: 'var(--teal-800)', border: '1px solid var(--teal-200)' }}>
+          <span className="badge-teal">
             {milestones.filter((m) => m.status === 'completed').length} / {milestones.length} {isRtl ? 'مكتملة' : 'Completed'}
           </span>
         </div>
@@ -152,7 +152,7 @@ export default function ProjectWorkspace({ isRtl = true }) {
                     width: '38px',
                     height: '38px',
                     borderRadius: '50%',
-                    backgroundColor: isDone ? 'var(--proven-color)' : isInProgress ? 'var(--teal-600)' : 'var(--slate-100)',
+                    backgroundColor: isDone ? 'var(--proven-color)' : isInProgress ? 'var(--qudra-teal-dark)' : 'var(--slate-100)',
                     color: isDone || isInProgress ? '#ffffff' : 'var(--slate-400)',
                     display: 'flex',
                     alignItems: 'center',
@@ -163,7 +163,7 @@ export default function ProjectWorkspace({ isRtl = true }) {
                   </div>
 
                   <div>
-                    <h4 style={{ fontSize: '14.5px', fontWeight: '700', color: 'var(--slate-900)' }}>
+                    <h4 style={{ fontSize: '14.5px', fontWeight: '700', color: 'var(--qudra-obsidian)' }}>
                       {m.title}
                     </h4>
                     <div style={{ fontSize: '12.5px', color: 'var(--slate-500)', marginTop: '2px' }}>
@@ -173,19 +173,19 @@ export default function ProjectWorkspace({ isRtl = true }) {
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                  <strong style={{ fontSize: '15px', color: 'var(--slate-900)' }}>
+                  <strong style={{ fontSize: '15px', color: 'var(--qudra-obsidian)' }}>
                     {m.amount}
                   </strong>
 
                   {isDone ? (
                     <span style={{ fontSize: '12px', fontWeight: '700', color: 'var(--proven-text)', display: 'flex', alignItems: 'center', gap: '4px' }}>
                       <ShieldCheck size={16} />
-                      <span>{isRtl ? 'معتمد كدليل Proven' : 'Verified Proven'}</span>
+                      <span>{isRtl ? 'معتمد كدليل موثوق' : 'Verified Proven'}</span>
                     </span>
                   ) : isInProgress ? (
                     <button
                       onClick={() => handleCompleteMilestone(m.id)}
-                      className="btn btn-primary btn-sm"
+                      className="btn btn-teal btn-sm"
                       style={{ gap: '6px' }}
                     >
                       <Upload size={13} />
