@@ -23,7 +23,8 @@ import {
   MessageSquare,
   Sparkles,
   Lock,
-  Settings
+  Settings,
+  X
 } from 'lucide-react';
 import { MODULES_METADATA } from '../../data/mockData';
 
@@ -63,15 +64,28 @@ export const CATEGORIES = [
   { id: 'cat-trust', nameAr: 'الثقة والأمان والتحكم', nameEn: 'Trust & Governance', moduleIds: ['M22', 'M24', 'M25', 'M26', 'M23'] },
 ];
 
-export default function Sidebar({ activeModuleId, onSelectModule, isRtl = true, isOpen = true }) {
+export default function Sidebar({ activeModuleId, onSelectModule, isRtl = true, isOpen = false, onClose }) {
   return (
     <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
       <div className="sidebar-header">
-        <span style={{ fontSize: '11px', fontWeight: '700', color: 'var(--teal-700)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-          {isRtl ? 'وحدات المنصة' : 'Platform Modules'}
-        </span>
-        <div style={{ fontSize: '14px', fontWeight: '800', color: 'var(--slate-900)', marginTop: '2px' }}>
-          {isRtl ? 'الأدلة والمطابقة المُفسَّرة' : 'Evidence & Match System'}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div>
+            <span style={{ fontSize: '11px', fontWeight: '700', color: 'var(--teal-700)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+              {isRtl ? 'وحدات المنصة' : 'Platform Modules'}
+            </span>
+            <div style={{ fontSize: '14px', fontWeight: '800', color: 'var(--slate-900)', marginTop: '2px' }}>
+              {isRtl ? 'الأدلة والمطابقة المُفسَّرة' : 'Evidence & Match System'}
+            </div>
+          </div>
+          {onClose && (
+            <button
+              className="mobile-sidebar-close"
+              onClick={onClose}
+              aria-label={isRtl ? 'إغلاق القائمة' : 'Close Sidebar'}
+            >
+              <X size={18} />
+            </button>
+          )}
         </div>
       </div>
 
@@ -91,7 +105,10 @@ export default function Sidebar({ activeModuleId, onSelectModule, isRtl = true, 
                 <div
                   key={mod.id}
                   className={`nav-item ${isActive ? 'active' : ''}`}
-                  onClick={() => onSelectModule(mod.id)}
+                  onClick={() => {
+                    onSelectModule(mod.id);
+                    if (onClose) onClose();
+                  }}
                   title={`${mod.code}: ${isRtl ? mod.nameAr : mod.nameEn}`}
                 >
                   <IconComp size={16} style={{ flexShrink: 0, color: isActive ? 'var(--teal-700)' : 'var(--slate-500)' }} />

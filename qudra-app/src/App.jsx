@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import Navbar from './components/layout/Navbar';
 import Sidebar from './components/layout/Sidebar';
 import ScreenNavigator from './components/layout/ScreenNavigator';
+import MobileBottomNav from './components/layout/MobileBottomNav';
 import ExplainDrawer from './components/common/ExplainDrawer';
 
 // Modules
@@ -31,6 +32,7 @@ export default function App() {
   const [isExplainOpen, setIsExplainOpen] = useState(false);
   const [isScreenNavOpen, setIsScreenNavOpen] = useState(false);
   const [showDevPill, setShowDevPill] = useState(true);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   // Sync RTL and lang attributes
   useEffect(() => {
@@ -57,11 +59,13 @@ export default function App() {
   const handleSelectScreen = (modId, stId) => {
     setActiveModuleId(modId);
     setActiveStateId(stId);
+    setIsMobileSidebarOpen(false);
   };
 
   const handleNavigateModule = (modId) => {
     setActiveModuleId(modId);
     setActiveStateId(1);
+    setIsMobileSidebarOpen(false);
   };
 
   return (
@@ -72,9 +76,20 @@ export default function App() {
         onSelectModule={(id) => {
           setActiveModuleId(id);
           setActiveStateId(1);
+          setIsMobileSidebarOpen(false);
         }}
         isRtl={isRtl}
+        isOpen={isMobileSidebarOpen}
+        onClose={() => setIsMobileSidebarOpen(false)}
       />
+
+      {/* Mobile Sidebar Backdrop Overlay */}
+      {isMobileSidebarOpen && (
+        <div
+          className="sidebar-backdrop"
+          onClick={() => setIsMobileSidebarOpen(false)}
+        />
+      )}
 
       {/* Main Content Area */}
       <div className="main-wrapper">
@@ -86,6 +101,7 @@ export default function App() {
           onToggleRtl={() => setIsRtl(!isRtl)}
           onOpenExplain={() => setIsExplainOpen(true)}
           onOpenScreenExplorer={() => setIsScreenNavOpen(true)}
+          onOpenSidebar={() => setIsMobileSidebarOpen(true)}
           currentPersona={currentPersona}
         />
 
@@ -239,6 +255,14 @@ export default function App() {
         activeModuleId={activeModuleId}
         activeStateId={activeStateId}
         onSelectScreen={handleSelectScreen}
+        isRtl={isRtl}
+      />
+
+      {/* Mobile Bottom Navigation Bar (LinkedIn / Upwork App Pattern) */}
+      <MobileBottomNav
+        activeModuleId={activeModuleId}
+        onNavigate={handleNavigateModule}
+        onOpenSidebar={() => setIsMobileSidebarOpen(true)}
         isRtl={isRtl}
       />
     </div>

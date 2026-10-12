@@ -4,8 +4,7 @@ import {
   Sparkles,
   Layers,
   ShieldCheck,
-  Search,
-  Bell,
+  Menu,
   ChevronDown
 } from 'lucide-react';
 
@@ -16,12 +15,21 @@ export default function Navbar({
   onToggleRtl,
   onOpenExplain,
   onOpenScreenExplorer,
+  onOpenSidebar,
   currentPersona
 }) {
   return (
     <header className="top-navbar">
-      {/* Brand */}
+      {/* Brand & Mobile Hamburger */}
       <div className="brand-section">
+        <button
+          className="mobile-menu-btn"
+          onClick={onOpenSidebar}
+          aria-label={isRtl ? 'فتح القائمة الجانبية' : 'Open Sidebar'}
+        >
+          <Menu size={20} />
+        </button>
+
         <div className="brand-logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
           <div className="brand-icon-box">
             <ShieldCheck size={20} />
@@ -30,7 +38,7 @@ export default function Navbar({
             <span style={{ fontSize: '18px', fontWeight: '800', color: 'var(--slate-900)' }}>
               قُدرة <span style={{ fontSize: '12px', fontWeight: '600', color: 'var(--teal-700)', marginInlineStart: '2px' }}>QUDRA</span>
             </span>
-            <span style={{ fontSize: '11px', color: 'var(--slate-400)', fontWeight: '500' }}>
+            <span className="brand-subtitle" style={{ fontSize: '11px', color: 'var(--slate-400)', fontWeight: '500' }}>
               {isRtl ? 'محرك الأدلة وجواز الكفاءات' : 'Evidence-Backed Capabilities'}
             </span>
           </div>
@@ -39,10 +47,10 @@ export default function Navbar({
 
       {/* Right Controls: Role, Language, Explain, Profile */}
       <div className="nav-actions">
-        {/* Explain AI Drawer Trigger — Elegant pill */}
+        {/* Explain AI Drawer Trigger */}
         <button
           onClick={onOpenExplain}
-          className="btn btn-secondary btn-sm"
+          className="btn btn-secondary btn-sm nav-explain-btn"
           style={{
             color: 'var(--indigo-700)',
             backgroundColor: 'var(--indigo-50)',
@@ -52,13 +60,13 @@ export default function Navbar({
           title={isRtl ? 'عرض لوحة تفسير قرارات الذكاء الاصطناعي' : 'Open Explainable AI Drawer'}
         >
           <Sparkles size={14} />
-          <span>{isRtl ? 'لوحة التفسير الشفاف' : 'Explain Decision'}</span>
+          <span className="hide-on-mobile">{isRtl ? 'لوحة التفسير الشفاف' : 'Explain Decision'}</span>
         </button>
 
         {/* 1,040 Screen Explorer Shortcut */}
         <button
           onClick={onOpenScreenExplorer}
-          className="btn btn-ghost btn-sm"
+          className="btn btn-ghost btn-sm hide-on-mobile"
           style={{ gap: '6px', color: 'var(--slate-600)' }}
           title={isRtl ? 'استعراض الـ 1,040 شاشة' : 'Explore 1,040 Screens'}
         >
@@ -121,7 +129,7 @@ export default function Navbar({
               boxShadow: '0 2px 6px rgba(0,0,0,0.06)'
             }}
           />
-          <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.2 }}>
+          <div className="profile-text hide-on-mobile" style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.2 }}>
             <span style={{ fontSize: '13px', fontWeight: '700', color: 'var(--slate-900)' }}>
               {currentPersona.name}
             </span>
