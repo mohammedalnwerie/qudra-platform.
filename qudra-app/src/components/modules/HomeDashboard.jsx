@@ -20,7 +20,10 @@ import {
   ChevronRight,
   Play,
   Zap,
-  Check
+  Check,
+  Star,
+  Clock,
+  CheckCircle2
 } from 'lucide-react';
 import EvidenceBadge from '../common/EvidenceBadge';
 import TrustChip from '../common/TrustChip';
@@ -90,10 +93,14 @@ export default function HomeDashboard({
                   borderRadius: '999px',
                   fontSize: '11px',
                   fontWeight: '800',
-                  border: '1px solid #FDE68A'
+                  border: '1px solid #FDE68A',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px'
                 }}
               >
-                ★ {isRtl ? 'مطور نخبة موثق (Top 1%)' : 'Elite Verified (Top 1%)'}
+                <Star size={12} fill="#B45309" color="#B45309" />
+                <span>{isRtl ? 'مطور نخبة موثق (Top 1%)' : 'Elite Verified (Top 1%)'}</span>
               </span>
             </div>
 
@@ -200,8 +207,9 @@ export default function HomeDashboard({
           <div style={{ width: '100%', height: '5px', backgroundColor: '#E2E8F0', borderRadius: '999px', overflow: 'hidden', margin: '6px 0 4px' }}>
             <div style={{ width: `${(provenCount / 16) * 100}%`, height: '100%', backgroundColor: '#16A34A', borderRadius: '999px' }} />
           </div>
-          <div className="stat-subtext" style={{ color: '#15803D' }}>
-            ✓ {isRtl ? 'مدعومة ببصمات SHA-256' : 'Cryptographically verified'}
+          <div className="stat-subtext" style={{ color: '#15803D', display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <Check size={13} color="#15803D" />
+            <span>{isRtl ? 'مدعومة ببصمات SHA-256' : 'Cryptographically verified'}</span>
           </div>
         </div>
 
@@ -230,8 +238,9 @@ export default function HomeDashboard({
           <div style={{ width: '100%', height: '5px', backgroundColor: '#E2E8F0', borderRadius: '999px', overflow: 'hidden', margin: '6px 0 4px' }}>
             <div style={{ width: '94%', height: '100%', backgroundColor: '#F59E0B', borderRadius: '999px' }} />
           </div>
-          <div className="stat-subtext" style={{ color: '#92400E' }}>
-            ⚡ {isRtl ? 'ميزانية 60,000 ر.س (مفسرة)' : '60k SAR Net Budget'}
+          <div className="stat-subtext" style={{ color: '#92400E', display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <Zap size={13} color="#92400E" />
+            <span>{isRtl ? 'ميزانية 60,000 ر.س (مفسرة)' : '60k SAR Net Budget'}</span>
           </div>
         </div>
 
@@ -260,8 +269,9 @@ export default function HomeDashboard({
           <div style={{ width: '100%', height: '5px', backgroundColor: '#E2E8F0', borderRadius: '999px', overflow: 'hidden', margin: '6px 0 4px' }}>
             <div style={{ width: '30%', height: '100%', backgroundColor: '#EF4444', borderRadius: '999px' }} />
           </div>
-          <div className="stat-subtext" style={{ color: '#991B1B' }}>
-            ○ {isRtl ? 'Apache Kafka في انتظار التحدي' : 'Kafka stream challenge waiting'}
+          <div className="stat-subtext" style={{ color: '#991B1B', display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <AlertCircle size={13} color="#991B1B" />
+            <span>{isRtl ? 'Apache Kafka في انتظار التحدي' : 'Kafka stream challenge waiting'}</span>
           </div>
         </div>
 
@@ -298,13 +308,14 @@ export default function HomeDashboard({
                   strokeLinecap="round"
                 />
               </svg>
-              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: '800', color: '#006666' }}>
-                ★
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Star size={13} fill="#008B8B" color="#008B8B" />
               </div>
             </div>
           </div>
-          <div className="stat-subtext" style={{ color: '#006666', fontWeight: '700' }}>
-            ✓ {isRtl ? 'معيار W3C Verifiable Credential' : 'W3C VC Compliant'}
+          <div className="stat-subtext" style={{ color: '#006666', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <CheckCircle2 size={13} color="#008B8B" />
+            <span>{isRtl ? 'معيار W3C Verifiable Credential' : 'W3C VC Compliant'}</span>
           </div>
         </div>
       </div>
@@ -452,6 +463,9 @@ export default function HomeDashboard({
                 <span
                   key={i}
                   style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px',
                     padding: '3px 8px',
                     borderRadius: '6px',
                     backgroundColor: '#F1F5F9',
@@ -460,7 +474,8 @@ export default function HomeDashboard({
                     color: '#334155'
                   }}
                 >
-                  ✓ {cap.name}
+                  <Check size={11} color="#008B8B" />
+                  <span>{cap.name}</span>
                 </span>
               ))}
             </div>
@@ -536,7 +551,10 @@ export default function HomeDashboard({
               <span style={{ fontSize: '11px', fontWeight: '800', color: '#166534' }}>{isRtl ? 'المرحلة 1: البنية التحتية' : 'Milestone 1'}</span>
               <span style={{ fontSize: '11px', fontWeight: '800', color: '#166534' }}>18,000 ر.س</span>
             </div>
-            <div style={{ fontSize: '12px', fontWeight: '700', color: '#14532D' }}>✓ {isRtl ? 'تم التسليم وتحرير الدفعة' : 'Released to Squad'}</div>
+            <div style={{ fontSize: '12px', fontWeight: '700', color: '#14532D', display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <CheckCircle2 size={13} color="#166534" />
+              <span>{isRtl ? 'تم التسليم وتحرير الدفعة' : 'Released to Squad'}</span>
+            </div>
           </div>
 
           <div style={{ padding: '12px', backgroundColor: '#FEF3C7', borderRadius: '8px', border: '1px solid #FDE68A' }}>
@@ -544,7 +562,10 @@ export default function HomeDashboard({
               <span style={{ fontSize: '11px', fontWeight: '800', color: '#92400E' }}>{isRtl ? 'المرحلة 2: محرك الدفع وSSRF' : 'Milestone 2'}</span>
               <span style={{ fontSize: '11px', fontWeight: '800', color: '#92400E' }}>24,000 ر.س</span>
             </div>
-            <div style={{ fontSize: '12px', fontWeight: '700', color: '#78350F' }}>⚡ {isRtl ? 'قيد مراجعة العميل والاعتماد' : 'In Client Review'}</div>
+            <div style={{ fontSize: '12px', fontWeight: '700', color: '#78350F', display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <Clock size={13} color="#92400E" />
+              <span>{isRtl ? 'قيد مراجعة العميل والاعتماد' : 'In Client Review'}</span>
+            </div>
           </div>
 
           <div style={{ padding: '12px', backgroundColor: '#F8FAFC', borderRadius: '8px', border: '1px solid #E2E8F0' }}>
@@ -552,7 +573,10 @@ export default function HomeDashboard({
               <span style={{ fontSize: '11px', fontWeight: '800', color: '#64748B' }}>{isRtl ? 'المرحلة 3: تدفق كافكا' : 'Milestone 3'}</span>
               <span style={{ fontSize: '11px', fontWeight: '800', color: '#64748B' }}>18,000 ر.س</span>
             </div>
-            <div style={{ fontSize: '12px', fontWeight: '700', color: '#475569' }}>🔒 {isRtl ? 'محجوزة في الضمان البنكي' : 'Locked in Escrow'}</div>
+            <div style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <Lock size={13} color="#64748B" />
+              <span>{isRtl ? 'محجوزة في الضمان البنكي' : 'Locked in Escrow'}</span>
+            </div>
           </div>
         </div>
       </div>

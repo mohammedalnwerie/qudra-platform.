@@ -421,7 +421,7 @@ module.exports = { fetchRemoteAvatar };`;
                   border: `1px solid ${hasRun ? '#bbf7d0' : 'var(--border-color)'}`
                 }}
               >
-                {hasRun ? (isRtl ? '6 / 6 اجتياز تام ✓' : '6 / 6 Passed ✓') : (isRtl ? 'بانتظار الاختبار' : 'Awaiting Run')}
+                {hasRun ? (isRtl ? '6 / 6 اجتياز تام' : '6 / 6 Passed') : (isRtl ? 'بانتظار الاختبار' : 'Awaiting Run')}
               </span>
             </div>
 
@@ -482,8 +482,9 @@ module.exports = { fetchRemoteAvatar };`;
 
                 {isMinted ? (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '4px' }}>
-                    <div style={{ backgroundColor: '#ffffff', border: '1px solid #bbf7d0', padding: '8px 12px', borderRadius: 'var(--radius-sm)', fontSize: '11.5px', color: '#166534', fontFamily: 'monospace' }}>
-                      ✓ تم الإصدار بالبصمة: {mintedHash}
+                    <div style={{ backgroundColor: '#ffffff', border: '1px solid #bbf7d0', padding: '8px 12px', borderRadius: 'var(--radius-sm)', fontSize: '11.5px', color: '#166534', fontFamily: 'monospace', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <CheckCircle2 size={13} color="#166534" />
+                      <span>تم الإصدار بالبصمة: {mintedHash}</span>
                     </div>
                     {onNavigate && (
                       <button
@@ -497,7 +498,8 @@ module.exports = { fetchRemoteAvatar };`;
                         }}
                       >
                         <ShieldCheck size={14} color="var(--qudra-yellow)" />
-                        <span>{isRtl ? 'عرض الدليل الجديد في جواز القدرات (M07) ↗' : 'View in Capability Passport (M07) ↗'}</span>
+                        <span>{isRtl ? 'عرض الدليل الجديد في جواز القدرات' : 'View in Capability Passport'}</span>
+                        <ArrowUpRight size={13} />
                       </button>
                     )}
                   </div>
@@ -742,12 +744,12 @@ module.exports = { fetchRemoteAvatar };`;
               ) : (
                 <div>
                   <div style={{ color: '#4ade80', fontWeight: '700' }}>PASS test/security.spec.js (1.42s)</div>
-                  <div style={{ color: '#94a3b8' }}>  ✓ [TC-01] Rejects 127.0.0.1 loopback calls (3ms)</div>
-                  <div style={{ color: '#94a3b8' }}>  ✓ [TC-02] Blocks AWS Cloud Metadata 169.254.169.254 (2ms)</div>
-                  <div style={{ color: '#94a3b8' }}>  ✓ [TC-03] Blocks Private RFC-1918 CIDR 10.0.0.0/8 (3ms)</div>
-                  <div style={{ color: '#94a3b8' }}>  ✓ [TC-04] Disallows file:// & gopher:// protocols (2ms)</div>
-                  <div style={{ color: '#94a3b8' }}>  ✓ [TC-05] Enforces response size limit &lt;= 2MB (4ms)</div>
-                  <div style={{ color: '#94a3b8' }}>  ✓ [TC-06] Successfully fetches verified public avatar (62ms)</div>
+                  <div style={{ color: '#94a3b8' }}>  PASS [TC-01] Rejects 127.0.0.1 loopback calls (3ms)</div>
+                  <div style={{ color: '#94a3b8' }}>  PASS [TC-02] Blocks AWS Cloud Metadata 169.254.169.254 (2ms)</div>
+                  <div style={{ color: '#94a3b8' }}>  PASS [TC-03] Blocks Private RFC-1918 CIDR 10.0.0.0/8 (3ms)</div>
+                  <div style={{ color: '#94a3b8' }}>  PASS [TC-04] Disallows file:// & gopher:// protocols (2ms)</div>
+                  <div style={{ color: '#94a3b8' }}>  PASS [TC-05] Enforces response size limit &lt;= 2MB (4ms)</div>
+                  <div style={{ color: '#94a3b8' }}>  PASS [TC-06] Successfully fetches verified public avatar (62ms)</div>
                   <div style={{ color: '#4ade80', fontWeight: 'bold', marginTop: '6px', borderTop: '1px solid #222', paddingTop: '4px' }}>
                     Test Suites: 1 passed, 1 total | Tests: 6 passed, 6 total | Time: 1.42s
                   </div>

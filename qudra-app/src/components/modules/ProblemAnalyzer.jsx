@@ -277,7 +277,10 @@ export default function ProblemAnalyzer({ onNavigate, onOpenExplain, isRtl = tru
                         border: '1px solid #bbf7d0'
                       }}
                     >
-                      ✓ {isRtl ? 'المرشح الأول (Top Match)' : 'Top Matched Candidate'}
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                        <CheckCircle2 size={12} color="#166534" />
+                        <span>{isRtl ? 'المرشح الأول (Top Match)' : 'Top Matched Candidate'}</span>
+                      </span>
                     </span>
                     <span className="badge-teal" style={{ fontSize: '11px' }}>
                       {isRtl ? 'جواز قدرات موثق W3C' : 'Verified Passport'}
@@ -324,7 +327,7 @@ export default function ProblemAnalyzer({ onNavigate, onOpenExplain, isRtl = tru
                     textDecoration: 'underline'
                   }}
                 >
-                  {isRtl ? 'كيف حُسبت هذه النسبة؟ 🔍' : 'How was this calculated? 🔍'}
+                  {isRtl ? 'كيف حُسبت هذه النسبة؟' : 'How was this calculated?'}
                 </button>
               </div>
             </div>
@@ -475,8 +478,9 @@ export default function ProblemAnalyzer({ onNavigate, onOpenExplain, isRtl = tru
               <h3 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
                 {isRtl ? 'بيانات المشكلة الهندسية' : 'Problem Statement'}
               </h3>
-              <span style={{ fontSize: '11.5px', color: '#16a34a', fontWeight: '700' }}>
-                ✓ {isRtl ? 'حفظ تلقائي للمسودة' : 'Autosaved'}
+              <span style={{ fontSize: '11.5px', color: '#16a34a', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <CheckCircle2 size={12} color="#16a34a" />
+                <span>{isRtl ? 'حفظ تلقائي للمسودة' : 'Autosaved'}</span>
               </span>
             </div>
 

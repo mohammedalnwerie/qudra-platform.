@@ -96,10 +96,10 @@ export default function Navbar({
               cursor: 'pointer'
             }}
           >
-            <option value="freelancer">{isRtl ? '👤 المستقل · كريم' : 'Role: Freelancer'}</option>
-            <option value="student">{isRtl ? '🎓 الطالب · سارة' : 'Role: Student'}</option>
-            <option value="enterprise">{isRtl ? '🏢 المنشأة · مسار' : 'Role: Enterprise'}</option>
-            <option value="verifier">{isRtl ? '🛡️ المحكّم · د. طارق' : 'Role: Verifier'}</option>
+            <option value="freelancer">{isRtl ? 'المستقل · كريم المنشاوي' : 'Freelancer: Karim'}</option>
+            <option value="student">{isRtl ? 'طالب ومبتدئ · سارة' : 'Student: Sarah'}</option>
+            <option value="enterprise">{isRtl ? 'جهة أعمال · شركة مسار' : 'Enterprise: Masar'}</option>
+            <option value="verifier">{isRtl ? 'محكّم معتمد · د. طارق' : 'Verifier: Dr. Tariq'}</option>
           </select>
         </div>
 
@@ -148,8 +148,9 @@ export default function Navbar({
             <span style={{ fontSize: '13px', fontWeight: '700', color: 'var(--slate-900)' }}>
               {currentPersona.name}
             </span>
-            <span style={{ fontSize: '11px', color: 'var(--proven-text)', fontWeight: '600' }}>
-              ✓ {isRtl ? 'موثوق ' : 'Verified '}{currentPersona.trustScore || 94}%
+            <span style={{ fontSize: '11px', color: 'var(--proven-text)', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '3px' }}>
+              <ShieldCheck size={11} color="var(--proven-color)" />
+              <span>{isRtl ? 'موثق ' : 'Verified '}{currentPersona.trustScore || 94}%</span>
             </span>
           </div>
         </div>

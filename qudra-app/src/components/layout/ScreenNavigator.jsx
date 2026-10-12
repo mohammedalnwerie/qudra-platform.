@@ -120,7 +120,7 @@ export default function ScreenNavigator({
               style={{ gap: '4px' }}
             >
               <Anchor size={12} />
-              <span>{isRtl ? 'شاشات الارتكاز (156 ⚓)' : 'Anchors (156 ⚓)'}</span>
+              <span>{isRtl ? 'شاشات الارتكاز (156)' : 'Anchors (156)'}</span>
             </button>
             <button
               className={`btn btn-sm ${filterMode === 'p0' ? 'btn-primary' : 'btn-secondary'}`}
@@ -227,7 +227,7 @@ export default function ScreenNavigator({
                           alignItems: 'center',
                           gap: '2px'
                         }}>
-                          ⚓ Anchor
+                          Anchor
                         </span>
                       )}
                       <span style={{

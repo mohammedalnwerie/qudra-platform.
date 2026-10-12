@@ -232,8 +232,9 @@ export default function CapabilityPassport({ currentPersona, isRtl = true }) {
               {isRtl ? 'درجة الموثوقية التشفيرية' : 'Cryptographic Trust Score'}
             </span>
 
-            <div style={{ marginTop: '10px', paddingTop: '10px', borderTop: '1px dashed var(--border-color)', width: '100%', fontSize: '11px', color: '#166534', fontWeight: '700' }}>
-              ✓ {isRtl ? 'معتمد بشهادة W3C VC 2.0' : 'W3C VC 2.0 Verified'}
+            <div style={{ marginTop: '10px', paddingTop: '10px', borderTop: '1px dashed var(--border-color)', width: '100%', fontSize: '11px', color: '#166534', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <CheckCircle2 size={13} color="#166534" />
+              <span>{isRtl ? 'معتمد بشهادة W3C VC 2.0' : 'W3C VC 2.0 Verified'}</span>
             </div>
           </div>
         </div>
@@ -264,8 +265,9 @@ export default function CapabilityPassport({ currentPersona, isRtl = true }) {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <span className="badge-teal" style={{ fontSize: '11px' }}>
-              ✓ {isRtl ? 'مشفر وموقع بروتوكولياً' : 'Protocol Signed'}
+            <span className="badge-teal" style={{ fontSize: '11px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <ShieldCheck size={12} />
+              <span>{isRtl ? 'مشفر وموقع بروتوكولياً' : 'Protocol Signed'}</span>
             </span>
             <a
               href={passportUrl}
@@ -540,7 +542,7 @@ export default function CapabilityPassport({ currentPersona, isRtl = true }) {
                         }}
                       >
                         <Eye size={12} />
-                        <span>{isRtl ? 'فحص الأدلة المرتبطة 🔍' : 'Inspect Proofs 🔍'}</span>
+                        <span>{isRtl ? 'فحص الأدلة المرتبطة' : 'Inspect Proofs'}</span>
                       </button>
                     </div>
                   </div>
@@ -570,10 +572,14 @@ export default function CapabilityPassport({ currentPersona, isRtl = true }) {
                       padding: '2px 8px',
                       fontSize: '11px',
                       cursor: 'pointer',
-                      color: 'var(--slate-500)'
+                      color: 'var(--slate-500)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px'
                     }}
                   >
-                    {isRtl ? 'إلغاء التصفية ✕' : 'Clear Filter ✕'}
+                    <span>{isRtl ? 'إلغاء التصفية' : 'Clear Filter'}</span>
+                    <X size={11} />
                   </button>
                 )}
               </div>

@@ -631,7 +631,7 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
                         }}
                       >
                         <Lock size={12} />
-                        <span>{isRtl ? 'فحص الإثبات التشفيري 🔍' : 'Inspect Proof Receipt 🔍'}</span>
+                        <span>{isRtl ? 'فحص الإثبات التشفيري' : 'Inspect Proof Receipt'}</span>
                       </button>
                     )}
                   </div>

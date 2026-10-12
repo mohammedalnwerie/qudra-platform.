@@ -177,7 +177,7 @@ export default function Sidebar({ activeModuleId, onSelectModule, isRtl = true, 
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder={isRtl ? 'ابحث في الوحدات (M01..M26)' : 'Filter modules...'}
+            placeholder={isRtl ? 'البحث السريع في القائمة...' : 'Search navigation...'}
             style={{
               width: '100%',
               padding: '6px 10px',
@@ -226,7 +226,7 @@ export default function Sidebar({ activeModuleId, onSelectModule, isRtl = true, 
                           onSelectModule(mod.id);
                           if (onClose) onClose();
                         }}
-                        title={`${mod.code}: ${isRtl ? mod.nameAr : mod.nameEn}`}
+                        title={isRtl ? mod.nameAr : mod.nameEn}
                       >
                         <IconComp
                           size={16}
@@ -245,21 +245,6 @@ export default function Sidebar({ activeModuleId, onSelectModule, isRtl = true, 
                           }}
                         >
                           {isRtl ? mod.nameAr : mod.nameEn}
-                        </span>
-
-                        <span
-                          style={{
-                            marginInlineStart: 'auto',
-                            fontSize: '10px',
-                            fontFamily: 'monospace',
-                            fontWeight: '700',
-                            color: isActive ? '#008B8B' : '#94A3B8',
-                            backgroundColor: isActive ? '#CCFBF1' : '#F1F5F9',
-                            padding: '1px 5px',
-                            borderRadius: '4px'
-                          }}
-                        >
-                          {mod.code}
                         </span>
                       </div>
                     );

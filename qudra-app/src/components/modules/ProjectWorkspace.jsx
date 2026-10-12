@@ -201,9 +201,18 @@ export default function ProjectWorkspace({ onNavigate, isRtl = true }) {
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--slate-600)', fontWeight: '600' }}>
-              <span style={{ color: '#166534' }}>✓ {releasedAmount.toLocaleString()} ر.س مُفرَج عنه</span>
-              <span style={{ color: '#0369a1' }}>⏳ {inReviewAmount.toLocaleString()} ر.س للمراجعة</span>
-              <span style={{ color: '#b45309' }}>🔒 {lockedEscrow.toLocaleString()} ر.س بالضمان</span>
+              <span style={{ color: '#166534', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <CheckCircle2 size={12} color="#166534" />
+                <span>{releasedAmount.toLocaleString()} ر.س مُفرَج عنه</span>
+              </span>
+              <span style={{ color: '#0369a1', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <Clock size={12} color="#0369a1" />
+                <span>{inReviewAmount.toLocaleString()} ر.س للمراجعة</span>
+              </span>
+              <span style={{ color: '#b45309', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <Lock size={12} color="#b45309" />
+                <span>{lockedEscrow.toLocaleString()} ر.س بالضمان</span>
+              </span>
             </div>
           </div>
         </div>
@@ -306,18 +315,21 @@ export default function ProjectWorkspace({ onNavigate, isRtl = true }) {
                         {m.title}
                       </h3>
                       {isCompleted && (
-                        <span style={{ fontSize: '11px', fontWeight: '800', padding: '2px 8px', borderRadius: '4px', backgroundColor: '#f0fdf4', color: '#166534', border: '1px solid #bbf7d0' }}>
-                          ✓ {isRtl ? 'مُفرَج عنه' : 'Released'}
+                        <span style={{ fontSize: '11px', fontWeight: '800', padding: '2px 8px', borderRadius: '4px', backgroundColor: '#f0fdf4', color: '#166534', border: '1px solid #bbf7d0', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                          <CheckCircle2 size={11} color="#166534" />
+                          <span>{isRtl ? 'مُفرَج عنه' : 'Released'}</span>
                         </span>
                       )}
                       {isReadyReview && (
-                        <span style={{ fontSize: '11px', fontWeight: '800', padding: '2px 8px', borderRadius: '4px', backgroundColor: '#f0fdfa', color: '#006666', border: '1px solid #99f6e4' }}>
-                          ⏳ {isRtl ? 'جاهز للاعتماد' : 'Ready for Release'}
+                        <span style={{ fontSize: '11px', fontWeight: '800', padding: '2px 8px', borderRadius: '4px', backgroundColor: '#f0fdfa', color: '#006666', border: '1px solid #99f6e4', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                          <Clock size={11} color="#006666" />
+                          <span>{isRtl ? 'جاهز للاعتماد' : 'Ready for Release'}</span>
                         </span>
                       )}
                       {isLocked && (
-                        <span style={{ fontSize: '11px', fontWeight: '600', padding: '2px 8px', borderRadius: '4px', backgroundColor: '#f8fafc', color: 'var(--slate-500)', border: '1px solid var(--border-color)' }}>
-                          🔒 {isRtl ? 'محجوز بالضمان' : 'In Escrow'}
+                        <span style={{ fontSize: '11px', fontWeight: '600', padding: '2px 8px', borderRadius: '4px', backgroundColor: '#f8fafc', color: 'var(--slate-500)', border: '1px solid var(--border-color)', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                          <Lock size={11} color="var(--slate-500)" />
+                          <span>{isRtl ? 'محجوز بالضمان' : 'In Escrow'}</span>
                         </span>
                       )}
                     </div>
@@ -346,7 +358,7 @@ export default function ProjectWorkspace({ onNavigate, isRtl = true }) {
                   {isCompleted ? (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#166534', fontSize: '12px', fontWeight: '700' }}>
                       <ShieldCheck size={16} color="#16a34a" />
-                      <span>{isRtl ? 'دليل مثبت مسكوك ✓' : 'Proof Minted ✓'}</span>
+                      <span>{isRtl ? 'دليل مثبت مسكوك' : 'Proof Minted'}</span>
                     </div>
                   ) : isReadyReview ? (
                     <button

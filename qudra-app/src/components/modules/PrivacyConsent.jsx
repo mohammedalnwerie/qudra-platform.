@@ -609,7 +609,7 @@ export default function PrivacyConsent({ isRtl = true }) {
                       {c.enabled ? (
                         <>
                           <Check size={14} />
-                          <span>{isRtl ? 'مُفعّل (نشط)' : 'Active ✓'}</span>
+                          <span>{isRtl ? 'مُفعّل (نشط)' : 'Active'}</span>
                         </>
                       ) : (
                         <>
@@ -911,8 +911,9 @@ export default function PrivacyConsent({ isRtl = true }) {
                 : 'Under Art. 18 of PDPL, permanently erase all profile metadata, cached commits, and revoke public identity keys.'}
             </p>
 
-            <div style={{ backgroundColor: '#FFFFFF', borderRadius: '8px', padding: '12px', fontSize: '12px', color: '#991B1B', border: '1px solid #FECDD3', marginBottom: '18px' }}>
-              ⚠️ {isRtl ? 'تحذير: سيتم إبطال رابط جواز القدرات العام وفصل كافة الفرق النشطة ومحو الكاش تماماً.' : 'Warning: This will revoke your passport link, cancel team memberships, and delete cached tokens.'}
+            <div style={{ backgroundColor: '#FFFFFF', borderRadius: '8px', padding: '12px', fontSize: '12px', color: '#991B1B', border: '1px solid #FECDD3', marginBottom: '18px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <AlertTriangle size={14} color="#DC2626" style={{ flexShrink: 0 }} />
+              <span>{isRtl ? 'تحذير: سيتم إبطال رابط جواز القدرات العام وفصل كافة الفرق النشطة ومحو الكاش تماماً.' : 'Warning: This will revoke your passport link, cancel team memberships, and delete cached tokens.'}</span>
             </div>
 
             <button

@@ -48,7 +48,7 @@ export default function GenericStateView({
             </span>
             {stateData.isAnchor && (
               <span className="badge-pill" style={{ backgroundColor: '#2563eb', color: '#fff', fontSize: '12px', fontWeight: '700' }}>
-                {isRtl ? '⚓ شاشة ارتكاز رئيسية' : '⚓ Anchor Screen'}
+                {isRtl ? 'شاشة ارتكاز رئيسية' : 'Anchor Screen'}
               </span>
             )}
             <span style={{ fontSize: '13px', color: 'var(--slate-500)', fontWeight: '600' }}>
@@ -76,7 +76,7 @@ export default function GenericStateView({
 
       {/* Render Based on State Type */}
 
-      {/* 1) Empty State ⚓ */}
+      {/* 1) Empty State */}
       {stateData.id === 29 && (
         <div className="card" style={{ textAlign: 'center', padding: '60px 24px' }}>
           <div style={{
@@ -111,7 +111,7 @@ export default function GenericStateView({
         </div>
       )}
 
-      {/* 2) Error State ⚓ */}
+      {/* 2) Error State */}
       {stateData.id === 31 && (
         <div className="card" style={{ borderInlineStart: '5px solid var(--danger-color)', padding: '32px' }}>
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
@@ -158,15 +158,16 @@ export default function GenericStateView({
         </div>
       )}
 
-      {/* 3) Create / Link Form ⚓ */}
+      {/* 3) Create / Link Form */}
       {stateData.id === 4 && (
         <div className="card">
           <div className="card-header">
             <h3 className="card-title">
               {isRtl ? `نموذج إضافة أو ربط جديد في ${moduleData.nameAr}` : `Create Record in ${moduleData.nameEn}`}
             </h3>
-            <span style={{ fontSize: '12px', color: 'var(--teal-700)', fontWeight: '600' }}>
-              ✓ {isRtl ? 'التحقق فوري ولا يضيع الإدخال' : 'Instant validation'}
+            <span style={{ fontSize: '12px', color: 'var(--teal-700)', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <CheckCircle2 size={13} color="var(--teal-700)" />
+              <span>{isRtl ? 'التحقق فوري ولا يضيع الإدخال' : 'Instant validation'}</span>
             </span>
           </div>
 
@@ -234,7 +235,7 @@ export default function GenericStateView({
         </div>
       )}
 
-      {/* 4) Results State ⚓ */}
+      {/* 4) Results State */}
       {stateData.id === 7 && (
         <div className="card">
           <div className="card-header">

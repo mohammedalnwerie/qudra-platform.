@@ -18,7 +18,9 @@ import {
   Check,
   X,
   SlidersHorizontal,
-  ChevronDown
+  ChevronDown,
+  FolderGit2,
+  Zap
 } from 'lucide-react';
 import TrustChip from '../common/TrustChip';
 import { MOCK_CONNECTORS } from '../../data/mockData';
@@ -228,10 +230,14 @@ export default function ConnectorsHub({ isRtl = true }) {
               fontSize: '12.5px',
               cursor: 'pointer',
               boxShadow: activeFilter === 'official' ? 'var(--shadow-subtle)' : 'none',
-              transition: 'all var(--transition-smooth)'
+              transition: 'all var(--transition-smooth)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '5px'
             }}
           >
-            ✓ {isRtl ? `رسمي OAuth (${officialCount})` : `Official (${officialCount})`}
+            <CheckCircle2 size={13} color="var(--qudra-teal-deep)" />
+            <span>{isRtl ? `رسمي OAuth (${officialCount})` : `Official (${officialCount})`}</span>
           </button>
 
           <button
@@ -246,10 +252,14 @@ export default function ConnectorsHub({ isRtl = true }) {
               fontSize: '12.5px',
               cursor: 'pointer',
               boxShadow: activeFilter === 'user' ? 'var(--shadow-subtle)' : 'none',
-              transition: 'all var(--transition-smooth)'
+              transition: 'all var(--transition-smooth)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '5px'
             }}
           >
-            📁 {isRtl ? `ملف مستخدم (${userCount})` : `User Export (${userCount})`}
+            <FolderGit2 size={13} color="#0369a1" />
+            <span>{isRtl ? `ملف مستخدم (${userCount})` : `User Export (${userCount})`}</span>
           </button>
 
           <button
@@ -264,10 +274,14 @@ export default function ConnectorsHub({ isRtl = true }) {
               fontSize: '12.5px',
               cursor: 'pointer',
               boxShadow: activeFilter === 'fragile' ? 'var(--shadow-subtle)' : 'none',
-              transition: 'all var(--transition-smooth)'
+              transition: 'all var(--transition-smooth)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '5px'
             }}
           >
-            ⚡ {isRtl ? `رمز وصول هش (${fragileCount})` : `Fragile (${fragileCount})`}
+            <Zap size={13} color="#b45309" />
+            <span>{isRtl ? `رمز وصول محدود (${fragileCount})` : `Limited Token (${fragileCount})`}</span>
           </button>
         </div>
 
@@ -525,7 +539,10 @@ export default function ConnectorsHub({ isRtl = true }) {
                 color: 'var(--qudra-obsidian)',
                 lineHeight: 1.6
               }}>
-                <strong>★ {isRtl ? 'ضمان أمان قُدرة الصارم:' : 'Qudra Zero-Write Guarantee:'}</strong>
+                <strong style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                  <ShieldCheck size={14} color="#008B8B" />
+                  <span>{isRtl ? 'ضمان أمان قُدرة الصارم:' : 'Qudra Zero-Write Guarantee:'}</span>
+                </strong>
                 <p style={{ margin: '4px 0 0', color: 'var(--slate-700)' }}>
                   {isRtl
                     ? 'يتم طلب صلاحيات قراءة فقط (Read-Only) لسحب المخرجات والمستودعات. لن نطلب أبداً صلاحية الكتابة، الحذف، أو النشر نيابة عنك.'

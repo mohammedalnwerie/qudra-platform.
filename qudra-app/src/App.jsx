@@ -45,7 +45,7 @@ export default function App() {
   });
   const [isExplainOpen, setIsExplainOpen] = useState(false);
   const [isScreenNavOpen, setIsScreenNavOpen] = useState(false);
-  const [showDevPill, setShowDevPill] = useState(true);
+  const [showDevPill, setShowDevPill] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [theme, setTheme] = useState(() => localStorage.getItem('qudra_theme') || 'light');
 
@@ -249,7 +249,7 @@ export default function App() {
             >
               {STATES_DICTIONARY.map((st) => (
                 <option key={st.id} value={st.id}>
-                  #{st.id} {isRtl ? st.nameAr : st.nameEn} {st.isAnchor ? '⚓' : ''}
+                  #{st.id} {isRtl ? st.nameAr : st.nameEn} {st.isAnchor ? '(Anchor)' : ''}
                 </option>
               ))}
             </select>
