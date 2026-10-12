@@ -64,26 +64,26 @@ const ICON_MAP = {
 export const CATEGORIES = [
   {
     id: 'cat-core',
-    nameAr: 'الهوية ومحرك الأدلة',
-    nameEn: 'Identity & Evidence',
+    nameAr: 'الملف المهني والمهارات',
+    nameEn: 'Profile & Skills',
     moduleIds: ['M02', 'M07', 'M05', 'M03', 'M06', 'M04', 'M13', 'M14', 'M01']
   },
   {
     id: 'cat-matching',
-    nameAr: 'المشكلات والمطابقة والفرق',
-    nameEn: 'Problems, Matching & Squads',
+    nameAr: 'المشاريع وفرق العمل',
+    nameEn: 'Projects & Squads',
     moduleIds: ['M15', 'M16', 'M20', 'M21', 'M17', 'M18', 'M19']
   },
   {
     id: 'cat-growth',
-    nameAr: 'التحديات وسد الفجوات',
-    nameEn: 'Challenges & Skill Gaps',
+    nameAr: 'التحديات والتدريب',
+    nameEn: 'Challenges & Learning',
     moduleIds: ['M11', 'M08', 'M09', 'M10', 'M12']
   },
   {
     id: 'cat-trust',
-    nameAr: 'السيادة والتحكم والأمان',
-    nameEn: 'Privacy, Trust & Control',
+    nameAr: 'الأمان والخصوصية',
+    nameEn: 'Security & Privacy',
     moduleIds: ['M25', 'M22', 'M24', 'M26', 'M23']
   },
 ];
@@ -141,10 +141,10 @@ export default function Sidebar({ activeModuleId, onSelectModule, isRtl = true, 
             </div>
             <div>
               <div style={{ fontSize: '13.5px', fontWeight: '900', color: '#1A1A1A', lineHeight: 1.2 }}>
-                {isRtl ? 'وحدات قُدرة' : 'QUDRA System'}
+                {isRtl ? 'منصة قُدرة' : 'QUDRA Platform'}
               </div>
               <div style={{ fontSize: '10.5px', color: '#64748B', fontWeight: '600' }}>
-                {isRtl ? 'محرك الأدلة والمطابقة' : 'Evidence & Matching'}
+                {isRtl ? 'لوحة الخدمات والتحكم' : 'Navigation & Services'}
               </div>
             </div>
           </div>

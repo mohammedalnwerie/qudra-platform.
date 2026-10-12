@@ -86,7 +86,7 @@ export default function HomeDashboard({
                 }}
               >
                 <ShieldCheck size={13} color="#008B8B" />
-                <span>{isRtl ? 'محرك القدرات النشط · لا مهارة بلا برهان تشفيري' : 'Cryptographic Capability Passport Active'}</span>
+                <span>{isRtl ? 'ملف موثق وجاهز للعمل' : 'Verified & Ready to Work'}</span>
               </span>
               <span
                 style={{
@@ -103,18 +103,18 @@ export default function HomeDashboard({
                 }}
               >
                 <Star size={12} fill="#B45309" color="#B45309" />
-                <span>{isRtl ? 'مطور نخبة موثق (Top 1%)' : 'Elite Verified (Top 1%)'}</span>
+                <span>{isRtl ? 'مطور نخبة (Top 1%)' : 'Elite Verified (Top 1%)'}</span>
               </span>
             </div>
 
             <h1 style={{ fontSize: '24px', fontWeight: '900', color: '#1A1A1A', margin: '0 0 6px 0' }}>
-              {isRtl ? `أهلاً بك، ${currentPersona.name || 'كريم المنشاوي'}` : `Welcome back, ${currentPersona.name || 'Karim El-Menshawy'}`}
+              {isRtl ? `أهلاً بك، ${currentPersona.name ? currentPersona.name.split(' ')[0] : 'كريم'}` : `Welcome back, ${currentPersona.name || 'Karim'}`}
             </h1>
 
-            <p style={{ fontSize: '13.5px', color: '#4B5563', lineHeight: 1.6, margin: 0 }}>
+            <p style={{ fontSize: '14px', color: '#4B5563', lineHeight: 1.6, margin: 0 }}>
               {isRtl
-                ? 'جواز قدراتك موثق رسمياً برمز W3C بنسبة ثقة 94%. لديك مطابقة ممتازة مع مشروع مسار (60,000 ر.س) وفجوة تقنية واحدة مقترحة للحل في التحديات البرمجية.'
-                : 'Your W3C-backed capability passport has a 94% Trust Score. 1 top enterprise match active (60,000 SAR) and 1 high-impact sandbox challenge available.'}
+                ? 'ملفك المهني موثق ومعتمد بنسبة 94%. لديك فرصة عمل جديدة بقيمة 60,000 ر.س بنسبة توافق ممتازة.'
+                : 'Your verified profile is active with a 94% Trust Score. 1 top enterprise project is available (60,000 SAR) with high match.'}
             </p>
           </div>
 
@@ -135,7 +135,7 @@ export default function HomeDashboard({
               }}
             >
               {copiedPassport ? <Check size={15} /> : <Share2 size={15} />}
-              <span>{copiedPassport ? (isRtl ? 'تم النسخ بنجاح!' : 'Copied!') : (isRtl ? 'مشاركة الجواز' : 'Share Passport')}</span>
+              <span>{copiedPassport ? (isRtl ? 'تم النسخ بنجاح!' : 'Copied!') : (isRtl ? 'مشاركة ملفي' : 'Share Profile')}</span>
             </button>
 
             <button
@@ -149,7 +149,7 @@ export default function HomeDashboard({
                 padding: '9px 16px'
               }}
             >
-              <span>{isRtl ? 'معاينة الجواز (M07)' : 'View Passport'}</span>
+              <span>{isRtl ? 'عرض ملفي العام' : 'View Public Profile'}</span>
               <ArrowIcon size={14} />
             </button>
           </div>
@@ -171,15 +171,15 @@ export default function HomeDashboard({
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <CheckCircle size={14} color="#008B8B" />
-            <span>{isRtl ? 'الهوية الوطنية موثقة عبر نفاذ (Nafath)' : 'National ID Verified via Nafath'}</span>
+            <span>{isRtl ? 'هوية موثقة رسمياً (نفاذ)' : 'Identity Verified (Nafath)'}</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <CheckCircle size={14} color="#008B8B" />
-            <span>{isRtl ? 'ضمان مالي 100% بدون عمولات منصة (0% Cut)' : '100% Net Earnings Escrow (0% Cut)'}</span>
+            <span>{isRtl ? 'أرباحك 100% بدون عمولة منصة' : '100% Net Earnings (0% Fee)'}</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <CheckCircle size={14} color="#008B8B" />
-            <span>{isRtl ? 'البيانات محمية بموجب نظام PDPL السعودي' : 'Saudi PDPL & SDAIA Compliant'}</span>
+            <span>{isRtl ? 'حماية وخصوصية تامة لبياناتك' : 'Full Data Privacy Protected'}</span>
           </div>
         </div>
       </div>
@@ -194,7 +194,7 @@ export default function HomeDashboard({
         >
           <div className="stat-header">
             <span className="stat-label">
-              {isRtl ? 'الأدلة المُثبتة قطيعاً' : 'Proven Evidence'}
+              {isRtl ? 'المهارات المعتمدة' : 'Verified Skills'}
             </span>
             <div className="stat-icon-wrapper" style={{ backgroundColor: '#DCFCE7', color: '#166534' }}>
               <ShieldCheck size={18} />
@@ -205,7 +205,7 @@ export default function HomeDashboard({
               {provenCount}
             </span>
             <span style={{ fontSize: '12px', color: '#64748B', fontWeight: '600' }}>
-              / 16 {isRtl ? 'كفاءة' : 'skills'}
+              / 16 {isRtl ? 'مهارة' : 'skills'}
             </span>
           </div>
           <div style={{ width: '100%', height: '5px', backgroundColor: '#E2E8F0', borderRadius: '999px', overflow: 'hidden', margin: '6px 0 4px' }}>
@@ -213,7 +213,7 @@ export default function HomeDashboard({
           </div>
           <div className="stat-subtext" style={{ color: '#15803D', display: 'flex', alignItems: 'center', gap: '4px' }}>
             <Check size={13} color="#15803D" />
-            <span>{isRtl ? 'مدعومة ببصمات SHA-256' : 'Cryptographically verified'}</span>
+            <span>{isRtl ? 'موثقة بمشاريع حقيقية' : 'Verified with real projects'}</span>
           </div>
         </div>
 
@@ -225,7 +225,7 @@ export default function HomeDashboard({
         >
           <div className="stat-header">
             <span className="stat-label">
-              {isRtl ? 'أقوى مطابقة مشكلات' : 'Top Match Score'}
+              {isRtl ? 'أعلى فرصة مطابقة' : 'Top Match Opportunity'}
             </span>
             <div className="stat-icon-wrapper" style={{ backgroundColor: '#FEF3C7', color: '#B45309' }}>
               <Sparkles size={18} />
@@ -236,7 +236,7 @@ export default function HomeDashboard({
               94%
             </span>
             <span style={{ fontSize: '12px', color: '#64748B', fontWeight: '600' }}>
-              {isRtl ? 'تطابق مع مسار' : 'Masar FinTech'}
+              {isRtl ? 'مشروع مسار' : 'Masar FinTech'}
             </span>
           </div>
           <div style={{ width: '100%', height: '5px', backgroundColor: '#E2E8F0', borderRadius: '999px', overflow: 'hidden', margin: '6px 0 4px' }}>
@@ -244,7 +244,7 @@ export default function HomeDashboard({
           </div>
           <div className="stat-subtext" style={{ color: '#92400E', display: 'flex', alignItems: 'center', gap: '4px' }}>
             <Zap size={13} color="#92400E" />
-            <span>{isRtl ? 'ميزانية 60,000 ر.س (مفسرة)' : '60k SAR Net Budget'}</span>
+            <span>{isRtl ? 'ميزانية 60,000 ر.س' : '60k SAR Budget'}</span>
           </div>
         </div>
 
@@ -256,7 +256,7 @@ export default function HomeDashboard({
         >
           <div className="stat-header">
             <span className="stat-label">
-              {isRtl ? 'الفجوات المرصودة' : 'Identified Gaps'}
+              {isRtl ? 'مهارات مقترحة للتطوير' : 'Recommended Skills'}
             </span>
             <div className="stat-icon-wrapper" style={{ backgroundColor: '#FEE2E2', color: '#B91C1C' }}>
               <AlertCircle size={18} />
@@ -267,7 +267,7 @@ export default function HomeDashboard({
               {gapCount}
             </span>
             <span style={{ fontSize: '12px', color: '#64748B', fontWeight: '600' }}>
-              {isRtl ? 'فجوات مهارية' : 'skill gaps'}
+              {isRtl ? 'مهارات مطلوبة' : 'skills in demand'}
             </span>
           </div>
           <div style={{ width: '100%', height: '5px', backgroundColor: '#E2E8F0', borderRadius: '999px', overflow: 'hidden', margin: '6px 0 4px' }}>
@@ -275,7 +275,7 @@ export default function HomeDashboard({
           </div>
           <div className="stat-subtext" style={{ color: '#991B1B', display: 'flex', alignItems: 'center', gap: '4px' }}>
             <AlertCircle size={13} color="#991B1B" />
-            <span>{isRtl ? 'Apache Kafka في انتظار التحدي' : 'Kafka stream challenge waiting'}</span>
+            <span>{isRtl ? 'تحدي Kafka متاح الآن' : 'Kafka challenge ready'}</span>
           </div>
         </div>
 
@@ -287,7 +287,7 @@ export default function HomeDashboard({
         >
           <div className="stat-header">
             <span className="stat-label">
-              {isRtl ? 'مؤشر الثقة التراكمي' : 'Passport Trust Score'}
+              {isRtl ? 'معدل موثوقية الملف' : 'Profile Trust Rating'}
             </span>
             <div className="stat-icon-wrapper" style={{ backgroundColor: '#E6FFFA', color: '#008B8B' }}>
               <Award size={18} />
@@ -319,7 +319,7 @@ export default function HomeDashboard({
           </div>
           <div className="stat-subtext" style={{ color: '#006666', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '4px' }}>
             <CheckCircle2 size={13} color="#008B8B" />
-            <span>{isRtl ? 'معيار W3C Verifiable Credential' : 'W3C VC Compliant'}</span>
+            <span>{isRtl ? 'توثيق رقمي رسمي' : 'Officially Verified'}</span>
           </div>
         </div>
       </div>
@@ -342,7 +342,7 @@ export default function HomeDashboard({
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <TrendingUp size={18} color="#008B8B" />
                 <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#1A1A1A', margin: 0 }}>
-                  {isRtl ? 'الخطوة القادمة الأكثر تأثيراً' : 'Recommended High-Impact Action'}
+                  {isRtl ? 'فرصة مقترحة لزيادة دخلك' : 'Recommended Opportunity'}
                 </h3>
               </div>
               <span
@@ -355,7 +355,7 @@ export default function HomeDashboard({
                   color: '#92400E'
                 }}
               >
-                {isRtl ? 'سد فجوة بنسبة +6%' : 'Close Gap (+6% Match)'}
+                {isRtl ? 'ترفع فرصتك +6%' : 'Boosts Match +6%'}
               </span>
             </div>
 
@@ -370,14 +370,14 @@ export default function HomeDashboard({
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                 <h4 style={{ fontSize: '14.5px', fontWeight: '800', color: '#1A1A1A', margin: 0 }}>
-                  {isRtl ? 'سد فجوة معالجة التدفقات عبر Apache Kafka' : 'Close Apache Kafka Streaming Gap'}
+                  {isRtl ? 'تحدي عملي: معالجة البيانات عبر Kafka' : 'Skill Challenge: Apache Kafka'}
                 </h4>
-                <EvidenceBadge status="gap" labelOverride={isRtl ? 'فجوة معمارية' : 'Arch Gap'} isRtl={isRtl} />
+                <EvidenceBadge status="gap" labelOverride={isRtl ? 'تحدي برمجي' : 'Code Challenge'} isRtl={isRtl} />
               </div>
               <p style={{ fontSize: '13px', color: '#4B5563', lineHeight: 1.6, margin: 0 }}>
                 {isRtl
-                  ? 'مشروع شركة مسار يتطلب كفاءة مثبتة في معالجة التدفقات المالية. إتمام التحدي العملي المباشر في البيئة المعزولة سيرفع نسبة مطابقتك إلى 98% ويسك برهاناً فورياً.'
-                  : 'Masar Fintech project requires Kafka stream skills. Solving this sandbox challenge raises your match score to 98% and mints proven evidence.'}
+                  ? 'مشروع مسار يتطلب خبرة في معالجة البيانات. إتمام هذا التحدي (25 دقيقة) يرفع نسبة تطابقك إلى 98% ويضيف المهارة فوراً لملفك.'
+                  : 'Masar project requires streaming skills. Complete this 25-min challenge to boost your match to 98% and earn verified proof.'}
               </p>
             </div>
           </div>
@@ -396,13 +396,13 @@ export default function HomeDashboard({
               }}
             >
               <Terminal size={15} />
-              <span>{isRtl ? 'خوض التحدي العملي (M11 Sandbox)' : 'Solve Sandbox Challenge (25m)'}</span>
+              <span>{isRtl ? 'بدء التحدي (25 دقيقة)' : 'Start Challenge (25m)'}</span>
             </button>
             <button
               onClick={onOpenExplain}
               className="btn btn-secondary"
               style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: '700' }}
-              title={isRtl ? 'عرض تفسير الذكاء الاصطناعي' : 'Explain Why'}
+              title={isRtl ? 'عرض تفسير التوصية' : 'Explain Why'}
             >
               <Sparkles size={14} color="#D97706" />
               <span>{isRtl ? 'لماذا؟' : 'Why?'}</span>
@@ -426,7 +426,7 @@ export default function HomeDashboard({
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Award size={18} color="#008B8B" />
                 <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#1A1A1A', margin: 0 }}>
-                  {isRtl ? 'أقوى مطابقة مع مشكلات الأعمال (M16)' : 'Top Enterprise Problem Match (M16)'}
+                  {isRtl ? 'مشروع متميز يناسب خبرتك' : 'Top Matched Project'}
                 </h3>
               </div>
               <div
@@ -446,19 +446,21 @@ export default function HomeDashboard({
                 }}
               >
                 <Sparkles size={12} color="#D97706" />
-                <span>{MOCK_PROBLEM.matchScore}% {isRtl ? 'تطابق مفسر' : 'Match'}</span>
+                <span>{MOCK_PROBLEM.matchScore}% {isRtl ? 'توافق تام' : 'Match'}</span>
               </div>
             </div>
 
             <div style={{ marginBottom: '14px' }}>
               <h4 style={{ fontSize: '15px', fontWeight: '800', color: '#1A1A1A', margin: '0 0 4px 0' }}>
-                {MOCK_PROBLEM.title}
+                {isRtl ? 'بناء بنية سحابية لمنصة مالية (FinTech)' : MOCK_PROBLEM.title}
               </h4>
               <div style={{ fontSize: '12.5px', color: '#008B8B', fontWeight: '700', marginBottom: '8px' }}>
-                {MOCK_PROBLEM.author} · {isRtl ? 'ميزانية صافية 60,000 ر.س (ضمان مصرفي مرخص)' : '60,000 SAR Escrow'}
+                {MOCK_PROBLEM.author} · {isRtl ? '60,000 ر.س (ضمان مالي محمي)' : '60,000 SAR Escrow'}
               </div>
               <p style={{ fontSize: '13px', color: '#4B5563', lineHeight: 1.6, margin: 0 }}>
-                {MOCK_PROBLEM.matchReason}
+                {isRtl
+                  ? 'خبراتك في AWS والأمن السيبراني تغطي 4 من أصل 5 متطلبات أساسية، ولديك مشروع عملي سابق مماثل.'
+                  : MOCK_PROBLEM.matchReason}
               </p>
             </div>
 
@@ -491,7 +493,7 @@ export default function HomeDashboard({
               className="btn btn-secondary btn-sm"
               style={{ flex: 1, gap: '6px', fontWeight: '700' }}
             >
-              <span>{isRtl ? 'تفاصيل المشكلة (M16)' : 'View Match (M16)'}</span>
+              <span>{isRtl ? 'تفاصيل المشروع' : 'Project Details'}</span>
               <ArrowIcon size={14} />
             </button>
             <button
@@ -507,13 +509,13 @@ export default function HomeDashboard({
               }}
             >
               <Users size={14} />
-              <span>{isRtl ? 'تشكيل الفريق (M20)' : 'Squad Composer (M20)'}</span>
+              <span>{isRtl ? 'تشكيل الفريق' : 'Assemble Squad'}</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* 4. Active Milestone Escrow Tracker (M21 Fast-Access) */}
+      {/* 4. Active Milestone Escrow Tracker */}
       <div
         className="card"
         style={{
@@ -528,13 +530,13 @@ export default function HomeDashboard({
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Briefcase size={17} color="#008B8B" />
               <h3 style={{ fontSize: '15.5px', fontWeight: '800', color: '#1A1A1A', margin: 0 }}>
-                {isRtl ? 'المشروع النشط والضمان المالي (M21 Project Workspace)' : 'Active Workspace & Escrow (M21)'}
+                {isRtl ? 'المشروع النشط والدفعات المالية' : 'Active Project & Secured Milestones'}
               </h3>
             </div>
             <p style={{ fontSize: '12.5px', color: '#64748B', margin: '3px 0 0 0' }}>
               {isRtl
-                ? 'مشروع منصة المدفوعات السحابية · شركة مسار للتحول الرقمي (60,000 ر.س - 0% عمولة)'
-                : 'Cloud Payment Microservices · Masar FinTech (60,000 SAR Net - 0% Commission)'}
+                ? 'مشروع منصة المدفوعات السحابية · شركة مسار (60,000 ر.س - أرباحك كاملة بدون خصم)'
+                : 'Cloud Payment Microservices · Masar FinTech (60,000 SAR Net - 0% Fee)'}
             </p>
           </div>
 
@@ -543,7 +545,7 @@ export default function HomeDashboard({
             className="btn btn-secondary btn-sm"
             style={{ fontWeight: '700', gap: '6px' }}
           >
-            <span>{isRtl ? 'فتح مساحة المشروع (M21)' : 'Open Workspace'}</span>
+            <span>{isRtl ? 'متابعة مراحل المشروع' : 'Track Milestones'}</span>
             <ArrowIcon size={14} />
           </button>
         </div>
@@ -563,7 +565,7 @@ export default function HomeDashboard({
 
           <div style={{ padding: '12px', backgroundColor: '#FEF3C7', borderRadius: '8px', border: '1px solid #FDE68A' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-              <span style={{ fontSize: '11px', fontWeight: '800', color: '#92400E' }}>{isRtl ? 'المرحلة 2: محرك الدفع وSSRF' : 'Milestone 2'}</span>
+              <span style={{ fontSize: '11px', fontWeight: '800', color: '#92400E' }}>{isRtl ? 'المرحلة 2: محرك الدفع' : 'Milestone 2'}</span>
               <span style={{ fontSize: '11px', fontWeight: '800', color: '#92400E' }}>24,000 ر.س</span>
             </div>
             <div style={{ fontSize: '12px', fontWeight: '700', color: '#78350F', display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -574,12 +576,12 @@ export default function HomeDashboard({
 
           <div style={{ padding: '12px', backgroundColor: '#F8FAFC', borderRadius: '8px', border: '1px solid #E2E8F0' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-              <span style={{ fontSize: '11px', fontWeight: '800', color: '#64748B' }}>{isRtl ? 'المرحلة 3: تدفق كافكا' : 'Milestone 3'}</span>
+              <span style={{ fontSize: '11px', fontWeight: '800', color: '#64748B' }}>{isRtl ? 'المرحلة 3: ربط البيانات' : 'Milestone 3'}</span>
               <span style={{ fontSize: '11px', fontWeight: '800', color: '#64748B' }}>18,000 ر.س</span>
             </div>
             <div style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'flex', alignItems: 'center', gap: '5px' }}>
               <Lock size={13} color="#64748B" />
-              <span>{isRtl ? 'محجوزة في الضمان البنكي' : 'Locked in Escrow'}</span>
+              <span>{isRtl ? 'محجوزة في الضمان المالي' : 'Locked in Escrow'}</span>
             </div>
           </div>
         </div>
@@ -590,10 +592,10 @@ export default function HomeDashboard({
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
           <div>
             <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#1A1A1A', margin: 0 }}>
-              {isRtl ? 'أحدث الأدلة والبراهين المُسجلة في الجواز (M05 Stream)' : 'Recent Verifiable Evidence Stream (M05)'}
+              {isRtl ? 'أحدث المهارات المعتمدة في ملفك' : 'Recently Verified Skills'}
             </h3>
             <p style={{ fontSize: '12.5px', color: '#64748B', margin: '3px 0 0 0' }}>
-              {isRtl ? 'كل سطر مربوط بمصدره الحقيقي وبصمة التحقق الرقمية غير القابلة للتزييف' : 'Every item links to an official source and immutable verification digest'}
+              {isRtl ? 'سجل موثق يربط كل مهارة بمشروعك الفعلي وشهاداتك المعتمدة' : 'Verified competencies backed by real code repositories and certifications'}
             </p>
           </div>
 
@@ -602,7 +604,7 @@ export default function HomeDashboard({
             className="btn btn-secondary btn-sm"
             style={{ fontWeight: '700', gap: '6px' }}
           >
-            <span>{isRtl ? 'استعراض كل الأدلة (M05)' : 'View All Evidence'}</span>
+            <span>{isRtl ? 'عرض كل المهارات' : 'View All Skills'}</span>
             <ArrowIcon size={14} />
           </button>
         </div>

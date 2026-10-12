@@ -105,7 +105,7 @@ export default function Navbar({
               قُدرة <span style={{ fontSize: '11.5px', fontWeight: '700', color: 'var(--qudra-teal-deep)', backgroundColor: 'var(--qudra-teal-light)', padding: '1px 6px', borderRadius: '4px', marginInlineStart: '4px' }}>QUDRA</span>
             </span>
             <span className="brand-subtitle" style={{ fontSize: '11px', color: 'var(--slate-500)', fontWeight: '500' }}>
-              {isRtl ? 'محرك الأدلة وجواز القدرات المعتمد' : 'Evidence-Backed Capabilities'}
+              {isRtl ? 'منصة العمل المستقل الموثق' : 'Verified Talent Platform'}
             </span>
           </div>
         </div>
@@ -124,10 +124,10 @@ export default function Navbar({
             gap: '6px',
             fontWeight: '700'
           }}
-          title={isRtl ? 'عرض لوحة تفسير قرارات الذكاء الاصطناعي' : 'Open Explainable AI Drawer'}
+          title={isRtl ? 'عرض لوحة تفسير قرارات التقييم والتوصيات' : 'Open Explainable AI Drawer'}
         >
           <Sparkles size={14} color="#b45309" />
-          <span className="hide-on-mobile">{isRtl ? 'محرك التفسير' : 'Explain XAI'}</span>
+          <span className="hide-on-mobile">{isRtl ? 'تفسير التقييم' : 'Explain Logic'}</span>
         </button>
 
         {/* Screen Explorer Shortcut */}
@@ -135,10 +135,10 @@ export default function Navbar({
           onClick={onOpenScreenExplorer}
           className="btn btn-ghost btn-sm hide-on-mobile"
           style={{ gap: '6px', color: 'var(--slate-600)' }}
-          title={isRtl ? 'استعراض فهرس الشاشات المعتمدة' : 'Explore Screen Catalog'}
+          title={isRtl ? 'استعراض فهرس شاشات المنصة' : 'Explore Screen Catalog'}
         >
           <Layers size={15} />
-          <span>{isRtl ? 'فاحص الشاشات' : 'Screen Catalog'}</span>
+          <span>{isRtl ? 'دليل الشاشات' : 'Screen Catalog'}</span>
         </button>
 
         {/* Language / RTL Switcher */}
