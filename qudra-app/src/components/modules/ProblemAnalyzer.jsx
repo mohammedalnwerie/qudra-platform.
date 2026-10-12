@@ -9,7 +9,10 @@ import {
 } from 'lucide-react';
 import { MOCK_PROBLEM } from '../../data/mockData';
 
+import { useToast } from '../common/ToastContext';
+
 export default function ProblemAnalyzer({ onNavigate, onOpenExplain, isRtl = true }) {
+  const { showToast } = useToast();
   const [problemText, setProblemText] = useState(MOCK_PROBLEM.description);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
@@ -19,7 +22,7 @@ export default function ProblemAnalyzer({ onNavigate, onOpenExplain, isRtl = tru
     setIsAnalyzing(true);
     setTimeout(() => {
       setIsAnalyzing(false);
-      alert(isRtl ? 'تم تفكيك المشكلة واستخراج 5 قدرات تقنية مطلوبة بنجاح.' : 'Problem decomposed into 5 capability requirements.');
+      showToast(isRtl ? 'تم تفكيك المشكلة دلالياً واستخراج 5 قدرات تقنية مطلوبة بنجاح.' : 'Problem decomposed into 5 capability requirements.');
     }, 1200);
   };
 

@@ -5,7 +5,10 @@ import {
   Trash2
 } from 'lucide-react';
 
+import { useToast } from '../common/ToastContext';
+
 export default function PrivacyConsent({ isRtl = true }) {
+  const { showToast } = useToast();
   const [consents, setConsents] = useState([
     {
       id: 'c-passport',
@@ -35,7 +38,14 @@ export default function PrivacyConsent({ isRtl = true }) {
 
   const handleToggle = (id) => {
     setConsents((prev) =>
-      prev.map((c) => (c.id === id ? { ...c, enabled: !c.enabled } : c))
+      prev.map((c) => {
+        if (c.id === id) {
+          const newState = !c.enabled;
+          showToast(isRtl ? `تم ${newState ? 'تفعيل' : 'إلغاء'} الإذن بنجاح` : 'Permission updated successfully');
+          return { ...c, enabled: newState };
+        }
+        return c;
+      })
     );
   };
 
@@ -133,7 +143,7 @@ export default function PrivacyConsent({ isRtl = true }) {
 
         <div style={{ display: 'flex', gap: '10px' }}>
           <button
-            onClick={() => alert(isRtl ? 'تم تجهيز ملف التصدير وتحميله.' : 'Export package generated.')}
+            onClick={() => showToast(isRtl ? 'تم تجهيز ملف الأرشيف الرقمي (JSON-LD) وتحميله بنجاح.' : 'Export package generated successfully.')}
             className="btn btn-secondary btn-sm"
             style={{ gap: '6px' }}
           >
@@ -142,9 +152,7 @@ export default function PrivacyConsent({ isRtl = true }) {
           </button>
           <button
             onClick={() => {
-              if (confirm(isRtl ? 'هل أنت متأكد من رغبتك في حذف كافة السجلات؟ هذا الإجراء نهائي.' : 'Confirm deletion?')) {
-                alert(isRtl ? 'تم حذف السجلات بنجاح.' : 'Data deleted.');
-              }
+              showToast(isRtl ? 'تم إرسال طلب حذف السجلات وحذف المعرفات الرقمية.' : 'Data deletion request executed.', 'info');
             }}
             className="btn btn-secondary btn-sm"
             style={{ color: 'var(--danger-color)', borderColor: 'var(--danger-border)', gap: '6px' }}

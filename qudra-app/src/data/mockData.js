@@ -8,7 +8,7 @@ export const MODULES_METADATA = [
   { id: 'M04', code: 'M04', nameAr: 'مركز الاستيراد', nameEn: 'Import Center', priority: 'P0', category: 'الهوية والأدلة', competitor: 'Credly (شارات موثقة) · LinkedIn Export (ملف كامل)', startQ: 121 },
   { id: 'M05', code: 'M05', nameAr: 'محرك الأدلة', nameEn: 'Evidence Engine', priority: 'P0', category: 'الهوية والأدلة', competitor: 'Wellfound (فصل Proven/Claimed) · Beamery (استنتاج مرئي)', startQ: 161 },
   { id: 'M06', code: 'M06', nameAr: 'الملف الشخصي للقدرات', nameEn: 'Capability Profile', priority: 'P0', category: 'الهوية والأدلة', competitor: 'Eightfold (Skills Graph مرئي) · Fiverr (مستويات شفافة)', startQ: 201 },
-  { id: 'M07', code: 'M07', nameAr: 'جواز القدرات (Passport)', nameEn: 'Capability Passport', priority: 'P0', category: 'الهوية والأدلة', competitor: 'Contra (ملف جاهز للمشاركة) · Toptal/Arc (جواز محمول)', startQ: 241 },
+  { id: 'M07', code: 'M07', nameAr: 'جواز القدرات', nameEn: 'Capability Passport', priority: 'P0', category: 'الهوية والأدلة', competitor: 'Contra (ملف جاهز للمشاركة) · Toptal/Arc (جواز محمول)', startQ: 241 },
   { id: 'M08', code: 'M08', nameAr: 'القوة والفجوات', nameEn: 'Strengths & Gaps', priority: 'P0', category: 'سد الفجوات والتعلم', competitor: 'CodersRank (شرح مفصل) · Toptal (خطة إصلاح للضعف)', startQ: 281 },
   { id: 'M09', code: 'M09', nameAr: 'الخطوة الجاية', nameEn: 'Next Step Engine', priority: 'P0', category: 'سد الفجوات والتعلم', competitor: 'Jobscan (فجوة الفرصة) · Degreed (مسار قياس ثم علاج)', startQ: 321 },
   { id: 'M10', code: 'M10', nameAr: 'التعلم والدورات', nameEn: 'Learning Paths', priority: 'P1', category: 'سد الفجوات والتعلم', competitor: 'Coursera & Udemy (دورات علاجية لفجوة محددة)', startQ: 361 },

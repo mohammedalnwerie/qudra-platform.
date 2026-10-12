@@ -26,7 +26,10 @@ const ICON_COMPONENTS = {
   Code
 };
 
+import { useToast } from '../common/ToastContext';
+
 export default function ConnectorsHub({ isRtl = true }) {
+  const { showToast } = useToast();
   const [connectors, setConnectors] = useState(MOCK_CONNECTORS);
   const [syncingId, setSyncingId] = useState(null);
 
@@ -34,7 +37,7 @@ export default function ConnectorsHub({ isRtl = true }) {
     setSyncingId(id);
     setTimeout(() => {
       setSyncingId(null);
-      alert(isRtl ? 'تمت مزامنة بيانات الموصل بنجاح وتحديث محرك الأدلة.' : 'Connector data successfully synced and verified.');
+      showToast(isRtl ? 'تمت مزامنة بيانات الموصل بنجاح وتحديث محرك الأدلة.' : 'Connector data successfully synced and verified.');
     }, 1200);
   };
 
@@ -78,7 +81,7 @@ export default function ConnectorsHub({ isRtl = true }) {
         </div>
 
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-          <span className="trust-tier trust-official">✓ {isRtl ? 'موصل رسمي (OAuth)' : 'Official OAuth'}</span>
+          <span className="trust-tier trust-official">✓ {isRtl ? 'موصل رسمي موثق' : 'Official OAuth'}</span>
           <span className="trust-tier trust-user">📁 {isRtl ? 'ملف بيانات معتمد' : 'User Export'}</span>
           <span className="trust-tier trust-fragile">⚡ {isRtl ? 'رمز وصول تقني' : 'App Token'}</span>
         </div>

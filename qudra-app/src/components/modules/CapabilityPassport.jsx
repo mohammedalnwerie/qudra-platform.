@@ -11,8 +11,10 @@ import {
 } from 'lucide-react';
 import EvidenceBadge from '../common/EvidenceBadge';
 import { MOCK_CAPABILITIES_GRAPH, MOCK_EVIDENCE_ITEMS } from '../../data/mockData';
+import { useToast } from '../common/ToastContext';
 
 export default function CapabilityPassport({ currentPersona, isRtl = true }) {
+  const { showToast } = useToast();
   const [copied, setCopied] = useState(false);
   const [showJsonAi, setShowJsonAi] = useState(false);
 
@@ -21,6 +23,7 @@ export default function CapabilityPassport({ currentPersona, isRtl = true }) {
   const handleCopy = () => {
     navigator.clipboard.writeText(passportUrl);
     setCopied(true);
+    showToast(isRtl ? 'تم نسخ الرابط العام لجواز القدرات بنجاح!' : 'Public Passport URL copied!');
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -132,7 +135,7 @@ export default function CapabilityPassport({ currentPersona, isRtl = true }) {
               style={{ fontSize: '11px', padding: '4px 8px', color: '#fff', backgroundColor: 'rgba(255,255,255,0.1)', borderColor: 'transparent' }}
               onClick={() => {
                 navigator.clipboard.writeText(JSON.stringify(aiPassportJson, null, 2));
-                alert(isRtl ? 'تم نسخ كائن الـ JSON للـ AI!' : 'AI JSON copied!');
+                showToast(isRtl ? 'تم نسخ كائن الـ JSON المعياري للـ AI بنجاح!' : 'AI JSON copied successfully!');
               }}
             >
               {isRtl ? 'نسخ كود JSON' : 'Copy JSON'}

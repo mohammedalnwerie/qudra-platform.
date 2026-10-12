@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import EvidenceBadge from '../common/EvidenceBadge';
 import TrustChip from '../common/TrustChip';
+import { useToast } from '../common/ToastContext';
 
 export default function GenericStateView({
   moduleData,
@@ -20,6 +21,7 @@ export default function GenericStateView({
   onOpenExplain,
   isRtl = true
 }) {
+  const { showToast } = useToast();
   const [formData, setFormData] = useState({ title: '', details: '', source: 'GitHub' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -137,7 +139,7 @@ export default function GenericStateView({
               </p>
               <div style={{ display: 'flex', gap: '10px' }}>
                 <button
-                  onClick={() => alert(isRtl ? 'جارِ إعادة المحاولة...' : 'Retrying...')}
+                  onClick={() => showToast(isRtl ? 'جارِ إعادة الاتصال بالخادم والتحقق من الاستجابة...' : 'Retrying endpoint verification...', 'info')}
                   className="btn btn-primary btn-sm"
                   style={{ gap: '6px', backgroundColor: 'var(--danger-color)' }}
                 >

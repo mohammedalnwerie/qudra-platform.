@@ -7,7 +7,10 @@ import {
   Upload
 } from 'lucide-react';
 
+import { useToast } from '../common/ToastContext';
+
 export default function ProjectWorkspace({ isRtl = true }) {
+  const { showToast } = useToast();
   const [milestones, setMilestones] = useState([
     {
       id: 'm-1',
@@ -39,8 +42,8 @@ export default function ProjectWorkspace({ isRtl = true }) {
     setMilestones((prev) =>
       prev.map((m) => (m.id === id ? { ...m, status: 'completed' } : m))
     );
-    alert(isRtl
-      ? 'تم اعتماد التسليم والإفراج عن الدفعة من الضمان المالي! تم تحويل المخرج تلقائياً إلى دليل موثوق جديد (Proven Evidence) في محرك الأدلة.'
+    showToast(isRtl
+      ? 'تم اعتماد التسليم والإفراج عن الدفعة من الضمان المالي! تم تحويل المخرج تلقائياً إلى دليل موثوق جديد في محرك الأدلة.'
       : 'Milestone approved and escrow funds released! Deliverable converted into verified Proven Evidence.');
   };
 
@@ -68,7 +71,7 @@ export default function ProjectWorkspace({ isRtl = true }) {
           </div>
           <p style={{ fontSize: '14px', color: 'var(--slate-600)', maxWidth: '720px', lineHeight: 1.6 }}>
             {isRtl
-              ? 'الحلقة المغلقة لمنصة قُدرة: إنجاز المشروعات لا ينتهي بالمقابل المالي فقط، بل يتحول المخرج المعتمد إلى دليل موثوق جديد (Proven) يضاف تلقائياً لجواز قدرات كل عضو.'
+              ? 'الحلقة المغلقة لمنصة قُدرة: إنجاز المشروعات لا ينتهي بالمقابل المالي فقط، بل يتحول المخرج المعتمد إلى دليل موثوق جديد يضاف تلقائياً لجواز قدرات كل عضو.'
               : 'The virtuous loop of Qudra: successful project delivery releases escrow and mints new proven evidence into every collaborator’s passport.'}
           </p>
         </div>

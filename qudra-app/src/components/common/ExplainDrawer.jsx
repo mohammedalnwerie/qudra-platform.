@@ -1,7 +1,9 @@
 import React from 'react';
 import { X, ShieldAlert, CheckCircle, ArrowRight, ArrowLeft, Scale, Sparkles, FileCode } from 'lucide-react';
+import { useToast } from './ToastContext';
 
 export default function ExplainDrawer({ isOpen, onClose, data, isRtl = true }) {
+  const { showToast } = useToast();
   if (!isOpen) return null;
 
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
@@ -190,7 +192,7 @@ export default function ExplainDrawer({ isOpen, onClose, data, isRtl = true }) {
               <button
                 className="btn btn-secondary btn-sm"
                 style={{ fontSize: '11px', padding: '4px 8px' }}
-                onClick={() => alert(isRtl ? 'تم تسجيل طلب مراجعة إنسانية للملف مع الخبير المعتمد.' : 'Human review appeal has been submitted.')}
+                onClick={() => showToast(isRtl ? 'تم تسجيل طلب مراجعة بشرية للقرار مع محكّم مستقل بنجاح.' : 'Human review appeal has been submitted.')}
               >
                 {isRtl ? 'اعتراض / طلب مراجعة بشرية' : 'Appeal Decision'}
               </button>

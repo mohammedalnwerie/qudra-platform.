@@ -9,7 +9,10 @@ import {
 } from 'lucide-react';
 import { MOCK_INTERACTIVE_CHALLENGE } from '../../data/mockData';
 
+import { useToast } from '../common/ToastContext';
+
 export default function PracticeChallenge({ onEvidenceGenerated, isRtl = true }) {
+  const { showToast } = useToast();
   const [code, setCode] = useState(MOCK_INTERACTIVE_CHALLENGE.starterCode);
   const [isRunning, setIsRunning] = useState(false);
   const [hasRun, setHasRun] = useState(false);
@@ -20,6 +23,7 @@ export default function PracticeChallenge({ onEvidenceGenerated, isRtl = true })
     setTimeout(() => {
       setIsRunning(false);
       setHasRun(true);
+      showToast(isRtl ? 'اجتاز الكود كافة اختبارات الأمان الأربعة بنجاح!' : 'All 4 security tests passed!');
     }, 1500);
   };
 
@@ -58,8 +62,8 @@ module.exports = { fetchRemoteAvatar };`
 
   const handleMintEvidence = () => {
     setIsMinted(true);
-    alert(isRtl
-      ? 'تهانينا! تم التحقق من الكود بنجاح وإصدار دليل Proven جديد مسجل برقم 0x1c4d...e201 وإضافته فوراً إلى جواز قدراتك.'
+    showToast(isRtl
+      ? 'تهانينا! تم التحقق من الكود بنجاح وإصدار دليل مثبت جديد مسجل بالبصمة 0x1c4d...e201 وإضافته فوراً إلى جواز قدراتك.'
       : 'Congratulations! All tests passed and new Proven Evidence has been minted and added to your passport.');
     if (onEvidenceGenerated) onEvidenceGenerated();
   };
@@ -88,7 +92,7 @@ module.exports = { fetchRemoteAvatar };`
           </div>
           <p style={{ fontSize: '14px', color: 'var(--slate-600)', maxWidth: '720px', lineHeight: 1.6 }}>
             {isRtl
-              ? 'تحديات كودية واقعية معزولة لا أسئلة خوارزميات نظرية. إكمال التحدي ينتج دليلاً موثوقاً فورياً (Proven) يرفع نسبة تطابقك في الفرص المعقدة.'
+              ? 'تحديات كودية واقعية معزولة لا أسئلة خوارزميات نظرية. إكمال التحدي ينتج دليلاً موثوقاً فورياً يرفع نسبة تطابقك في الفرص المعقدة.'
               : 'Real-world practical sandbox challenges. Solving them mints instant verified evidence.'}
           </p>
         </div>
