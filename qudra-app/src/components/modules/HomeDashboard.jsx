@@ -170,10 +170,10 @@ export default function HomeDashboard({
             </div>
 
             <div style={{
-              padding: '16px',
-              backgroundColor: 'var(--slate-50)',
+              padding: '16px 18px',
+              backgroundColor: '#fafbfc',
               borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--slate-100)',
+              border: '1px solid var(--slate-200)',
               marginBottom: '16px'
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
@@ -302,48 +302,36 @@ export default function HomeDashboard({
           </button>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          {MOCK_EVIDENCE_ITEMS.slice(0, 3).map((item) => (
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          {MOCK_EVIDENCE_ITEMS.slice(0, 3).map((item, idx) => (
             <div
               key={item.id}
               style={{
-                padding: '14px 18px',
-                borderRadius: 'var(--radius-md)',
-                border: '1px solid var(--slate-100)',
-                backgroundColor: 'var(--slate-50)',
+                padding: '16px 8px',
+                borderBottom: idx < 2 ? '1px solid var(--slate-100)' : 'none',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 flexWrap: 'wrap',
                 gap: '12px',
-                transition: 'all 0.2s ease'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#ffffff';
-                e.currentTarget.style.borderColor = 'var(--slate-300)';
-                e.currentTarget.style.boxShadow = 'var(--shadow-subtle)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'var(--slate-50)';
-                e.currentTarget.style.borderColor = 'var(--slate-100)';
-                e.currentTarget.style.boxShadow = 'none';
+                transition: 'background-color var(--transition-smooth)'
               }}
             >
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', maxWidth: '680px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxWidth: '720px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-                  <span style={{ fontSize: '14px', fontWeight: '700', color: 'var(--slate-900)' }}>
+                  <span style={{ fontSize: '14.5px', fontWeight: '700', color: 'var(--slate-900)' }}>
                     {item.title}
                   </span>
                   <EvidenceBadge status={item.status} score={item.confidenceScore} isRtl={isRtl} />
                   <TrustChip tier={item.trustTier} isRtl={isRtl} />
                 </div>
-                <p style={{ fontSize: '12.5px', color: 'var(--slate-600)' }}>
+                <p style={{ fontSize: '13px', color: 'var(--slate-600)', lineHeight: 1.6, margin: 0 }}>
                   {item.summary}
                 </p>
-                <div style={{ display: 'flex', gap: '8px', fontSize: '11px', color: 'var(--slate-400)', alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: '8px', fontSize: '11.5px', color: 'var(--slate-400)', alignItems: 'center' }}>
                   <span>{isRtl ? 'المصدر: ' : 'Source: '}{item.source}</span>
                   <span>•</span>
-                  <span style={{ fontFamily: 'monospace' }}>{item.proofHash}</span>
+                  <span style={{ fontFamily: 'monospace', color: 'var(--slate-500)' }}>{item.proofHash}</span>
                 </div>
               </div>
 
@@ -351,9 +339,9 @@ export default function HomeDashboard({
                 <button
                   onClick={onOpenExplain}
                   className="btn btn-secondary btn-sm"
-                  style={{ fontSize: '11.5px', padding: '5px 10px', gap: '4px' }}
+                  style={{ gap: '5px' }}
                 >
-                  <Sparkles size={12} color="var(--indigo-600)" />
+                  <Sparkles size={13} color="var(--indigo-600)" />
                   <span>{isRtl ? 'تفسير' : 'Explain'}</span>
                 </button>
                 {item.sourceUrl && item.sourceUrl !== '#' && (
@@ -362,9 +350,9 @@ export default function HomeDashboard({
                     target="_blank"
                     rel="noreferrer"
                     className="btn btn-secondary btn-sm"
-                    style={{ fontSize: '11.5px', padding: '5px 10px', gap: '4px' }}
+                    style={{ gap: '5px' }}
                   >
-                    <ExternalLink size={12} />
+                    <ExternalLink size={13} />
                     <span>{isRtl ? 'المصدر' : 'Source'}</span>
                   </a>
                 )}

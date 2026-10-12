@@ -92,10 +92,10 @@ export default function ScreenNavigator({
             </div>
             <div>
               <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#ffffff' }}>
-                {isRtl ? 'مستعرض ومفتش الـ 1,040 شاشة (1,040 Screen Explorer)' : 'The 1,040 Screen Explorer & Matrix'}
+                {isRtl ? 'مستعرض ومفتش الـ 1,040 شاشة بالكامل' : '1,040 Screen Explorer & Matrix'}
               </h3>
-              <p style={{ fontSize: '11px', color: 'var(--slate-300)' }}>
-                {isRtl ? '26 وحدة × 40 حالة تفاعلية · 156 شاشة ارتكاز (Anchor) · 884 متغيراً منهجياً' : '26 Modules x 40 States · 156 Anchors · 884 Systematic Variants'}
+              <p style={{ fontSize: '11.5px', color: 'var(--slate-300)' }}>
+                {isRtl ? '26 وحدة × 40 حالة تفاعلية · 156 شاشة ارتكاز رئيسية · 884 متغيراً منهجياً' : '26 Modules x 40 States · 156 Anchors · 884 Systematic Variants'}
               </p>
             </div>
           </div>

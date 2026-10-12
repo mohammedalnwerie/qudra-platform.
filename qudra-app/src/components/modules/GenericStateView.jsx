@@ -46,7 +46,7 @@ export default function GenericStateView({
             </span>
             {stateData.isAnchor && (
               <span className="badge-pill" style={{ backgroundColor: '#2563eb', color: '#fff', fontSize: '12px', fontWeight: '700' }}>
-                ⚓ شاشة ارتكاز (Anchor)
+                {isRtl ? '⚓ شاشة ارتكاز رئيسية' : '⚓ Anchor Screen'}
               </span>
             )}
             <span style={{ fontSize: '13px', color: 'var(--slate-500)', fontWeight: '600' }}>

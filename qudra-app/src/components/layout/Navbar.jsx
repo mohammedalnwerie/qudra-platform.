@@ -26,9 +26,9 @@ export default function Navbar({
           <div className="brand-icon-box">
             <ShieldCheck size={20} />
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.2 }}>
-            <span style={{ fontSize: '18px', fontWeight: '800', color: 'var(--slate-900)', letterSpacing: '-0.02em' }}>
-              قُدرة <span style={{ fontSize: '13px', fontWeight: '500', color: 'var(--teal-700)' }}>QUDRA</span>
+          <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.25 }}>
+            <span style={{ fontSize: '18px', fontWeight: '800', color: 'var(--slate-900)' }}>
+              قُدرة <span style={{ fontSize: '12px', fontWeight: '600', color: 'var(--teal-700)', marginInlineStart: '2px' }}>QUDRA</span>
             </span>
             <span style={{ fontSize: '11px', color: 'var(--slate-400)', fontWeight: '500' }}>
               {isRtl ? 'محرك الأدلة وجواز الكفاءات' : 'Evidence-Backed Capabilities'}
@@ -83,10 +83,10 @@ export default function Navbar({
               cursor: 'pointer'
             }}
           >
-            <option value="freelancer">{isRtl ? '👤 دور المستقل (كريم)' : 'Role: Freelancer'}</option>
-            <option value="student">{isRtl ? '🎓 دور الطالب (سارة)' : 'Role: Student'}</option>
-            <option value="enterprise">{isRtl ? '🏢 دور جهة العمل (مسار)' : 'Role: Enterprise'}</option>
-            <option value="verifier">{isRtl ? '🛡️ دور المحكّم (د. طارق)' : 'Role: Verifier'}</option>
+            <option value="freelancer">{isRtl ? '👤 المستقل · كريم' : 'Role: Freelancer'}</option>
+            <option value="student">{isRtl ? '🎓 الطالب · سارة' : 'Role: Student'}</option>
+            <option value="enterprise">{isRtl ? '🏢 المنشأة · مسار' : 'Role: Enterprise'}</option>
+            <option value="verifier">{isRtl ? '🛡️ المحكّم · د. طارق' : 'Role: Verifier'}</option>
           </select>
         </div>
 

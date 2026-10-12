@@ -14,14 +14,14 @@ export default function ExplainDrawer({ isOpen, onClose, data, isRtl = true }) {
       ? 'حق المعرفة والاعتراض: وفقاً لميثاق قُدرة، كل درجة أو توصية مرئية لك بالكامل وتستند إلى أدلة معللة لا خوارزميات سرية.'
       : 'Right to Explainability: Under Qudra policies, every score is fully visible, grounded in evidence, and appealable.',
     factors: [
-      { name: isRtl ? 'أدلة بنية الخدمات المصغرة (GitHub OAuth Verified)' : 'Microservices Architecture (GitHub Verified)', weight: 35, impact: '+35%', positive: true },
-      { name: isRtl ? 'تحدي أمان الواجهات وهجمات Rate Limit (M11 Challenge)' : 'API Security & Rate Limiting Challenge (M11)', weight: 28, impact: '+28%', positive: true },
-      { name: isRtl ? 'تطوير الواجهات المتوافقة وإمكانية الوصول WCAG AAA' : 'Accessible Multilingual Frontend UI (React 19)', weight: 20, impact: '+20%', positive: true },
-      { name: isRtl ? 'شهادة الحاويات المصرح بها (User-Supplied Certificate)' : 'Containerization Certificate (Claimed)', weight: 9, impact: '+9%', positive: true },
-      { name: isRtl ? 'فجوة معالجة البيانات الفورية Kafka (Gap)' : 'Missing Real-time Data Streaming (Kafka Gap)', weight: -10, impact: '-8%', positive: false },
+      { name: isRtl ? 'أدلة بنية الخدمات المصغرة · توثيق رسمي من GitHub' : 'Microservices Architecture (GitHub Verified)', weight: 35, impact: '+35%', positive: true },
+      { name: isRtl ? 'تحدي أمان الواجهات وهجمات تدفق الطلبات' : 'API Security & Rate Limiting Challenge', weight: 28, impact: '+28%', positive: true },
+      { name: isRtl ? 'تطوير الواجهات المتوافقة وإمكانية الوصول الشامل' : 'Accessible Multilingual Frontend UI', weight: 20, impact: '+20%', positive: true },
+      { name: isRtl ? 'شهادة الحاويات المصرح بها من المستخدم' : 'Containerization Certificate (Claimed)', weight: 9, impact: '+9%', positive: true },
+      { name: isRtl ? 'فجوة معالجة البيانات الفورية في Kafka' : 'Missing Real-time Data Streaming (Kafka Gap)', weight: -10, impact: '-8%', positive: false },
     ],
     counterfactual: isRtl
-      ? 'إذا أكملت تحدي Apache Kafka العملي (المقدر بـ 25 دقيقة)، سترتفع نسبة التوافق الإجمالية إلى 98% وتتصدر ترشيحات الفريق.'
+      ? 'إذا أكملت تحدي Apache Kafka العملي المقدر بـ 25 دقيقة، فسترتفع نسبة التوافق الإجمالية إلى 98% وتتصدر ترشيحات الفريق.'
       : 'If you complete the Apache Kafka challenge (~25 mins), your overall match score will rise to 98%, placing you #1.',
     hash: '0x9e3f...821b · Verified at 2026-10-12T10:45:00Z'
   };
@@ -47,7 +47,7 @@ export default function ExplainDrawer({ isOpen, onClose, data, isRtl = true }) {
             </div>
             <div>
               <h3 style={{ fontSize: '16px', fontWeight: '700' }}>
-                {isRtl ? 'لوحة التفسير الشفاف (Explain Drawer)' : 'Explainability Drawer'}
+                {isRtl ? 'لوحة التفسير الشفاف' : 'Explainability Drawer'}
               </h3>
               <p style={{ fontSize: '12px', color: 'var(--slate-500)' }}>
                 {isRtl ? 'تفكيك قرار الذكاء الاصطناعي بالأدلة الحقيقية' : 'Deconstructing AI logic with verifiable evidence'}

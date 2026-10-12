@@ -21,10 +21,10 @@ export default function EvidenceBadge({ status, score, onClick, labelOverride, i
   );
 
   const defaultTextAr = isProven
-    ? 'مُثبت بأدلة (Proven)'
+    ? 'دليل مُثبت'
     : isClaimed
-    ? 'مُعلن ذاتياً (Claimed)'
-    : 'فجوة قائمة (Gap)';
+    ? 'مُعلن ذاتياً'
+    : 'فجوة قائمة';
 
   const defaultTextEn = isProven
     ? 'Proven Evidence'
