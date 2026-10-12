@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   ShieldCheck,
   Sparkles,
@@ -11,11 +11,21 @@ import {
   FileCode,
   CheckCircle,
   Share2,
-  ExternalLink
+  ExternalLink,
+  Lock,
+  Layers,
+  Users,
+  Briefcase,
+  DollarSign,
+  ChevronRight,
+  Play,
+  Zap,
+  Check
 } from 'lucide-react';
 import EvidenceBadge from '../common/EvidenceBadge';
 import TrustChip from '../common/TrustChip';
 import { MOCK_EVIDENCE_ITEMS, MOCK_PROBLEM } from '../../data/mockData';
+import { useToast } from '../common/ToastContext';
 
 export default function HomeDashboard({
   currentPersona,
@@ -23,202 +33,336 @@ export default function HomeDashboard({
   onOpenExplain,
   isRtl = true
 }) {
+  const { showToast } = useToast();
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
+  const [activeTab, setActiveTab] = useState('overview'); // overview | milestones | proofs
+
+  // Calculate stats based on persona or defaults
+  const provenCount = currentPersona?.provenCount || 12;
+  const claimedCount = currentPersona?.claimedCount || 4;
+  const gapCount = currentPersona?.gapCount || 2;
+  const trustScore = currentPersona?.trustScore || 94;
+
+  const handleSharePassport = () => {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText('https://qudra.sa/p/did:qudra:sa:0x71c828e678a192ec492a');
+    }
+    showToast(isRtl ? 'تم نسخ رابط جواز القدرات الموثق للمشاركة!' : 'Public Passport link copied to clipboard!', 'success');
+  };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
-      {/* 1. Welcoming Hero Banner — Light, Airy & Reassuring (No heavy black) */}
-      <div className="hero-card">
-        <div style={{ maxWidth: '680px' }}>
-          <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '6px',
-            backgroundColor: 'var(--teal-100)',
-            color: 'var(--teal-800)',
-            padding: '4px 12px',
-            borderRadius: 'var(--radius-full)',
-            fontSize: '12px',
-            fontWeight: '600',
-            marginBottom: '14px'
-          }}>
-            <ShieldCheck size={14} color="var(--teal-700)" />
-            <span>{isRtl ? 'محرك الأدلة النشط · لا مهارة بلا دليل قطعي' : 'Evidence-Backed Capabilities'}</span>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      {/* 1. Bento Hero Card — Light-First, High Contrast Obsidian & Teal */}
+      <div
+        className="card"
+        style={{
+          background: 'linear-gradient(135deg, #ffffff 0%, #F0FDFA 100%)',
+          borderColor: '#99F6E4',
+          padding: '24px 28px',
+          boxShadow: 'var(--shadow-sm)'
+        }}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>
+          <div style={{ maxWidth: '720px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+              <span
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  backgroundColor: '#E6FFFA',
+                  color: '#006666',
+                  padding: '3px 10px',
+                  borderRadius: '999px',
+                  fontSize: '11px',
+                  fontWeight: '800',
+                  border: '1px solid #B2F5EA'
+                }}
+              >
+                <ShieldCheck size={13} color="#008B8B" />
+                <span>{isRtl ? 'محرك القدرات النشط · لا مهارة بلا برهان تشفيري' : 'Cryptographic Capability Passport Active'}</span>
+              </span>
+              <span
+                style={{
+                  backgroundColor: '#FEF3C7',
+                  color: '#92400E',
+                  padding: '3px 10px',
+                  borderRadius: '999px',
+                  fontSize: '11px',
+                  fontWeight: '800',
+                  border: '1px solid #FDE68A'
+                }}
+              >
+                ★ {isRtl ? 'مطور نخبة موثق (Top 1%)' : 'Elite Verified (Top 1%)'}
+              </span>
+            </div>
+
+            <h1 style={{ fontSize: '24px', fontWeight: '900', color: '#1A1A1A', margin: '0 0 6px 0' }}>
+              {isRtl ? `أهلاً بك، ${currentPersona.name || 'كريم المنشاوي'}` : `Welcome back, ${currentPersona.name || 'Karim El-Menshawy'}`}
+            </h1>
+
+            <p style={{ fontSize: '13.5px', color: '#4B5563', lineHeight: 1.6, margin: 0 }}>
+              {isRtl
+                ? 'جواز قدراتك موثق رسمياً برمز W3C بنسبة ثقة 94%. لديك مطابقة ممتازة مع مشروع مسار (60,000 ر.س) وفجوة تقنية واحدة مقترحة للحل في التحديات البرمجية.'
+                : 'Your W3C-backed capability passport has a 94% Trust Score. 1 top enterprise match active (60,000 SAR) and 1 high-impact sandbox challenge available.'}
+            </p>
           </div>
 
-          <h1 style={{ fontSize: '26px', fontWeight: '800', color: 'var(--slate-900)', marginBottom: '8px' }}>
-            {isRtl ? `مرحباً بك، ${currentPersona.name}` : `Welcome back, ${currentPersona.name}`}
-          </h1>
+          {/* Quick Actions in Hero */}
+          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
+            <button
+              onClick={handleSharePassport}
+              className="btn btn-primary"
+              style={{
+                backgroundColor: '#008B8B',
+                borderColor: '#008B8B',
+                color: '#ffffff',
+                fontWeight: '700',
+                gap: '8px',
+                padding: '9px 16px',
+                boxShadow: '0 2px 6px rgba(0, 139, 139, 0.2)'
+              }}
+            >
+              <Share2 size={15} />
+              <span>{isRtl ? 'مشاركة الجواز' : 'Share Passport'}</span>
+            </button>
 
-          <p style={{ fontSize: '14.5px', color: 'var(--slate-600)', lineHeight: 1.6 }}>
-            {isRtl
-              ? 'ملفك يجمع أدلتك من موصلات موثقة ويحدد نقاط قوتك وفجواتك والخطوة القادمة. جواز قدراتك جاهز للمشاركة برابط واحد.'
-              : 'Your verified capability passport unifies real evidence, identifying strengths, gaps, and immediate next steps.'}
-          </p>
+            <button
+              onClick={() => onNavigate('M07')}
+              className="btn btn-secondary"
+              style={{
+                backgroundColor: '#ffffff',
+                borderColor: '#CBD5E1',
+                fontWeight: '700',
+                gap: '6px',
+                padding: '9px 16px'
+              }}
+            >
+              <span>{isRtl ? 'معاينة الجواز (M07)' : 'View Passport'}</span>
+              <ArrowIcon size={14} />
+            </button>
+          </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-          <button
-            onClick={() => onNavigate('M07')}
-            className="btn btn-primary"
-            style={{ gap: '8px', padding: '10px 20px' }}
-          >
-            <Share2 size={16} />
-            <span>{isRtl ? 'مشاركة جواز القدرات' : 'Share Passport'}</span>
-          </button>
-          <button
-            onClick={() => onNavigate('M09')}
-            className="btn btn-secondary"
-            style={{ gap: '8px', padding: '10px 18px' }}
-          >
-            <span>{isRtl ? 'الخطوة القادمة' : 'Next Step'}</span>
-            <ArrowIcon size={16} />
-          </button>
+        {/* Quick Identity Guarantee Strip */}
+        <div
+          style={{
+            marginTop: '18px',
+            paddingTop: '12px',
+            borderTop: '1px solid #CCFBF1',
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '20px',
+            fontSize: '12px',
+            color: '#0F766E',
+            fontWeight: '600'
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <CheckCircle size={14} color="#008B8B" />
+            <span>{isRtl ? 'الهوية الوطنية موثقة عبر نفاذ (Nafath)' : 'National ID Verified via Nafath'}</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <CheckCircle size={14} color="#008B8B" />
+            <span>{isRtl ? 'ضمان مالي 100% بدون عمولات منصة (0% Cut)' : '100% Net Earnings Escrow (0% Cut)'}</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <CheckCircle size={14} color="#008B8B" />
+            <span>{isRtl ? 'البيانات محمية بموجب نظام PDPL السعودي' : 'Saudi PDPL & SDAIA Compliant'}</span>
+          </div>
         </div>
       </div>
 
-      {/* 2. Four Metric Cards — Clean, Balanced, Soft Colors */}
+      {/* 2. Four Bento Metric Cards */}
       <div className="grid-4">
-        {/* Card 1: Proven */}
-        <div className="stat-card">
+        {/* Card 1: Proven Evidence */}
+        <div
+          className="stat-card"
+          style={{ cursor: 'pointer', transition: 'transform 0.15s ease' }}
+          onClick={() => onNavigate('M05')}
+        >
           <div className="stat-header">
             <span className="stat-label">
-              {isRtl ? 'الأدلة المُثبتة' : 'Proven Evidence'}
+              {isRtl ? 'الأدلة المُثبتة قطيعاً' : 'Proven Evidence'}
             </span>
-            <div className="stat-icon-wrapper" style={{ backgroundColor: 'var(--proven-bg)', color: 'var(--proven-color)' }}>
+            <div className="stat-icon-wrapper" style={{ backgroundColor: '#DCFCE7', color: '#166534' }}>
               <ShieldCheck size={18} />
             </div>
           </div>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-            <span className="stat-value" style={{ color: 'var(--proven-color)' }}>
-              {currentPersona.provenCount || 12}
+            <span className="stat-value" style={{ color: '#166534' }}>
+              {provenCount}
             </span>
-            <span style={{ fontSize: '12px', color: 'var(--slate-500)', fontWeight: '600' }}>
+            <span style={{ fontSize: '12px', color: '#64748B', fontWeight: '600' }}>
               / 16 {isRtl ? 'كفاءة' : 'skills'}
             </span>
           </div>
-          {/* Progress Mini Bar */}
-          <div style={{ width: '100%', height: '5px', backgroundColor: 'var(--slate-100)', borderRadius: '9999px', overflow: 'hidden', margin: '6px 0 2px' }}>
-            <div style={{ width: `${((currentPersona.provenCount || 12) / 16) * 100}%`, height: '100%', backgroundColor: 'var(--proven-color)', borderRadius: '9999px' }} />
+          <div style={{ width: '100%', height: '5px', backgroundColor: '#E2E8F0', borderRadius: '999px', overflow: 'hidden', margin: '6px 0 4px' }}>
+            <div style={{ width: `${(provenCount / 16) * 100}%`, height: '100%', backgroundColor: '#16A34A', borderRadius: '999px' }} />
           </div>
-          <div className="stat-subtext" style={{ color: 'var(--proven-text)' }}>
-            ✓ {isRtl ? 'موثقة برمجياً بروابط رسمية' : 'Verified via official sources'}
+          <div className="stat-subtext" style={{ color: '#15803D' }}>
+            ✓ {isRtl ? 'مدعومة ببصمات SHA-256' : 'Cryptographically verified'}
           </div>
         </div>
 
-        {/* Card 2: Claimed */}
-        <div className="stat-card">
+        {/* Card 2: Explainable Match */}
+        <div
+          className="stat-card"
+          style={{ cursor: 'pointer', transition: 'transform 0.15s ease' }}
+          onClick={() => onNavigate('M16')}
+        >
           <div className="stat-header">
             <span className="stat-label">
-              {isRtl ? 'الادعاءات المُعلنة' : 'Self-Claimed'}
+              {isRtl ? 'أقوى مطابقة مشكلات' : 'Top Match Score'}
             </span>
-            <div className="stat-icon-wrapper" style={{ backgroundColor: 'var(--claimed-bg)', color: 'var(--claimed-color)' }}>
+            <div className="stat-icon-wrapper" style={{ backgroundColor: '#FEF3C7', color: '#B45309' }}>
               <Sparkles size={18} />
             </div>
           </div>
-          <div className="stat-value" style={{ color: 'var(--claimed-color)' }}>
-            {currentPersona.claimedCount || 4}
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+            <span className="stat-value" style={{ color: '#B45309' }}>
+              94%
+            </span>
+            <span style={{ fontSize: '12px', color: '#64748B', fontWeight: '600' }}>
+              {isRtl ? 'تطابق مع مسار' : 'Masar FinTech'}
+            </span>
           </div>
-          <div className="stat-subtext" style={{ color: 'var(--claimed-text)' }}>
-            ⚡ {isRtl ? 'بانتظار تحدٍّ لإثباتها' : 'Pending challenge validation'}
+          <div style={{ width: '100%', height: '5px', backgroundColor: '#E2E8F0', borderRadius: '999px', overflow: 'hidden', margin: '6px 0 4px' }}>
+            <div style={{ width: '94%', height: '100%', backgroundColor: '#F59E0B', borderRadius: '999px' }} />
+          </div>
+          <div className="stat-subtext" style={{ color: '#92400E' }}>
+            ⚡ {isRtl ? 'ميزانية 60,000 ر.س (مفسرة)' : '60k SAR Net Budget'}
           </div>
         </div>
 
-        {/* Card 3: Gaps */}
-        <div className="stat-card">
+        {/* Card 3: Identified Gaps */}
+        <div
+          className="stat-card"
+          style={{ cursor: 'pointer', transition: 'transform 0.15s ease' }}
+          onClick={() => onNavigate('M11')}
+        >
           <div className="stat-header">
             <span className="stat-label">
-              {isRtl ? 'الفجوات المكتشفة' : 'Identified Gaps'}
+              {isRtl ? 'الفجوات المرصودة' : 'Identified Gaps'}
             </span>
-            <div className="stat-icon-wrapper" style={{ backgroundColor: 'var(--gap-bg)', color: 'var(--gap-color)' }}>
+            <div className="stat-icon-wrapper" style={{ backgroundColor: '#FEE2E2', color: '#B91C1C' }}>
               <AlertCircle size={18} />
             </div>
           </div>
-          <div className="stat-value" style={{ color: 'var(--gap-color)' }}>
-            {currentPersona.gapCount || 2}
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+            <span className="stat-value" style={{ color: '#B91C1C' }}>
+              {gapCount}
+            </span>
+            <span style={{ fontSize: '12px', color: '#64748B', fontWeight: '600' }}>
+              {isRtl ? 'فجوات مهارية' : 'skill gaps'}
+            </span>
           </div>
-          <div className="stat-subtext" style={{ color: 'var(--gap-text)' }}>
-            ○ {isRtl ? 'مهارات مطلوبة للفرص' : 'Needed for target jobs'}
+          <div style={{ width: '100%', height: '5px', backgroundColor: '#E2E8F0', borderRadius: '999px', overflow: 'hidden', margin: '6px 0 4px' }}>
+            <div style={{ width: '30%', height: '100%', backgroundColor: '#EF4444', borderRadius: '999px' }} />
+          </div>
+          <div className="stat-subtext" style={{ color: '#991B1B' }}>
+            ○ {isRtl ? 'Apache Kafka في انتظار التحدي' : 'Kafka stream challenge waiting'}
           </div>
         </div>
 
-        {/* Card 4: Trust Score (Upwork / Behance Circular Radial Gauge) */}
-        <div className="stat-card">
+        {/* Card 4: Trust Score & Radial Gauge */}
+        <div
+          className="stat-card"
+          style={{ cursor: 'pointer', transition: 'transform 0.15s ease' }}
+          onClick={() => onNavigate('M07')}
+        >
           <div className="stat-header">
             <span className="stat-label">
-              {isRtl ? 'مؤشر الموثوقية' : 'Trust Score'}
+              {isRtl ? 'مؤشر الثقة التراكمي' : 'Passport Trust Score'}
             </span>
-            <div className="stat-icon-wrapper" style={{ backgroundColor: 'var(--qudra-yellow-light)', color: 'var(--qudra-yellow-dark)' }}>
+            <div className="stat-icon-wrapper" style={{ backgroundColor: '#E6FFFA', color: '#008B8B' }}>
               <Award size={18} />
             </div>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', margin: '2px 0' }}>
-            <div className="stat-value" style={{ color: 'var(--qudra-obsidian)', margin: 0 }}>
-              {currentPersona.trustScore || 94}%
+            <div className="stat-value" style={{ color: '#1A1A1A', margin: 0 }}>
+              {trustScore}%
             </div>
-            <div style={{ position: 'relative', width: '48px', height: '48px', flexShrink: 0 }}>
-              <svg width="48" height="48" viewBox="0 0 48 48" style={{ transform: 'rotate(-90deg)' }}>
-                <circle cx="24" cy="24" r="19" stroke="var(--slate-200)" strokeWidth="4" fill="transparent" />
+            <div style={{ position: 'relative', width: '46px', height: '46px', flexShrink: 0 }}>
+              <svg width="46" height="46" viewBox="0 0 46 46" style={{ transform: 'rotate(-90deg)' }}>
+                <circle cx="23" cy="23" r="18" stroke="#E2E8F0" strokeWidth="4" fill="transparent" />
                 <circle
-                  cx="24"
-                  cy="24"
-                  r="19"
-                  stroke="var(--qudra-teal)"
+                  cx="23"
+                  cy="23"
+                  r="18"
+                  stroke="#008B8B"
                   strokeWidth="4"
                   fill="transparent"
-                  strokeDasharray="119.38"
-                  strokeDashoffset={119.38 * (1 - (currentPersona.trustScore || 94) / 100)}
+                  strokeDasharray="113.1"
+                  strokeDashoffset={113.1 * (1 - trustScore / 100)}
                   strokeLinecap="round"
-                  style={{ transition: 'stroke-dashoffset 1s ease' }}
                 />
               </svg>
-              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: '800', color: 'var(--qudra-teal-deep)' }}>
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: '800', color: '#006666' }}>
                 ★
               </div>
             </div>
           </div>
-          <div className="stat-subtext">
-            <span className="badge-gold">
-              ★ {isRtl ? 'نخبة القدرات المعتمدة (Top Verified)' : 'Top Verified'}
-            </span>
+          <div className="stat-subtext" style={{ color: '#006666', fontWeight: '700' }}>
+            ✓ {isRtl ? 'معيار W3C Verifiable Credential' : 'W3C VC Compliant'}
           </div>
         </div>
       </div>
 
-      {/* 3. Action Cards Grid: Next Step & Top Match */}
+      {/* 3. Action Cards Grid: High-Impact Next Step & Top Explainable Match */}
       <div className="grid-2">
         {/* Next Step Card */}
-        <div className="card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <div
+          className="card"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            padding: '24px',
+            boxShadow: 'var(--shadow-sm)'
+          }}
+        >
           <div>
-            <div className="card-header">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <TrendingUp size={18} color="var(--qudra-teal-dark)" />
-                <h3 className="card-title">
-                  {isRtl ? 'الخطوة القادمة الأكثر تأثيراً' : 'Recommended Next Step'}
+                <TrendingUp size={18} color="#008B8B" />
+                <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#1A1A1A', margin: 0 }}>
+                  {isRtl ? 'الخطوة القادمة الأكثر تأثيراً' : 'Recommended High-Impact Action'}
                 </h3>
               </div>
-              <span className="badge-gold">
-                {isRtl ? 'سد فجوة' : 'Close Gap'}
+              <span
+                style={{
+                  fontSize: '11px',
+                  fontWeight: '800',
+                  padding: '3px 8px',
+                  borderRadius: '6px',
+                  backgroundColor: '#FEF3C7',
+                  color: '#92400E'
+                }}
+              >
+                {isRtl ? 'سد فجوة بنسبة +6%' : 'Close Gap (+6% Match)'}
               </span>
             </div>
 
-            <div style={{
-              padding: '16px 18px',
-              backgroundColor: '#fafbfc',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--slate-200)',
-              marginBottom: '16px'
-            }}>
+            <div
+              style={{
+                padding: '16px',
+                backgroundColor: '#F8FAFC',
+                borderRadius: '10px',
+                border: '1px solid #E2E8F0',
+                marginBottom: '16px'
+              }}
+            >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                <h4 style={{ fontSize: '14.5px', fontWeight: '700', color: 'var(--qudra-obsidian)' }}>
-                  {isRtl ? 'سد فجوة Apache Kafka وتأمين خطوط البيانات' : 'Close Apache Kafka Streaming Gap'}
+                <h4 style={{ fontSize: '14.5px', fontWeight: '800', color: '#1A1A1A', margin: 0 }}>
+                  {isRtl ? 'سد فجوة معالجة التدفقات عبر Apache Kafka' : 'Close Apache Kafka Streaming Gap'}
                 </h4>
-                <EvidenceBadge status="gap" labelOverride={isRtl ? 'فجوة' : 'Gap'} isRtl={isRtl} />
+                <EvidenceBadge status="gap" labelOverride={isRtl ? 'فجوة معمارية' : 'Arch Gap'} isRtl={isRtl} />
               </div>
-              <p style={{ fontSize: '13px', color: 'var(--slate-600)', lineHeight: 1.6 }}>
+              <p style={{ fontSize: '13px', color: '#4B5563', lineHeight: 1.6, margin: 0 }}>
                 {isRtl
-                  ? 'مشروع شركة مسار يتطلب كفاءة مثبتة في معالجة التدفقات المالية. إتمام التحدي العملي المباشر سيرفع نسبة مطابقتك إلى 98%.'
-                  : 'Masar Fintech project requires Kafka stream skills. Solving this practice challenge raises your match score to 98%.'}
+                  ? 'مشروع شركة مسار يتطلب كفاءة مثبتة في معالجة التدفقات المالية. إتمام التحدي العملي المباشر في البيئة المعزولة سيرفع نسبة مطابقتك إلى 98% ويسك برهاناً فورياً.'
+                  : 'Masar Fintech project requires Kafka stream skills. Solving this sandbox challenge raises your match score to 98% and mints proven evidence.'}
               </p>
             </div>
           </div>
@@ -227,71 +371,93 @@ export default function HomeDashboard({
             <button
               onClick={() => onNavigate('M11')}
               className="btn btn-primary"
-              style={{ flex: 1, gap: '6px' }}
+              style={{
+                flex: 1,
+                backgroundColor: '#008B8B',
+                borderColor: '#008B8B',
+                color: '#ffffff',
+                fontWeight: '700',
+                gap: '8px'
+              }}
             >
               <Terminal size={15} />
-              <span>{isRtl ? 'خوض التحدي العملي (25 دقيقة)' : 'Start Challenge (25 min)'}</span>
+              <span>{isRtl ? 'خوض التحدي العملي (M11 Sandbox)' : 'Solve Sandbox Challenge (25m)'}</span>
             </button>
             <button
               onClick={onOpenExplain}
               className="btn btn-secondary"
-              title={isRtl ? 'عرض تفسير الذكاء الاصطناعي' : 'Explain why'}
+              style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: '700' }}
+              title={isRtl ? 'عرض تفسير الذكاء الاصطناعي' : 'Explain Why'}
             >
-              <Sparkles size={15} color="var(--qudra-yellow-dark)" />
+              <Sparkles size={14} color="#D97706" />
               <span>{isRtl ? 'لماذا؟' : 'Why?'}</span>
             </button>
           </div>
         </div>
 
         {/* Top Match Card */}
-        <div className="card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <div
+          className="card"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            padding: '24px',
+            boxShadow: 'var(--shadow-sm)'
+          }}
+        >
           <div>
-            <div className="card-header">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Award size={18} color="var(--qudra-teal-dark)" />
-                <h3 className="card-title">
-                  {isRtl ? 'أقوى مطابقة حالية' : 'Top Explainable Match'}
+                <Award size={18} color="#008B8B" />
+                <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#1A1A1A', margin: 0 }}>
+                  {isRtl ? 'أقوى مطابقة مع مشكلات الأعمال (M16)' : 'Top Enterprise Problem Match (M16)'}
                 </h3>
               </div>
               <div
-                className="match-chip"
                 onClick={onOpenExplain}
                 style={{
-                  backgroundColor: 'var(--qudra-yellow-light)',
-                  border: '1px solid var(--qudra-yellow-border)',
-                  color: 'var(--qudra-yellow-dark)',
+                  backgroundColor: '#FEF3C7',
+                  border: '1px solid #FDE68A',
+                  color: '#92400E',
+                  borderRadius: '999px',
+                  padding: '3px 10px',
+                  fontSize: '12px',
+                  fontWeight: '800',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
                   cursor: 'pointer'
                 }}
-                title={isRtl ? 'انقر لفتح لوحة التفسير' : 'Click to inspect breakdown'}
               >
-                <Sparkles size={13} color="var(--qudra-yellow-dark)" />
-                <span>{MOCK_PROBLEM.matchScore}% {isRtl ? 'تطابق' : 'Match'}</span>
+                <Sparkles size={12} color="#D97706" />
+                <span>{MOCK_PROBLEM.matchScore}% {isRtl ? 'تطابق مفسر' : 'Match'}</span>
               </div>
             </div>
 
             <div style={{ marginBottom: '14px' }}>
-              <h4 style={{ fontSize: '14.5px', fontWeight: '700', color: 'var(--qudra-obsidian)', marginBottom: '4px' }}>
+              <h4 style={{ fontSize: '15px', fontWeight: '800', color: '#1A1A1A', margin: '0 0 4px 0' }}>
                 {MOCK_PROBLEM.title}
               </h4>
-              <div style={{ fontSize: '12.5px', color: 'var(--qudra-teal-deep)', fontWeight: '600', marginBottom: '8px' }}>
-                {MOCK_PROBLEM.author} · {MOCK_PROBLEM.budget}
+              <div style={{ fontSize: '12.5px', color: '#008B8B', fontWeight: '700', marginBottom: '8px' }}>
+                {MOCK_PROBLEM.author} · {isRtl ? 'ميزانية صافية 60,000 ر.س (ضمان مصرفي مرخص)' : '60,000 SAR Escrow'}
               </div>
-              <p style={{ fontSize: '13px', color: 'var(--slate-600)', lineHeight: 1.6 }}>
+              <p style={{ fontSize: '13px', color: '#4B5563', lineHeight: 1.6, margin: 0 }}>
                 {MOCK_PROBLEM.matchReason}
               </p>
             </div>
 
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '14px' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '16px' }}>
               {MOCK_PROBLEM.extractedCapabilities.slice(0, 3).map((cap, i) => (
                 <span
                   key={i}
                   style={{
                     padding: '3px 8px',
-                    borderRadius: 'var(--radius-sm)',
-                    backgroundColor: 'var(--slate-100)',
+                    borderRadius: '6px',
+                    backgroundColor: '#F1F5F9',
                     fontSize: '11.5px',
-                    fontWeight: '600',
-                    color: 'var(--qudra-obsidian)'
+                    fontWeight: '700',
+                    color: '#334155'
                   }}
                 >
                   ✓ {cap.name}
@@ -300,43 +466,115 @@ export default function HomeDashboard({
             </div>
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', gap: '10px' }}>
             <button
               onClick={() => onNavigate('M16')}
               className="btn btn-secondary btn-sm"
-              style={{ flex: 1, gap: '6px' }}
+              style={{ flex: 1, gap: '6px', fontWeight: '700' }}
             >
-              <span>{isRtl ? 'تفاصيل المشكلة' : 'View Problem'}</span>
+              <span>{isRtl ? 'تفاصيل المشكلة (M16)' : 'View Match (M16)'}</span>
               <ArrowIcon size={14} />
             </button>
             <button
               onClick={() => onNavigate('M20')}
               className="btn btn-primary btn-sm"
-              style={{ flex: 1 }}
+              style={{
+                flex: 1,
+                backgroundColor: '#1A1A1A',
+                borderColor: '#1A1A1A',
+                color: '#ffffff',
+                fontWeight: '700',
+                gap: '6px'
+              }}
             >
-              <span>{isRtl ? 'الفريق المقترح' : 'Squad Composer'}</span>
+              <Users size={14} />
+              <span>{isRtl ? 'تشكيل الفريق (M20)' : 'Squad Composer (M20)'}</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* 4. Latest Evidence Feed — Clean, Legible Table */}
-      <div className="card">
-        <div className="card-header">
+      {/* 4. Active Milestone Escrow Tracker (M21 Fast-Access) */}
+      <div
+        className="card"
+        style={{
+          padding: '20px 24px',
+          backgroundColor: '#FFFFFF',
+          borderColor: '#E2E8F0',
+          boxShadow: 'var(--shadow-sm)'
+        }}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap', gap: '10px' }}>
           <div>
-            <h3 className="card-title">
-              {isRtl ? 'سجل الأدلة النشطة الموثقة' : 'Verified Evidence Stream'}
-            </h3>
-            <p style={{ fontSize: '12.5px', color: 'var(--slate-500)', marginTop: '2px' }}>
-              {isRtl ? 'كل سطر مربوط بمصدره الحقيقي وبصمة التحقق الرقمية' : 'Every item links to an official source and verification hash'}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Briefcase size={17} color="#008B8B" />
+              <h3 style={{ fontSize: '15.5px', fontWeight: '800', color: '#1A1A1A', margin: 0 }}>
+                {isRtl ? 'المشروع النشط والضمان المالي (M21 Project Workspace)' : 'Active Workspace & Escrow (M21)'}
+              </h3>
+            </div>
+            <p style={{ fontSize: '12.5px', color: '#64748B', margin: '3px 0 0 0' }}>
+              {isRtl
+                ? 'مشروع منصة المدفوعات السحابية · شركة مسار للتحول الرقمي (60,000 ر.س - 0% عمولة)'
+                : 'Cloud Payment Microservices · Masar FinTech (60,000 SAR Net - 0% Commission)'}
             </p>
           </div>
+
+          <button
+            onClick={() => onNavigate('M21')}
+            className="btn btn-secondary btn-sm"
+            style={{ fontWeight: '700', gap: '6px' }}
+          >
+            <span>{isRtl ? 'فتح مساحة المشروع (M21)' : 'Open Workspace'}</span>
+            <ArrowIcon size={14} />
+          </button>
+        </div>
+
+        {/* Milestone Steps Bar */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px' }}>
+          <div style={{ padding: '12px', backgroundColor: '#F0FDF4', borderRadius: '8px', border: '1px solid #DCFCE7' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+              <span style={{ fontSize: '11px', fontWeight: '800', color: '#166534' }}>{isRtl ? 'المرحلة 1: البنية التحتية' : 'Milestone 1'}</span>
+              <span style={{ fontSize: '11px', fontWeight: '800', color: '#166534' }}>18,000 ر.س</span>
+            </div>
+            <div style={{ fontSize: '12px', fontWeight: '700', color: '#14532D' }}>✓ {isRtl ? 'تم التسليم وتحرير الدفعة' : 'Released to Squad'}</div>
+          </div>
+
+          <div style={{ padding: '12px', backgroundColor: '#FEF3C7', borderRadius: '8px', border: '1px solid #FDE68A' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+              <span style={{ fontSize: '11px', fontWeight: '800', color: '#92400E' }}>{isRtl ? 'المرحلة 2: محرك الدفع وSSRF' : 'Milestone 2'}</span>
+              <span style={{ fontSize: '11px', fontWeight: '800', color: '#92400E' }}>24,000 ر.س</span>
+            </div>
+            <div style={{ fontSize: '12px', fontWeight: '700', color: '#78350F' }}>⚡ {isRtl ? 'قيد مراجعة العميل والاعتماد' : 'In Client Review'}</div>
+          </div>
+
+          <div style={{ padding: '12px', backgroundColor: '#F8FAFC', borderRadius: '8px', border: '1px solid #E2E8F0' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+              <span style={{ fontSize: '11px', fontWeight: '800', color: '#64748B' }}>{isRtl ? 'المرحلة 3: تدفق كافكا' : 'Milestone 3'}</span>
+              <span style={{ fontSize: '11px', fontWeight: '800', color: '#64748B' }}>18,000 ر.س</span>
+            </div>
+            <div style={{ fontSize: '12px', fontWeight: '700', color: '#475569' }}>🔒 {isRtl ? 'محجوزة في الضمان البنكي' : 'Locked in Escrow'}</div>
+          </div>
+        </div>
+      </div>
+
+      {/* 5. Verified Evidence Stream Feed */}
+      <div className="card" style={{ padding: '24px', boxShadow: 'var(--shadow-sm)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
+          <div>
+            <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#1A1A1A', margin: 0 }}>
+              {isRtl ? 'أحدث الأدلة والبراهين المُسجلة في الجواز (M05 Stream)' : 'Recent Verifiable Evidence Stream (M05)'}
+            </h3>
+            <p style={{ fontSize: '12.5px', color: '#64748B', margin: '3px 0 0 0' }}>
+              {isRtl ? 'كل سطر مربوط بمصدره الحقيقي وبصمة التحقق الرقمية غير القابلة للتزييف' : 'Every item links to an official source and immutable verification digest'}
+            </p>
+          </div>
+
           <button
             onClick={() => onNavigate('M05')}
             className="btn btn-secondary btn-sm"
-            style={{ gap: '6px' }}
+            style={{ fontWeight: '700', gap: '6px' }}
           >
-            <span>{isRtl ? 'كل الأدلة' : 'View All'}</span>
+            <span>{isRtl ? 'استعراض كل الأدلة (M05)' : 'View All Evidence'}</span>
             <ArrowIcon size={14} />
           </button>
         </div>
@@ -347,30 +585,29 @@ export default function HomeDashboard({
               key={item.id}
               style={{
                 padding: '16px 8px',
-                borderBottom: idx < 2 ? '1px solid var(--slate-100)' : 'none',
+                borderBottom: idx < 2 ? '1px solid #F1F5F9' : 'none',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 flexWrap: 'wrap',
-                gap: '12px',
-                transition: 'background-color var(--transition-smooth)'
+                gap: '12px'
               }}
             >
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxWidth: '720px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-                  <span style={{ fontSize: '14.5px', fontWeight: '700', color: 'var(--slate-900)' }}>
+                  <span style={{ fontSize: '14.5px', fontWeight: '800', color: '#1A1A1A' }}>
                     {item.title}
                   </span>
                   <EvidenceBadge status={item.status} score={item.confidenceScore} isRtl={isRtl} />
                   <TrustChip tier={item.trustTier} isRtl={isRtl} />
                 </div>
-                <p style={{ fontSize: '13px', color: 'var(--slate-600)', lineHeight: 1.6, margin: 0 }}>
+                <p style={{ fontSize: '13px', color: '#4B5563', lineHeight: 1.6, margin: 0 }}>
                   {item.summary}
                 </p>
-                <div style={{ display: 'flex', gap: '8px', fontSize: '11.5px', color: 'var(--slate-400)', alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: '8px', fontSize: '11.5px', color: '#64748B', alignItems: 'center' }}>
                   <span>{isRtl ? 'المصدر: ' : 'Source: '}{item.source}</span>
                   <span>•</span>
-                  <span style={{ fontFamily: 'monospace', color: 'var(--slate-500)' }}>{item.proofHash}</span>
+                  <span style={{ fontFamily: 'monospace', color: '#008B8B', fontWeight: '700' }}>{item.proofHash}</span>
                 </div>
               </div>
 
@@ -378,9 +615,9 @@ export default function HomeDashboard({
                 <button
                   onClick={onOpenExplain}
                   className="btn btn-secondary btn-sm"
-                  style={{ gap: '5px' }}
+                  style={{ gap: '5px', fontWeight: '700' }}
                 >
-                  <Sparkles size={13} color="var(--indigo-600)" />
+                  <Sparkles size={13} color="#D97706" />
                   <span>{isRtl ? 'تفسير' : 'Explain'}</span>
                 </button>
                 {item.sourceUrl && item.sourceUrl !== '#' && (
@@ -389,7 +626,7 @@ export default function HomeDashboard({
                     target="_blank"
                     rel="noreferrer"
                     className="btn btn-secondary btn-sm"
-                    style={{ gap: '5px' }}
+                    style={{ gap: '5px', fontWeight: '700' }}
                   >
                     <ExternalLink size={13} />
                     <span>{isRtl ? 'المصدر' : 'Source'}</span>

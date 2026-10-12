@@ -12,7 +12,13 @@ if (!fs.existsSync(outputDir)) {
 }
 
 async function capture() {
+  const targetModule = process.argv[2] || 'M02';
+  const filePrefix = process.argv[3] || 'redesign';
+  const url = `http://localhost:5173/?module=${targetModule}&state=1`;
+
   console.log(`Using browser: ${executablePath}`);
+  console.log(`Capturing ${targetModule} from ${url} with prefix '${filePrefix}'`);
+
   const browser = await puppeteer.launch({
     executablePath,
     headless: true,
@@ -21,24 +27,31 @@ async function capture() {
 
   const page = await browser.newPage();
 
-  // 1. Desktop Redesign (Home Dashboard M02)
+  // 1. Desktop (1440x900)
   await page.setViewport({ width: 1440, height: 900 });
-  await page.goto('http://localhost:5173', { waitUntil: 'networkidle0', timeout: 15000 });
-  await page.screenshot({ path: path.join(outputDir, 'redesign-desktop-home.png'), fullPage: false });
-  console.log('Saved redesign-desktop-home.png');
+  await page.goto(url, { waitUntil: 'networkidle0', timeout: 15000 });
+  // Wait a short moment for animations/fonts to settle
+  await new Promise(r => setTimeout(r, 1000));
+  const desktopFile = `${filePrefix}-desktop.png`;
+  await page.screenshot({ path: path.join(outputDir, desktopFile), fullPage: false });
+  console.log(`Saved ${desktopFile}`);
 
-  // 2. Tablet Redesign (820x1180)
+  // 2. Tablet (820x1180)
   await page.setViewport({ width: 820, height: 1180 });
-  await page.screenshot({ path: path.join(outputDir, 'redesign-tablet-home.png'), fullPage: false });
-  console.log('Saved redesign-tablet-home.png');
+  await new Promise(r => setTimeout(r, 500));
+  const tabletFile = `${filePrefix}-tablet.png`;
+  await page.screenshot({ path: path.join(outputDir, tabletFile), fullPage: false });
+  console.log(`Saved ${tabletFile}`);
 
-  // 3. Mobile Redesign (390x844)
+  // 3. Mobile (390x844)
   await page.setViewport({ width: 390, height: 844 });
-  await page.screenshot({ path: path.join(outputDir, 'redesign-mobile-home.png'), fullPage: false });
-  console.log('Saved redesign-mobile-home.png');
+  await new Promise(r => setTimeout(r, 500));
+  const mobileFile = `${filePrefix}-mobile.png`;
+  await page.screenshot({ path: path.join(outputDir, mobileFile), fullPage: false });
+  console.log(`Saved ${mobileFile}`);
 
   await browser.close();
-  console.log('Post-redesign capture complete!');
+  console.log(`Capture complete for ${targetModule}!`);
 }
 
 capture().catch((err) => {

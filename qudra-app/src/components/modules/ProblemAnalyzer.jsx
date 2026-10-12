@@ -5,16 +5,35 @@ import {
   ArrowRight,
   ArrowLeft,
   Users,
-  CheckCircle2
+  CheckCircle2,
+  AlertCircle,
+  Scale,
+  ShieldCheck,
+  Building2,
+  Coins,
+  Clock,
+  Layers,
+  FileCode,
+  Zap,
+  TrendingUp,
+  X,
+  Info,
+  Check,
+  ChevronRight
 } from 'lucide-react';
-import { MOCK_PROBLEM } from '../../data/mockData';
-
+import { MOCK_PROBLEM, USER_PERSONAS } from '../../data/mockData';
 import { useToast } from '../common/ToastContext';
 
 export default function ProblemAnalyzer({ onNavigate, onOpenExplain, isRtl = true }) {
   const { showToast } = useToast();
+  const [activeTab, setActiveTab] = useState('match'); // 'deconstruct' | 'match'
+  const [problemTitle, setProblemTitle] = useState(MOCK_PROBLEM.title);
   const [problemText, setProblemText] = useState(MOCK_PROBLEM.description);
+  const [budgetMin, setBudgetMin] = useState('45,000');
+  const [budgetMax, setBudgetMax] = useState('60,000');
+  const [timeline, setTimeline] = useState('6 أسابيع');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [showMathModal, setShowMathModal] = useState(false);
 
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
@@ -22,98 +41,536 @@ export default function ProblemAnalyzer({ onNavigate, onOpenExplain, isRtl = tru
     setIsAnalyzing(true);
     setTimeout(() => {
       setIsAnalyzing(false);
-      showToast(isRtl ? 'تم تفكيك المشكلة دلالياً واستخراج 5 قدرات تقنية مطلوبة بنجاح.' : 'Problem decomposed into 5 capability requirements.');
-    }, 1200);
+      setActiveTab('match');
+      showToast(isRtl ? 'تم تفكيك المشكلة دلالياً وتوليد المطابقة المُفسرة بنجاح بنسبة 94%!' : 'Problem decomposed and 94% explainable match generated!');
+    }, 1000);
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
-      {/* Header Banner — Clean Light Background */}
-      <div className="hero-card" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #eef2ff 100%)', borderColor: 'var(--indigo-100)' }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-            <div style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: 'var(--radius-md)',
-              backgroundColor: 'var(--indigo-50)',
-              color: 'var(--indigo-600)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              <HelpCircle size={20} />
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      {/* 1. Bento Hero Card (Light-First Triad: Yellow #FFC107, Teal #00B8B8, Obsidian #1A1A1A) */}
+      <div
+        className="card hero-bento"
+        style={{
+          background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+          border: '1px solid var(--border-color)',
+          borderTop: '4px solid var(--qudra-yellow, #FFC107)',
+          padding: '26px 30px',
+          borderRadius: 'var(--radius-xl)',
+          position: 'relative'
+        }}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>
+          <div style={{ maxWidth: '680px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+              <div className="brand-icon-box" style={{ width: '42px', height: '42px', borderRadius: '10px', backgroundColor: 'var(--qudra-obsidian, #1A1A1A)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Sparkles size={22} color="var(--qudra-yellow, #FFC107)" />
+              </div>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <h1 style={{ fontSize: '22px', fontWeight: '800', color: 'var(--qudra-obsidian, #1A1A1A)', margin: 0 }}>
+                    {isRtl ? 'تفكيك المشكلات والمطابقة المُفسرة' : 'Problem Deconstruction & Explainable Matching'}
+                  </h1>
+                  <span className="badge-teal" style={{ fontSize: '11px', padding: '2px 8px' }}>
+                    {isRtl ? 'الركيزة الثانية · M15/M16' : 'Pillar 2 · M15/M16'}
+                  </span>
+                </div>
+                <p style={{ fontSize: '13px', color: 'var(--slate-500)', margin: '2px 0 0' }}>
+                  {isRtl ? 'مدخل المشروعات المعقدة: تفكيك دلالي للمشكلة ومطابقة مفسرة رياضياً 100% بدون خوارزميات غامضة' : 'Explainable Matching Engine: Zero algorithmic blackbox, backed by verified proofs'}
+                </p>
+              </div>
             </div>
-            <h2 style={{ fontSize: '22px', fontWeight: '800', color: 'var(--slate-900)' }}>
-              {isRtl ? 'تحليل وتفكيك المشكلات التقنية' : 'Problem Input & Capability Decomposition'}
-            </h2>
-          </div>
-          <p style={{ fontSize: '14px', color: 'var(--slate-600)', maxWidth: '720px', lineHeight: 1.6 }}>
-            {isRtl
-              ? 'الركيزة الثانية: اطرح مشكلتك الواقعية بلغة طبيعية. يقوم الذكاء الاصطناعي بتفكيكها إلى قدرات محددة، ثم يبحث في قاعدة الأدلة لترشيح الكفاءات أو تركيب فريق متكامل.'
-              : 'Enter your business problem; AI decomposes it into capabilities and matches verified talent.'}
-          </p>
-        </div>
 
-        <span className="badge-pill" style={{ backgroundColor: 'var(--indigo-50)', color: 'var(--indigo-700)', border: '1px solid var(--indigo-200)', fontWeight: '700' }}>
-          {isRtl ? 'تفكيك دلالي معلل' : 'Semantic AI Decomposition'}
-        </span>
+            <p style={{ fontSize: '14px', color: 'var(--slate-600)', lineHeight: 1.65, marginTop: '10px' }}>
+              {isRtl
+                ? 'في المنصات التقليدية يطرح العميل وصفاً عاماً فيرد المستقلون بعروض منسوخة، وتكون المطابقة صندوقاً أسود غير مبرر. في قُدرة، يطرح العميل مشكلته التقنية الواقعية؛ فيقوم المحرك بتفكيكها إلى متجهات قدرات محددة، ثم يطابقها مع سجلات الأدلة مع إبراز وزن وتأثير كل مهارة ودليل بالمللي.'
+                : 'Zero generic bidding or opaque algorithms: enterprise problems are decomposed into verifiable capability vectors and matched against cryptographic evidence with full mathematical provenance.'}
+            </p>
+
+            {/* Client Context Pill */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '16px', flexWrap: 'wrap' }}>
+              <div
+                style={{
+                  padding: '6px 12px',
+                  borderRadius: 'var(--radius-full)',
+                  backgroundColor: '#f8fafc',
+                  border: '1px solid var(--border-color)',
+                  color: 'var(--slate-700)',
+                  fontSize: '12px',
+                  fontWeight: '700',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+              >
+                <Building2 size={13} color="var(--qudra-teal)" />
+                <span>{isRtl ? 'الجهة الطارحة: شركة مسار للتحول الرقمي (الرياض)' : 'Client: Masar Digital Transformation (Riyadh)'}</span>
+              </div>
+
+              <div
+                style={{
+                  padding: '6px 12px',
+                  borderRadius: 'var(--radius-full)',
+                  backgroundColor: '#f0fdf4',
+                  border: '1px solid #bbf7d0',
+                  color: '#166534',
+                  fontSize: '12px',
+                  fontWeight: '700',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+              >
+                <Coins size={13} color="#16a34a" />
+                <span>{isRtl ? 'ميزانية صافية معفاة من العمولات الخفية (0% عمولة عميل)' : 'Zero Hidden Client Fees'}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Bento Live Metrics */}
+          <div
+            style={{
+              backgroundColor: '#ffffff',
+              border: '1px solid var(--border-color)',
+              borderRadius: 'var(--radius-lg)',
+              padding: '16px 20px',
+              display: 'flex',
+              gap: '20px',
+              boxShadow: 'var(--shadow-xs)'
+            }}
+          >
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '24px', fontWeight: '900', color: 'var(--qudra-teal, #008B8B)', fontFamily: 'monospace' }}>
+                94%
+              </div>
+              <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--slate-500)', marginTop: '2px' }}>
+                {isRtl ? 'نسبة التطابق' : 'Match Score'}
+              </div>
+              <div style={{ fontSize: '10px', color: 'var(--qudra-teal)', marginTop: '1px' }}>
+                {isRtl ? 'مُفسَّرة بالكامل' : '100% Explainable'}
+              </div>
+            </div>
+
+            <div style={{ width: '1px', backgroundColor: 'var(--border-color)' }} />
+
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '24px', fontWeight: '900', color: 'var(--slate-900)', fontFamily: 'monospace' }}>
+                5
+              </div>
+              <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--slate-500)', marginTop: '2px' }}>
+                {isRtl ? 'متجهات قدرات' : 'Vectors'}
+              </div>
+              <div style={{ fontSize: '10px', color: 'var(--slate-500)', marginTop: '1px' }}>
+                {isRtl ? '4 مطابقة + 1 فجوة' : '4 Matched · 1 Gap'}
+              </div>
+            </div>
+
+            <div style={{ width: '1px', backgroundColor: 'var(--border-color)' }} />
+
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '24px', fontWeight: '900', color: '#16a34a', fontFamily: 'monospace' }}>
+                60K
+              </div>
+              <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--slate-500)', marginTop: '2px' }}>
+                {isRtl ? 'ر.س الضمان' : 'SAR Escrow'}
+              </div>
+              <div style={{ fontSize: '10px', color: '#16a34a', marginTop: '1px' }}>
+                {isRtl ? 'محمي بعقد ذكي' : 'Milestone Escrow'}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Problem Input Workspace */}
-      <div className="grid-2">
-        {/* Left: Input Textarea */}
-        <div className="card">
-          <div className="card-header">
-            <h3 className="card-title">
-              {isRtl ? 'نص المشكلة أو التحدي التقني' : 'Problem Statement'}
-            </h3>
-            <span style={{ fontSize: '12px', color: 'var(--slate-400)' }}>
-              {isRtl ? 'حفظ تلقائي للمسودة' : 'Autosaved locally'}
-            </span>
-          </div>
+      {/* 2. Step View Switcher Tabs (M15 Decomposition vs M16 Explainable Matching) */}
+      <div style={{ display: 'flex', gap: '8px', borderBottom: '1px solid var(--border-color)', paddingBottom: '2px' }}>
+        <button
+          onClick={() => setActiveTab('match')}
+          style={{
+            padding: '10px 18px',
+            border: 'none',
+            background: 'none',
+            borderBottom: activeTab === 'match' ? '3px solid var(--qudra-teal, #00B8B8)' : '3px solid transparent',
+            fontWeight: activeTab === 'match' ? '800' : '600',
+            color: activeTab === 'match' ? 'var(--qudra-obsidian, #1A1A1A)' : 'var(--slate-500)',
+            fontSize: '13.5px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}
+        >
+          <Scale size={16} color={activeTab === 'match' ? 'var(--qudra-teal)' : 'var(--slate-400)'} />
+          <span>{isRtl ? 'نتائج المطابقة المُفسَّرة مع الكفاءات (M16 Match)' : 'Explainable Match Results (M16)'}</span>
+          <span style={{ backgroundColor: '#ccfbf1', color: '#006666', padding: '1px 7px', borderRadius: '10px', fontSize: '11px', fontWeight: '800' }}>
+            94%
+          </span>
+        </button>
 
-          <div className="form-group">
-            <label className="form-label">{isRtl ? 'عنوان المشكلة' : 'Problem Title'}</label>
-            <input
-              type="text"
-              className="form-input"
-              defaultValue={MOCK_PROBLEM.title}
-              style={{ fontWeight: '700' }}
-            />
-          </div>
+        <button
+          onClick={() => setActiveTab('deconstruct')}
+          style={{
+            padding: '10px 18px',
+            border: 'none',
+            background: 'none',
+            borderBottom: activeTab === 'deconstruct' ? '3px solid var(--qudra-teal, #00B8B8)' : '3px solid transparent',
+            fontWeight: activeTab === 'deconstruct' ? '800' : '600',
+            color: activeTab === 'deconstruct' ? 'var(--qudra-obsidian, #1A1A1A)' : 'var(--slate-500)',
+            fontSize: '13.5px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}
+        >
+          <Layers size={16} color={activeTab === 'deconstruct' ? 'var(--qudra-teal)' : 'var(--slate-400)'} />
+          <span>{isRtl ? 'محرر تفكيك المشكلة التقنية (M15 Input)' : 'Problem Decomposition Workspace (M15)'}</span>
+        </button>
+      </div>
 
-          <div className="form-group">
-            <label className="form-label">{isRtl ? 'الوصف التفصيلي للمشكلة' : 'Detailed Description'}</label>
-            <textarea
-              className="form-textarea"
-              rows={8}
-              value={problemText}
-              onChange={(e) => setProblemText(e.target.value)}
-              placeholder={isRtl ? 'اكتب ما تواجهه شركتك أو مشروعك بالتفصيل...' : 'Describe what challenges your team is facing...'}
-            />
-          </div>
-
-          <button
-            onClick={handleAnalyze}
-            disabled={isAnalyzing}
-            className="btn btn-primary"
-            style={{ width: '100%', backgroundColor: 'var(--indigo-600)', gap: '6px' }}
+      {/* 3. Tab Content */}
+      {activeTab === 'match' ? (
+        /* TAB: EXPLAINABLE MATCH RESULTS (M16) */
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          
+          {/* Candidate Match Highlight Card */}
+          <div
+            className="card"
+            style={{
+              backgroundColor: '#ffffff',
+              borderRadius: 'var(--radius-xl)',
+              border: '1px solid var(--border-color)',
+              borderInlineStart: '6px solid var(--qudra-teal, #00B8B8)',
+              padding: '28px',
+              boxShadow: 'var(--shadow-sm)'
+            }}
           >
-            <Sparkles size={16} className={isAnalyzing ? 'animate-spin' : ''} />
-            <span>{isAnalyzing ? (isRtl ? 'جارِ تفكيك القدرات...' : 'Decomposing...') : (isRtl ? 'تحليل المشكلة واستخراج القدرات' : 'Decompose Capabilities')}</span>
-          </button>
-        </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px', paddingBottom: '22px', borderBottom: '1px solid var(--border-color)' }}>
+              
+              {/* Candidate Info */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '18px', flexWrap: 'wrap' }}>
+                <img
+                  src={USER_PERSONAS.freelancer.avatar}
+                  alt={USER_PERSONAS.freelancer.name}
+                  style={{
+                    width: '76px',
+                    height: '76px',
+                    borderRadius: '50%',
+                    objectFit: 'cover',
+                    border: '3px solid var(--qudra-teal, #00B8B8)'
+                  }}
+                />
 
-        {/* Right: AI Decomposition Matrix */}
-        <div className="card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-          <div>
-            <div className="card-header">
-              <h3 className="card-title">
-                {isRtl ? 'مصفوفة القدرات المستخرجة' : 'Extracted Capability Matrix'}
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: '4px' }}>
+                    <h2 style={{ fontSize: '20px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
+                      {USER_PERSONAS.freelancer.name}
+                    </h2>
+                    <span
+                      style={{
+                        fontSize: '11px',
+                        fontWeight: '800',
+                        padding: '2px 9px',
+                        borderRadius: 'var(--radius-full)',
+                        backgroundColor: '#f0fdf4',
+                        color: '#166534',
+                        border: '1px solid #bbf7d0'
+                      }}
+                    >
+                      ✓ {isRtl ? 'المرشح الأول (Top Match)' : 'Top Matched Candidate'}
+                    </span>
+                    <span className="badge-teal" style={{ fontSize: '11px' }}>
+                      {isRtl ? 'جواز قدرات موثق W3C' : 'Verified Passport'}
+                    </span>
+                  </div>
+
+                  <div style={{ fontSize: '14px', color: 'var(--slate-600)', fontWeight: '600' }}>
+                    {USER_PERSONAS.freelancer.roleTitle}
+                  </div>
+
+                  <div style={{ fontSize: '12px', color: 'var(--slate-400)', marginTop: '4px' }}>
+                    {USER_PERSONAS.freelancer.location} • {isRtl ? 'درجة الموثوقية التشفيرية: %94' : 'Trust Score: 94%'}
+                  </div>
+                </div>
+              </div>
+
+              {/* Match Score Radial / Pill Display */}
+              <div
+                style={{
+                  backgroundColor: '#f0fdfa',
+                  border: '1px solid #99f6e4',
+                  borderRadius: 'var(--radius-lg)',
+                  padding: '16px 24px',
+                  textAlign: 'center',
+                  minWidth: '160px'
+                }}
+              >
+                <div style={{ fontSize: '32px', fontWeight: '900', color: 'var(--qudra-teal, #008B8B)', fontFamily: 'monospace', lineHeight: 1 }}>
+                  %94
+                </div>
+                <div style={{ fontSize: '12px', fontWeight: '800', color: '#006666', marginTop: '6px' }}>
+                  {isRtl ? 'تطابق مُفسَّر بالكامل' : 'Explainable Match'}
+                </div>
+                <button
+                  onClick={() => setShowMathModal(true)}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: 'var(--qudra-teal-deep)',
+                    fontSize: '11px',
+                    fontWeight: '700',
+                    cursor: 'pointer',
+                    marginTop: '6px',
+                    textDecoration: 'underline'
+                  }}
+                >
+                  {isRtl ? 'كيف حُسبت هذه النسبة؟ 🔍' : 'How was this calculated? 🔍'}
+                </button>
+              </div>
+            </div>
+
+            {/* Explainability Breakdown (Waterfall) */}
+            <div style={{ marginTop: '22px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+                <h3 style={{ fontSize: '15px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
+                  {isRtl ? 'تحليل التفسير الرياضي لمطابقة القدرات والأدلة:' : 'Mathematical Proof Vector Breakdown:'}
+                </h3>
+                <span style={{ fontSize: '12px', color: 'var(--slate-500)' }}>
+                  {isRtl ? 'كل نقطة مدعومة برابط دليل تشفيري مسجل' : 'Each point is backed by an auditable proof hash'}
+                </span>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {MOCK_PROBLEM.explainDetails.factors.map((factor, idx) => {
+                  const isPositive = factor.impact.startsWith('+');
+                  return (
+                    <div
+                      key={idx}
+                      style={{
+                        padding: '12px 16px',
+                        borderRadius: 'var(--radius-md)',
+                        backgroundColor: isPositive ? '#ffffff' : '#fffbeb',
+                        border: `1px solid ${isPositive ? 'var(--border-color)' : '#fde68a'}`,
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        fontSize: '13px',
+                        flexWrap: 'wrap',
+                        gap: '10px'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        {isPositive ? (
+                          <CheckCircle2 size={16} color="var(--qudra-teal, #008B8B)" />
+                        ) : (
+                          <AlertCircle size={16} color="#D97706" />
+                        )}
+                        <div>
+                          <span style={{ fontWeight: '700', color: 'var(--slate-900)' }}>
+                            {factor.name}
+                          </span>
+                          <span style={{ fontSize: '11.5px', color: 'var(--slate-500)', marginInlineStart: '8px' }}>
+                            ({isRtl ? 'الوزن المعماري: ' : 'Weight: '}{factor.weight}%)
+                          </span>
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <code style={{ fontSize: '11px', backgroundColor: '#f8fafc', padding: '2px 6px', borderRadius: '4px', border: '1px solid var(--border-color)', color: 'var(--slate-700)' }}>
+                          {factor.source}
+                        </code>
+                        <span
+                          style={{
+                            fontWeight: '900',
+                            fontFamily: 'monospace',
+                            fontSize: '13.5px',
+                            color: isPositive ? '#16a34a' : '#b45309'
+                          }}
+                        >
+                          {factor.impact}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Recommendation Callout */}
+              <div
+                style={{
+                  marginTop: '16px',
+                  padding: '12px 16px',
+                  borderRadius: 'var(--radius-md)',
+                  backgroundColor: '#f8fafc',
+                  border: '1px dashed var(--border-color)',
+                  fontSize: '12.5px',
+                  color: 'var(--slate-700)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px'
+                }}
+              >
+                <Zap size={16} color="var(--qudra-yellow-dark, #b45309)" />
+                <span>
+                  <strong>{isRtl ? 'توصية المحرك المعمارية: ' : 'Architectural Recommendation: '}</strong>
+                  {MOCK_PROBLEM.explainDetails.recommendation}
+                </span>
+              </div>
+            </div>
+
+            {/* Next Best Action CTAs */}
+            <div style={{ display: 'flex', gap: '12px', marginTop: '24px', flexWrap: 'wrap', paddingTop: '18px', borderTop: '1px solid var(--border-color)' }}>
+              <button
+                onClick={() => onNavigate('M21')}
+                className="btn btn-primary"
+                style={{
+                  backgroundColor: 'var(--qudra-obsidian, #1A1A1A)',
+                  color: '#ffffff',
+                  gap: '8px',
+                  padding: '10px 22px',
+                  fontWeight: '700',
+                  borderRadius: 'var(--radius-md)'
+                }}
+              >
+                <ShieldCheck size={16} color="var(--qudra-yellow, #FFC107)" />
+                <span>{isRtl ? 'بدء التعاقد وحجز الضمان المالي (M21 Escrow)' : 'Initiate Milestone Escrow (M21)'}</span>
+              </button>
+
+              <button
+                onClick={() => onNavigate('M20')}
+                className="btn btn-secondary"
+                style={{ gap: '6px', padding: '10px 18px', fontWeight: '700' }}
+              >
+                <Users size={16} color="var(--qudra-teal, #008B8B)" />
+                <span>{isRtl ? 'سد الفجوة وتشكيل فريق متكامل (M20 Squad)' : 'Compose Squad (M20)'}</span>
+              </button>
+
+              <button
+                onClick={onOpenExplain}
+                className="btn btn-secondary"
+                style={{ gap: '6px', padding: '10px 16px' }}
+              >
+                <Scale size={15} />
+                <span>{isRtl ? 'فتح محرك التفسير المستقل' : 'Audit Drawer'}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : (
+        /* TAB: PROBLEM DECONSTRUCTION WORKSPACE (M15) */
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', alignItems: 'start' }}>
+          
+          {/* Left: Problem Form */}
+          <div
+            className="card"
+            style={{
+              backgroundColor: '#ffffff',
+              borderRadius: 'var(--radius-xl)',
+              border: '1px solid var(--border-color)',
+              padding: '24px',
+              boxShadow: 'var(--shadow-xs)'
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <h3 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
+                {isRtl ? 'بيانات المشكلة الهندسية' : 'Problem Statement'}
               </h3>
-              <span className="badge-pill" style={{ backgroundColor: 'var(--teal-50)', color: 'var(--teal-800)', border: '1px solid var(--teal-200)' }}>
-                {MOCK_PROBLEM.extractedCapabilities.length} {isRtl ? 'قدرات مطلوبة' : 'Requirements'}
+              <span style={{ fontSize: '11.5px', color: '#16a34a', fontWeight: '700' }}>
+                ✓ {isRtl ? 'حفظ تلقائي للمسودة' : 'Autosaved'}
+              </span>
+            </div>
+
+            <div className="form-group" style={{ marginBottom: '14px' }}>
+              <label className="form-label" style={{ fontWeight: '700', fontSize: '12.5px', color: 'var(--slate-700)', display: 'block', marginBottom: '6px' }}>
+                {isRtl ? 'عنوان المشكلة أو المشروع:' : 'Problem Title:'}
+              </label>
+              <input
+                type="text"
+                className="form-input"
+                value={problemTitle}
+                onChange={(e) => setProblemTitle(e.target.value)}
+                style={{ fontWeight: '700', width: '100%' }}
+              />
+            </div>
+
+            <div className="form-group" style={{ marginBottom: '14px' }}>
+              <label className="form-label" style={{ fontWeight: '700', fontSize: '12.5px', color: 'var(--slate-700)', display: 'block', marginBottom: '6px' }}>
+                {isRtl ? 'الوصف الهندسي التفصيلي للمشكلة:' : 'Detailed Description:'}
+              </label>
+              <textarea
+                className="form-textarea"
+                rows={7}
+                value={problemText}
+                onChange={(e) => setProblemText(e.target.value)}
+                style={{ width: '100%', lineHeight: 1.6 }}
+              />
+            </div>
+
+            {/* Budget & Timeline Inputs */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '18px' }}>
+              <div>
+                <label className="form-label" style={{ fontWeight: '700', fontSize: '12px', color: 'var(--slate-700)', display: 'block', marginBottom: '4px' }}>
+                  {isRtl ? 'الميزانية الصافية المقترحة (ر.س):' : 'Budget Range (SAR):'}
+                </label>
+                <input
+                  type="text"
+                  className="form-input"
+                  value={`${budgetMin} - ${budgetMax}`}
+                  onChange={() => {}}
+                  style={{ width: '100%', fontSize: '12.5px', fontFamily: 'monospace', fontWeight: '700' }}
+                />
+              </div>
+
+              <div>
+                <label className="form-label" style={{ fontWeight: '700', fontSize: '12px', color: 'var(--slate-700)', display: 'block', marginBottom: '4px' }}>
+                  {isRtl ? 'المدة الزمنية المستهدفة:' : 'Target Timeline:'}
+                </label>
+                <input
+                  type="text"
+                  className="form-input"
+                  value={timeline}
+                  onChange={(e) => setTimeline(e.target.value)}
+                  style={{ width: '100%', fontSize: '12.5px', fontWeight: '700' }}
+                />
+              </div>
+            </div>
+
+            <button
+              onClick={handleAnalyze}
+              disabled={isAnalyzing}
+              className="btn btn-primary"
+              style={{
+                width: '100%',
+                backgroundColor: 'var(--qudra-obsidian, #1A1A1A)',
+                color: '#ffffff',
+                fontWeight: '800',
+                gap: '8px',
+                padding: '11px',
+                borderRadius: 'var(--radius-md)'
+              }}
+            >
+              <Sparkles size={16} color="var(--qudra-yellow, #FFC107)" className={isAnalyzing ? 'animate-spin' : ''} />
+              <span>{isAnalyzing ? (isRtl ? 'جارِ تفكيك المتجهات...' : 'Decomposing...') : (isRtl ? 'تفكيك المشكلة وتوليد المطابقة المُفسرة ▶' : 'Decompose & Match ▶')}</span>
+            </button>
+          </div>
+
+          {/* Right: Deconstructed Capability Vectors Matrix */}
+          <div
+            className="card"
+            style={{
+              backgroundColor: '#ffffff',
+              borderRadius: 'var(--radius-xl)',
+              border: '1px solid var(--border-color)',
+              padding: '24px',
+              boxShadow: 'var(--shadow-xs)'
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <h3 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
+                {isRtl ? 'متجهات القدرات المستخرجة دلالياً' : 'Extracted Capability Vectors'}
+              </h3>
+              <span className="badge-teal" style={{ fontSize: '11px' }}>
+                {MOCK_PROBLEM.extractedCapabilities.length} {isRtl ? 'متطلبات معمارية' : 'Vectors'}
               </span>
             </div>
 
@@ -124,79 +581,137 @@ export default function ProblemAnalyzer({ onNavigate, onOpenExplain, isRtl = tru
                   style={{
                     padding: '12px 16px',
                     borderRadius: 'var(--radius-md)',
-                    border: '1px solid var(--slate-100)',
-                    backgroundColor: 'var(--slate-50)',
+                    border: '1px solid var(--border-color)',
+                    backgroundColor: cap.status === 'match' ? '#ffffff' : '#fffbeb',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between'
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <CheckCircle2 size={16} color="var(--teal-600)" />
+                    {cap.status === 'match' ? (
+                      <CheckCircle2 size={16} color="var(--qudra-teal, #008B8B)" />
+                    ) : (
+                      <AlertCircle size={16} color="#D97706" />
+                    )}
                     <div>
                       <div style={{ fontSize: '13.5px', fontWeight: '700', color: 'var(--slate-900)' }}>
                         {cap.name}
                       </div>
                       <div style={{ fontSize: '11.5px', color: 'var(--slate-500)' }}>
-                        {isRtl ? 'الحد الأدنى للإتقان: ' : 'Min Score: '}<strong>{cap.requiredScore}%</strong>
+                        {isRtl ? 'الحد الأدنى المطلوب: ' : 'Min Score: '}<strong>{cap.requiredScore}%</strong>
                       </div>
                     </div>
                   </div>
 
-                  <span className="badge-pill" style={{
-                    fontSize: '11px',
-                    backgroundColor: cap.importance === 'critical' ? 'var(--danger-bg)' : 'var(--indigo-50)',
-                    color: cap.importance === 'critical' ? 'var(--danger-text)' : 'var(--indigo-700)',
-                    border: `1px solid ${cap.importance === 'critical' ? 'var(--danger-border)' : 'var(--indigo-200)'}`
-                  }}>
+                  <span
+                    style={{
+                      fontSize: '11px',
+                      fontWeight: '800',
+                      padding: '2px 8px',
+                      borderRadius: '10px',
+                      backgroundColor: cap.importance === 'critical' ? '#fee2e2' : '#f1f5f9',
+                      color: cap.importance === 'critical' ? '#991b1b' : 'var(--slate-700)',
+                      border: `1px solid ${cap.importance === 'critical' ? '#fecaca' : 'var(--border-color)'}`
+                    }}
+                  >
                     {cap.importance === 'critical' ? (isRtl ? 'حرج جداً' : 'Critical') : (isRtl ? 'مهم' : 'Important')}
                   </span>
                 </div>
               ))}
             </div>
 
-            {/* Quick Estimates */}
-            <div style={{
-              padding: '14px',
-              backgroundColor: '#ffffff',
-              borderRadius: 'var(--radius-md)',
-              border: '1px dashed var(--slate-300)',
-              display: 'flex',
-              justifyContent: 'space-around',
-              fontSize: '12.5px',
-              color: 'var(--slate-700)'
-            }}>
-              <div>
-                <strong>{isRtl ? 'الميزانية الصافية المقترحة: ' : 'Estimated Budget: '}</strong>
-                <span style={{ color: 'var(--teal-700)', fontWeight: '700' }}>45,000 - 60,000 ر.س</span>
-              </div>
-              <div>
-                <strong>{isRtl ? 'المدة التقديرية: ' : 'Timeline: '}</strong>
-                <span style={{ color: 'var(--indigo-700)', fontWeight: '700' }}>6 أسابيع</span>
-              </div>
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
             <button
-              onClick={() => onNavigate('M16')}
+              onClick={() => setActiveTab('match')}
               className="btn btn-primary"
-              style={{ flex: 1, gap: '6px' }}
+              style={{
+                width: '100%',
+                backgroundColor: 'var(--qudra-teal, #00B8B8)',
+                color: '#ffffff',
+                fontWeight: '800',
+                gap: '8px',
+                padding: '10px',
+                borderRadius: 'var(--radius-md)'
+              }}
             >
-              <span>{isRtl ? 'المطابقة المُفسَّرة مع الكفاءات' : 'Explainable Match'}</span>
+              <span>{isRtl ? 'عرض تقرير المطابقة المُفسَّرة (M16)' : 'View Match Report (M16)'}</span>
               <ArrowIcon size={14} />
-            </button>
-            <button
-              onClick={() => onNavigate('M20')}
-              className="btn btn-secondary"
-              style={{ gap: '6px' }}
-            >
-              <Users size={16} />
-              <span>{isRtl ? 'مُركِّب الفرق' : 'Team Composer'}</span>
             </button>
           </div>
         </div>
-      </div>
+      )}
+
+      {/* 4. Explainability Math Formula Modal */}
+      {showMathModal && (
+        <div
+          className="modal-backdrop"
+          onClick={() => setShowMathModal(false)}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: 'rgba(15, 23, 42, 0.65)',
+            backdropFilter: 'blur(4px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            padding: '20px'
+          }}
+        >
+          <div
+            className="modal-container"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              backgroundColor: '#ffffff',
+              borderRadius: 'var(--radius-xl)',
+              maxWidth: '600px',
+              width: '100%',
+              padding: '28px',
+              boxShadow: 'var(--shadow-xl)',
+              border: '1px solid var(--border-color)'
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <Scale size={22} color="var(--qudra-teal, #008B8B)" />
+                <h3 style={{ fontSize: '18px', fontWeight: '800', margin: 0, color: 'var(--qudra-obsidian, #1A1A1A)' }}>
+                  {isRtl ? 'معادلة المطابقة المُفسَّرة في قُدرة' : 'QUDRA Explainable Matching Formulation'}
+                </h3>
+              </div>
+              <button onClick={() => setShowMathModal(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--slate-400)' }}>
+                <X size={20} />
+              </button>
+            </div>
+
+            <p style={{ fontSize: '13px', color: 'var(--slate-600)', lineHeight: 1.6, marginBottom: '14px' }}>
+              {isRtl
+                ? 'لا تستخدم قُدرة أي نموذج ذكاء اصطناعي مغلق أو غير معلل (Blackbox). تُحسب نسبة التطابق عبر حاصل جمع أوزان متجهات القدرات المثبتة تشفيرياً مضروبة في موثوقية مصدر الإثبات:'
+                : 'Zero blackbox bias: match score is the deterministic dot product of verified capability vectors and proof tier reliabilities:'}
+            </p>
+
+            <div style={{ backgroundColor: '#0f172a', color: '#38bdf8', padding: '14px 18px', borderRadius: 'var(--radius-md)', fontFamily: 'monospace', fontSize: '12.5px', marginBottom: '14px', direction: 'ltr', textAlign: 'left' }}>
+              Score = Σ (Capability_i * Weight_i * ProofReliability_i) - GapPenalty_j
+            </div>
+
+            <div style={{ fontSize: '12px', color: 'var(--slate-600)', lineHeight: 1.6 }}>
+              <div>• <strong>ev-101 (AWS ECS):</strong> 35% weight × 98% score = +34.3%</div>
+              <div>• <strong>ev-102 (Anti-SSRF):</strong> 28% weight × 95% score = +26.6%</div>
+              <div>• <strong>ev-103 (React/Accessibility):</strong> 20% weight × 92% score = +18.4%</div>
+              <div>• <strong>ev-104 (Kubernetes Claimed):</strong> 9% weight × 68% score = +6.1%</div>
+              <div>• <strong>ev-105 (Kafka Gap Penalty):</strong> -8.0% missing secondary skill</div>
+              <div style={{ borderTop: '1px solid var(--border-color)', marginTop: '8px', paddingTop: '6px', fontWeight: '800', color: 'var(--qudra-teal)' }}>
+                = 94.0% Overall Explainable Match
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>
+              <button onClick={() => setShowMathModal(false)} className="btn btn-primary btn-sm" style={{ padding: '8px 20px' }}>
+                {isRtl ? 'إغلاق' : 'Close'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

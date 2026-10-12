@@ -27,8 +27,22 @@ import { Layers, Sparkles, SlidersHorizontal, ChevronUp, ChevronDown } from 'luc
 export default function App() {
   const [isRtl, setIsRtl] = useState(true);
   const [currentRole, setCurrentRole] = useState('freelancer');
-  const [activeModuleId, setActiveModuleId] = useState('M02');
-  const [activeStateId, setActiveStateId] = useState(1);
+  const [activeModuleId, setActiveModuleId] = useState(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('module') || 'M02';
+    } catch {
+      return 'M02';
+    }
+  });
+  const [activeStateId, setActiveStateId] = useState(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      return parseInt(params.get('state'), 10) || 1;
+    } catch {
+      return 1;
+    }
+  });
   const [isExplainOpen, setIsExplainOpen] = useState(false);
   const [isScreenNavOpen, setIsScreenNavOpen] = useState(false);
   const [showDevPill, setShowDevPill] = useState(true);
@@ -46,6 +60,19 @@ export default function App() {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('qudra_theme', theme);
   }, [theme]);
+
+  // Sync URL parameters for direct linking and testing
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      params.set('module', activeModuleId);
+      params.set('state', String(activeStateId));
+      const newUrl = `${window.location.pathname}?${params.toString()}`;
+      window.history.replaceState({}, '', newUrl);
+    } catch {
+      // Ignore if not supported in test env
+    }
+  }, [activeModuleId, activeStateId]);
 
   const currentPersona = USER_PERSONAS[currentRole] || USER_PERSONAS.freelancer;
 

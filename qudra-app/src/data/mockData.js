@@ -275,6 +275,54 @@ export const MOCK_EVIDENCE_ITEMS = [
     summary: 'مهارة حرجة مطلوبة للمنافسة على مشروعات البنية السحابية الكبرى؛ لا توجد أدلة مسجلة.',
     proofHash: 'غير متوفر',
     evaluator: 'موصى بإتمام مسار التعلم M10 والتحدي العملي M11'
+  },
+  {
+    id: 'ev-106',
+    title: 'شهادة مهندس أمن سحابي معتمد (AWS Certified Security Specialty)',
+    category: 'شهادة رقمية',
+    status: 'proven',
+    trustTier: 'official',
+    source: 'Credly Official OAuth Sync',
+    sourceUrl: 'https://www.credly.com/org/amazon-web-services/badge/aws-certified-security-specialty',
+    verifiedAt: '2026-08-20',
+    confidenceScore: 99,
+    skills: ['AWS IAM', 'KMS Encryption', 'VPC Security', 'CloudTrail Auditing'],
+    summary: 'اعتماد مهني دولي متقدم صادر بتوقيع رقمي موثق ومطابق للسجل العام لشركة AWS.',
+    proofHash: '0x4d19...3b8a (Credly ECDSA Signature Verified)',
+    fullHash: '0x4d19a7c3b889e2fa901bc0942851239857d4a13b8a927164901fbcdae012891f',
+    evaluator: 'محقق عبر المفتاح العام لمؤسسة Credly الرسمية'
+  },
+  {
+    id: 'ev-107',
+    title: 'تصميم بنية البيانات الموزعة والزمنية (PostgreSQL & TimescaleDB)',
+    category: 'مشروع حقيقي',
+    status: 'proven',
+    trustTier: 'official',
+    source: 'عقد مسار منجز ومفرج الضمان (Escrow M21)',
+    sourceUrl: '#',
+    verifiedAt: '2026-09-02',
+    confidenceScore: 94,
+    skills: ['PostgreSQL', 'TimescaleDB', 'Database Indexing', 'High Availability'],
+    summary: 'إنجاز تسليم فعلي لقاعدة بيانات زمنية تعالج 10 مليون سجل يومياً مع الإفراج المشفر لمستحقات الضمان.',
+    proofHash: '0x7a8e...f013 (Escrow Milestone Digest)',
+    fullHash: '0x7a8e29bc4412f901ab887200912d78a94bca1123f013a7b8e100234190cbef91',
+    evaluator: 'محقق بواسطة بصمة إفراج العقد الذكي وشهادة استلام العميل'
+  },
+  {
+    id: 'ev-108',
+    title: 'تطوير تطبيقات الذكاء الاصطناعي التوليدي وتقنيات الـ RAG',
+    category: 'مشروع حقيقي',
+    status: 'claimed',
+    trustTier: 'user_supplied',
+    source: 'مستودع شخصي (بانتظار الفحص الآلي)',
+    sourceUrl: 'https://github.com/karim-dev/rag-chatbot-langchain',
+    verifiedAt: '2026-10-05',
+    confidenceScore: 62,
+    skills: ['Python', 'LangChain', 'Vector DB (pgvector)', 'RAG Pipelines'],
+    summary: 'روبوت محادثة مستند إلى وثائق محلية؛ الدليل مدعوم برابط كود فقط ولم يجتز بعد اختبارات الأمان المعزولة.',
+    proofHash: '0x99a1...12ef (Unverified Commit SHA)',
+    fullHash: '0x99a102bc4501ef23401982ab9102871134aefc9012ef44b910238128471029ab',
+    evaluator: 'يتطلب تشغيل فاحص الأكواد الآلي M14 أو تحدياً عملياً M11 للترقية إلى Proven'
   }
 ];
 
