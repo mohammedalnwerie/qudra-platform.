@@ -34,7 +34,7 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
   const [filterCategory, setFilterCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedReceipt, setSelectedReceipt] = useState(null);
-  const [copiedHash, setCopiedHash] = useState(null);
+  const [copiedId, setCopiedId] = useState(null);
   const [syncNotice, setSyncNotice] = useState(null);
 
   // Status counts
@@ -65,12 +65,54 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
     });
   }, [filterStatus, filterCategory, searchQuery]);
 
-  const handleCopyHash = (text) => {
+  const handleCopy = (text, id = 'default') => {
     if (navigator.clipboard) {
       navigator.clipboard.writeText(text);
     }
-    setCopiedHash(text);
-    setTimeout(() => setCopiedHash(null), 2500);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2500);
+  };
+
+  const getTierWeight = (tier) => {
+    switch (tier) {
+      case 'official':
+        return { label: '1.0x', percent: '100%' };
+      case 'user_supplied':
+        return { label: '0.6x', percent: '60%' };
+      case 'fragile':
+        return { label: '0.3x', percent: '30%' };
+      default:
+        return { label: '0.5x', percent: '50%' };
+    }
+  };
+
+  const handleCopyW3cReceipt = (receipt) => {
+    const vcPayload = {
+      "@context": [
+        "https://www.w3.org/2018/credentials/v1",
+        "https://schema.qudra.io/v1"
+      ],
+      "id": `urn:qudra:evidence:${receipt.id}`,
+      "type": ["VerifiableCredential", "CapabilityProofCredential"],
+      "issuer": "did:qudra:verifier:sa-node-01",
+      "issuanceDate": receipt.verifiedAt || "2026-09-15T00:00:00Z",
+      "credentialSubject": {
+        "id": "did:qudra:holder:karim-elmenshawy",
+        "title": receipt.title,
+        "skills": receipt.skills,
+        "confidenceScore": receipt.confidenceScore,
+        "trustTier": receipt.trustTier,
+        "evaluator": receipt.evaluator
+      },
+      "proof": {
+        "type": "Ed25519Signature2020",
+        "created": receipt.verifiedAt ? `${receipt.verifiedAt}T12:00:00Z` : "2026-09-15T12:00:00Z",
+        "proofPurpose": "assertionMethod",
+        "verificationMethod": "did:qudra:verifier:sa-node-01#key-1",
+        "jws": receipt.fullHash || receipt.proofHash
+      }
+    };
+    handleCopy(JSON.stringify(vcPayload, null, 2), `modal-w3c-${receipt.id}`);
   };
 
   const handleRefreshSync = () => {
@@ -581,6 +623,83 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
                   ))}
                 </div>
 
+                {/* Tabular Metrics Strip (Verification Date, Weight, Confidence) */}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '14px',
+                    flexWrap: 'wrap',
+                    padding: '8px 12px',
+                    backgroundColor: '#f8fafc',
+                    borderRadius: 'var(--radius-md)',
+                    border: '1px solid var(--border-color)',
+                    fontSize: '12px'
+                  }}
+                >
+                  {/* Verification Date */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ color: 'var(--slate-500)', fontWeight: '600' }}>
+                      {isRtl ? 'تاريخ التدقيق:' : 'Verified Date:'}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: 'Consolas, monospace',
+                        fontVariantNumeric: 'tabular-nums',
+                        fontWeight: '700',
+                        color: 'var(--slate-800)',
+                        letterSpacing: '0.02em'
+                      }}
+                    >
+                      {item.verifiedAt || (isRtl ? 'قيد التدقيق' : 'Pending')}
+                    </span>
+                  </div>
+
+                  <span style={{ color: 'var(--slate-300)' }}>•</span>
+
+                  {/* Proof Weight */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ color: 'var(--slate-500)', fontWeight: '600' }}>
+                      {isRtl ? 'وزن الاعتماد:' : 'Trust Weight:'}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: 'Consolas, monospace',
+                        fontVariantNumeric: 'tabular-nums',
+                        fontWeight: '800',
+                        color: isProven ? '#006666' : isClaimed ? '#0369a1' : '#b45309',
+                        backgroundColor: isProven ? '#ccfbf1' : isClaimed ? '#e0f2fe' : '#fef3c7',
+                        padding: '1px 6px',
+                        borderRadius: '4px'
+                      }}
+                    >
+                      {getTierWeight(item.trustTier).label} ({getTierWeight(item.trustTier).percent})
+                    </span>
+                  </div>
+
+                  <span style={{ color: 'var(--slate-300)' }}>•</span>
+
+                  {/* Confidence Percentage */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ color: 'var(--slate-500)', fontWeight: '600' }}>
+                      {isRtl ? 'نسبة الثقة:' : 'Confidence:'}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: 'Consolas, monospace',
+                        fontVariantNumeric: 'tabular-nums',
+                        fontWeight: '900',
+                        color: isProven ? '#166534' : isClaimed ? '#0369a1' : '#b45309',
+                        backgroundColor: isProven ? '#dcfce7' : isClaimed ? '#e0f2fe' : '#fef3c7',
+                        padding: '1px 7px',
+                        borderRadius: '4px'
+                      }}
+                    >
+                      %{item.confidenceScore}
+                    </span>
+                  </div>
+                </div>
+
                 {/* Cryptographic Proof Hash Strip & Evaluator */}
                 <div
                   style={{
@@ -606,8 +725,10 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
                         padding: '4px 8px',
                         borderRadius: 'var(--radius-sm)',
                         fontFamily: 'monospace',
+                        fontVariantNumeric: 'tabular-nums',
                         fontSize: '11.5px',
-                        color: 'var(--slate-700)'
+                        color: 'var(--slate-800)',
+                        fontWeight: '600'
                       }}
                     >
                       <FileCode size={13} color="var(--qudra-teal, #008B8B)" />
@@ -615,24 +736,59 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
                     </div>
 
                     {item.proofHash !== 'غير متوفر' && (
-                      <button
-                        onClick={() => setSelectedReceipt(item)}
-                        style={{
-                          background: 'none',
-                          border: 'none',
-                          color: 'var(--qudra-teal, #008B8B)',
-                          fontSize: '11.5px',
-                          fontWeight: '700',
-                          cursor: 'pointer',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '4px',
-                          padding: '2px 6px'
-                        }}
-                      >
-                        <Lock size={12} />
-                        <span>{isRtl ? 'فحص الإثبات التشفيري' : 'Inspect Proof Receipt'}</span>
-                      </button>
+                      <>
+                        <button
+                          onClick={() => handleCopy(item.fullHash || item.proofHash, `card-${item.id}`)}
+                          className="btn btn-xs"
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '5px',
+                            padding: '4px 10px',
+                            borderRadius: 'var(--radius-sm)',
+                            border: copiedId === `card-${item.id}` ? '1px solid #10b981' : '1px solid var(--border-color)',
+                            backgroundColor: copiedId === `card-${item.id}` ? '#ecfdf5' : '#ffffff',
+                            color: copiedId === `card-${item.id}` ? '#059669' : 'var(--slate-700)',
+                            fontSize: '11px',
+                            fontWeight: '700',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                            boxShadow: copiedId === `card-${item.id}` ? '0 0 0 2px rgba(16, 185, 129, 0.2)' : 'none'
+                          }}
+                          title={isRtl ? 'نسخ بصمة التشفير' : 'Copy cryptographic hash'}
+                        >
+                          {copiedId === `card-${item.id}` ? (
+                            <>
+                              <Check size={14} color="#059669" />
+                              <span style={{ color: '#059669' }}>{isRtl ? 'تم النسخ!' : 'Copied!'}</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy size={12} color="var(--slate-500)" />
+                              <span>{isRtl ? 'نسخ البصمة' : 'Copy Hash'}</span>
+                            </>
+                          )}
+                        </button>
+
+                        <button
+                          onClick={() => setSelectedReceipt(item)}
+                          style={{
+                            background: 'none',
+                            border: 'none',
+                            color: 'var(--qudra-teal, #008B8B)',
+                            fontSize: '11.5px',
+                            fontWeight: '700',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                            padding: '2px 6px'
+                          }}
+                        >
+                          <Lock size={12} />
+                          <span>{isRtl ? 'فحص الإثبات التشفيري' : 'Inspect Proof Receipt'}</span>
+                        </button>
+                      </>
                     )}
                   </div>
 
@@ -759,6 +915,15 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
 
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ color: 'var(--slate-500)', fontWeight: '600' }}>
+                  {isRtl ? 'تاريخ التوثيق بالسجل:' : 'Verification Date:'}
+                </span>
+                <span style={{ fontWeight: '800', color: 'var(--slate-900)', fontFamily: 'Consolas, monospace', fontVariantNumeric: 'tabular-nums' }}>
+                  {selectedReceipt.verifiedAt || (isRtl ? '2026-09-15' : '2026-09-15')}
+                </span>
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ color: 'var(--slate-500)', fontWeight: '600' }}>
                   {isRtl ? 'المستوى وثقة المصدر:' : 'Trust Tier:'}
                 </span>
                 <TrustChip tier={selectedReceipt.trustTier} isRtl={isRtl} />
@@ -766,9 +931,18 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
 
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ color: 'var(--slate-500)', fontWeight: '600' }}>
+                  {isRtl ? 'وزن الاعتماد التشفيري:' : 'Cryptographic Weight:'}
+                </span>
+                <span style={{ fontWeight: '800', color: 'var(--qudra-teal-deep, #006666)', fontFamily: 'Consolas, monospace', fontVariantNumeric: 'tabular-nums' }}>
+                  {getTierWeight(selectedReceipt.trustTier).label} ({getTierWeight(selectedReceipt.trustTier).percent})
+                </span>
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ color: 'var(--slate-500)', fontWeight: '600' }}>
                   {isRtl ? 'مستوى الثقة الحسابي:' : 'Confidence Metric:'}
                 </span>
-                <span style={{ fontWeight: '800', color: 'var(--qudra-teal, #008B8B)' }}>
+                <span style={{ fontWeight: '900', color: 'var(--qudra-teal, #008B8B)', fontFamily: 'Consolas, monospace', fontVariantNumeric: 'tabular-nums', fontSize: '15px' }}>
                   %{selectedReceipt.confidenceScore}
                 </span>
               </div>
@@ -789,21 +963,34 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
                     {isRtl ? 'التجزئة التشفيرية الكاملة (SHA-256 Digest):' : 'Full SHA-256 Digest:'}
                   </span>
                   <button
-                    onClick={() => handleCopyHash(selectedReceipt.fullHash || selectedReceipt.proofHash)}
+                    onClick={() => handleCopy(selectedReceipt.fullHash || selectedReceipt.proofHash, `modal-hash-${selectedReceipt.id}`)}
                     style={{
-                      background: 'none',
-                      border: 'none',
-                      color: copiedHash ? '#16a34a' : 'var(--qudra-teal, #008B8B)',
-                      fontSize: '11px',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '5px',
+                      padding: '4px 10px',
+                      borderRadius: 'var(--radius-sm)',
+                      border: copiedId === `modal-hash-${selectedReceipt.id}` ? '1px solid #10b981' : '1px solid #cbd5e1',
+                      backgroundColor: copiedId === `modal-hash-${selectedReceipt.id}` ? '#ecfdf5' : '#ffffff',
+                      color: copiedId === `modal-hash-${selectedReceipt.id}` ? '#059669' : 'var(--qudra-teal, #008B8B)',
+                      fontSize: '11.5px',
                       fontWeight: '700',
                       cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '4px'
+                      transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                      boxShadow: copiedId === `modal-hash-${selectedReceipt.id}` ? '0 0 0 2px rgba(16, 185, 129, 0.2)' : 'none'
                     }}
                   >
-                    {copiedHash ? <Check size={12} /> : <Copy size={12} />}
-                    <span>{copiedHash ? (isRtl ? 'تم النسخ!' : 'Copied!') : (isRtl ? 'نسخ البصمة' : 'Copy Hash')}</span>
+                    {copiedId === `modal-hash-${selectedReceipt.id}` ? (
+                      <>
+                        <Check size={14} color="#059669" />
+                        <span style={{ color: '#059669' }}>{isRtl ? 'تم النسخ!' : 'Copied!'}</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy size={12} />
+                        <span>{isRtl ? 'نسخ البصمة (SHA-256)' : 'Copy Hash'}</span>
+                      </>
+                    )}
                   </button>
                 </div>
                 <div
@@ -813,6 +1000,7 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
                     padding: '8px 10px',
                     borderRadius: 'var(--radius-sm)',
                     fontFamily: 'monospace',
+                    fontVariantNumeric: 'tabular-nums',
                     fontSize: '11px',
                     color: 'var(--slate-800)',
                     wordBreak: 'break-all',
@@ -850,15 +1038,46 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
             </div>
 
             {/* Modal Footer */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '20px' }}>
-              <button
-                onClick={onOpenExplain}
-                className="btn btn-secondary btn-sm"
-                style={{ gap: '6px', fontSize: '12px' }}
-              >
-                <Scale size={13} color="var(--qudra-teal, #008B8B)" />
-                <span>{isRtl ? 'فتح محرك التفسير' : 'Open Explain Engine'}</span>
-              </button>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '20px', flexWrap: 'wrap', gap: '10px' }}>
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                <button
+                  onClick={onOpenExplain}
+                  className="btn btn-secondary btn-sm"
+                  style={{ gap: '6px', fontSize: '12px' }}
+                >
+                  <Scale size={13} color="var(--qudra-teal, #008B8B)" />
+                  <span>{isRtl ? 'فتح محرك التفسير' : 'Open Explain Engine'}</span>
+                </button>
+
+                <button
+                  onClick={() => handleCopyW3cReceipt(selectedReceipt)}
+                  className="btn btn-secondary btn-sm"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    fontSize: '12px',
+                    fontWeight: '700',
+                    border: copiedId === `modal-w3c-${selectedReceipt.id}` ? '1px solid #10b981' : '1px solid var(--border-color)',
+                    backgroundColor: copiedId === `modal-w3c-${selectedReceipt.id}` ? '#ecfdf5' : '#ffffff',
+                    color: copiedId === `modal-w3c-${selectedReceipt.id}` ? '#059669' : 'var(--slate-700)',
+                    transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+                  }}
+                  title={isRtl ? 'نسخ إيصال W3C Verifiable Credential الكامل بصيغة JSON' : 'Copy canonical W3C JSON receipt'}
+                >
+                  {copiedId === `modal-w3c-${selectedReceipt.id}` ? (
+                    <>
+                      <Check size={14} color="#059669" />
+                      <span>{isRtl ? 'تم نسخ إيصال W3C!' : 'W3C Receipt Copied!'}</span>
+                    </>
+                  ) : (
+                    <>
+                      <FileCode size={13} color="var(--qudra-teal, #008B8B)" />
+                      <span>{isRtl ? 'نسخ إيصال W3C (JSON)' : 'Copy W3C Receipt'}</span>
+                    </>
+                  )}
+                </button>
+              </div>
 
               <button
                 onClick={() => setSelectedReceipt(null)}

@@ -183,26 +183,28 @@ export default function ProblemAnalyzer({ onNavigate, onOpenExplain, isRtl = tru
       </div>
 
       {/* 2. Step View Switcher Tabs (M15 Decomposition vs M16 Explainable Matching) */}
-      <div style={{ display: 'flex', gap: '8px', borderBottom: '1px solid var(--border-color)', paddingBottom: '2px' }}>
+      <div style={{ display: 'flex', gap: '8px', borderBottom: '2px solid var(--border-color)', paddingBottom: '2px' }}>
         <button
           onClick={() => setActiveTab('match')}
           style={{
-            padding: '10px 18px',
+            padding: '10px 20px',
             border: 'none',
-            background: 'none',
             borderBottom: activeTab === 'match' ? '3px solid var(--qudra-teal, #00B8B8)' : '3px solid transparent',
             fontWeight: activeTab === 'match' ? '800' : '600',
             color: activeTab === 'match' ? 'var(--qudra-obsidian, #1A1A1A)' : 'var(--slate-500)',
+            backgroundColor: activeTab === 'match' ? '#f0fdfa' : 'transparent',
+            borderRadius: '8px 8px 0 0',
             fontSize: '13.5px',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
-            gap: '8px'
+            gap: '8px',
+            transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
           }}
         >
-          <Scale size={16} color={activeTab === 'match' ? 'var(--qudra-teal)' : 'var(--slate-400)'} />
+          <Scale size={16} color={activeTab === 'match' ? 'var(--qudra-teal, #00B8B8)' : 'var(--slate-400)'} />
           <span>{isRtl ? 'نتائج المطابقة المُفسَّرة مع الكفاءات (M16 Match)' : 'Explainable Match Results (M16)'}</span>
-          <span style={{ backgroundColor: '#ccfbf1', color: '#006666', padding: '1px 7px', borderRadius: '10px', fontSize: '11px', fontWeight: '800' }}>
+          <span style={{ backgroundColor: activeTab === 'match' ? '#ccfbf1' : 'var(--slate-100)', color: activeTab === 'match' ? '#006666' : 'var(--slate-600)', padding: '1px 7px', borderRadius: '10px', fontSize: '11px', fontWeight: '800', transition: 'all 0.2s ease' }}>
             94%
           </span>
         </button>
@@ -210,20 +212,22 @@ export default function ProblemAnalyzer({ onNavigate, onOpenExplain, isRtl = tru
         <button
           onClick={() => setActiveTab('deconstruct')}
           style={{
-            padding: '10px 18px',
+            padding: '10px 20px',
             border: 'none',
-            background: 'none',
             borderBottom: activeTab === 'deconstruct' ? '3px solid var(--qudra-teal, #00B8B8)' : '3px solid transparent',
             fontWeight: activeTab === 'deconstruct' ? '800' : '600',
             color: activeTab === 'deconstruct' ? 'var(--qudra-obsidian, #1A1A1A)' : 'var(--slate-500)',
+            backgroundColor: activeTab === 'deconstruct' ? '#f0fdfa' : 'transparent',
+            borderRadius: '8px 8px 0 0',
             fontSize: '13.5px',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
-            gap: '8px'
+            gap: '8px',
+            transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
           }}
         >
-          <Layers size={16} color={activeTab === 'deconstruct' ? 'var(--qudra-teal)' : 'var(--slate-400)'} />
+          <Layers size={16} color={activeTab === 'deconstruct' ? 'var(--qudra-teal, #00B8B8)' : 'var(--slate-400)'} />
           <span>{isRtl ? 'محرر تفكيك المشكلة التقنية (M15 Input)' : 'Problem Decomposition Workspace (M15)'}</span>
         </button>
       </div>
@@ -550,11 +554,16 @@ export default function ProblemAnalyzer({ onNavigate, onOpenExplain, isRtl = tru
                 fontWeight: '800',
                 gap: '8px',
                 padding: '11px',
-                borderRadius: 'var(--radius-md)'
+                borderRadius: 'var(--radius-md)',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.2s ease'
               }}
             >
               <Sparkles size={16} color="var(--qudra-yellow, #FFC107)" className={isAnalyzing ? 'animate-spin' : ''} />
-              <span>{isAnalyzing ? (isRtl ? 'جارِ تفكيك المتجهات...' : 'Decomposing...') : (isRtl ? 'تفكيك المشكلة وتوليد المطابقة المُفسرة ▶' : 'Decompose & Match ▶')}</span>
+              <span>{isAnalyzing ? (isRtl ? 'جارِ تفكيك المتجهات...' : 'Decomposing...') : (isRtl ? 'تفكيك المشكلة وتوليد المطابقة المُفسرة' : 'Decompose & Match')}</span>
+              {!isAnalyzing && <ArrowIcon size={14} />}
             </button>
           </div>
 

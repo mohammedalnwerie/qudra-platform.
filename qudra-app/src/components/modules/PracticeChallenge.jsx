@@ -15,10 +15,13 @@ import {
   Lock,
   ArrowRight,
   ArrowLeft,
+  ArrowUpRight,
   Cpu,
   Layers,
   FileCode,
-  AlertTriangle
+  AlertTriangle,
+  RefreshCw,
+  Loader2
 } from 'lucide-react';
 import { MOCK_INTERACTIVE_CHALLENGE } from '../../data/mockData';
 import { useToast } from '../common/ToastContext';
@@ -29,6 +32,7 @@ export default function PracticeChallenge({ onNavigate, onEvidenceGenerated, isR
   const [activeFileTab, setActiveFileTab] = useState('editor'); // 'editor' | 'spec' | 'readme'
   const [isRunning, setIsRunning] = useState(false);
   const [hasRun, setHasRun] = useState(false);
+  const [testExecutionStep, setTestExecutionStep] = useState(0);
   const [isMinted, setIsMinted] = useState(false);
   const [mintedHash, setMintedHash] = useState(null);
   const [activeChallengeId, setActiveChallengeId] = useState('chal-ssrf');
@@ -116,11 +120,23 @@ module.exports = { fetchRemoteAvatar };`;
   const handleRunTests = () => {
     setIsRunning(true);
     setHasRun(false);
+    setTestExecutionStep(0);
+
+    setTimeout(() => setTestExecutionStep(1), 220);
+    setTimeout(() => setTestExecutionStep(2), 440);
+    setTimeout(() => setTestExecutionStep(3), 660);
+    setTimeout(() => setTestExecutionStep(4), 880);
+    setTimeout(() => setTestExecutionStep(5), 1100);
+    setTimeout(() => setTestExecutionStep(6), 1320);
     setTimeout(() => {
       setIsRunning(false);
       setHasRun(true);
-      showToast(isRtl ? 'اجتاز الكود كافة اختبارات الأمان الـ 6 بنجاح تام!' : 'All 6 sandbox security tests passed!');
-    }, 1200);
+      showToast(
+        isRtl
+          ? 'اجتاز الكود كافة اختبارات الأمان الـ 6 بنجاح تام!'
+          : 'All 6 sandbox security tests passed!'
+      );
+    }, 1500);
   };
 
   const handleApplySolution = () => {
@@ -131,6 +147,8 @@ module.exports = { fetchRemoteAvatar };`;
   const handleResetCode = () => {
     setCode(MOCK_INTERACTIVE_CHALLENGE.starterCode);
     setHasRun(false);
+    setIsRunning(false);
+    setTestExecutionStep(0);
     setIsMinted(false);
     setMintedHash(null);
   };
@@ -414,45 +432,59 @@ module.exports = { fetchRemoteAvatar };`;
                 style={{
                   fontSize: '11.5px',
                   fontWeight: '800',
-                  padding: '2px 8px',
+                  padding: '2px 9px',
                   borderRadius: '10px',
-                  backgroundColor: hasRun ? '#f0fdf4' : '#f1f5f9',
-                  color: hasRun ? '#166534' : 'var(--slate-600)',
-                  border: `1px solid ${hasRun ? '#bbf7d0' : 'var(--border-color)'}`
+                  backgroundColor: hasRun ? '#f0fdf4' : isRunning ? '#f0fdfa' : '#f1f5f9',
+                  color: hasRun ? '#166534' : isRunning ? '#006666' : 'var(--slate-600)',
+                  border: `1px solid ${hasRun ? '#bbf7d0' : isRunning ? '#99f6e4' : 'var(--border-color)'}`
                 }}
               >
-                {hasRun ? (isRtl ? '6 / 6 اجتياز تام' : '6 / 6 Passed') : (isRtl ? 'بانتظار الاختبار' : 'Awaiting Run')}
+                {hasRun
+                  ? (isRtl ? '6 / 6 اجتياز تام' : '6 / 6 Passed')
+                  : isRunning
+                  ? (isRtl ? `${testExecutionStep} / 6 جاري الفحص` : `${testExecutionStep} / 6 Verifying`)
+                  : (isRtl ? 'بانتظار الاختبار' : 'Awaiting Run')}
               </span>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              {MOCK_INTERACTIVE_CHALLENGE.testCases.map((tc, idx) => (
-                <div
-                  key={idx}
-                  style={{
-                    padding: '10px 14px',
-                    borderRadius: 'var(--radius-md)',
-                    backgroundColor: hasRun ? '#f0fdf4' : '#f8fafc',
-                    border: `1px solid ${hasRun ? '#bbf7d0' : 'var(--border-color)'}`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px',
-                    fontSize: '12.5px',
-                    transition: 'all 0.2s ease'
-                  }}
-                >
-                  {hasRun ? (
-                    <CheckCircle2 size={16} color="#16a34a" />
-                  ) : isRunning ? (
-                    <div style={{ width: '16px', height: '16px', borderRadius: '50%', border: '2px solid var(--qudra-teal)', borderTopColor: 'transparent', animation: 'spin 1s linear infinite' }} />
-                  ) : (
-                    <div style={{ width: '16px', height: '16px', borderRadius: '50%', border: '2px solid var(--slate-300)' }} />
-                  )}
-                  <span style={{ color: hasRun ? '#166534' : 'var(--slate-700)', fontWeight: hasRun ? '700' : '500' }}>
-                    {tc.name}
-                  </span>
-                </div>
-              ))}
+              {MOCK_INTERACTIVE_CHALLENGE.testCases.map((tc, idx) => {
+                const isPassed = hasRun || (isRunning && testExecutionStep > idx);
+                const isCurrent = isRunning && testExecutionStep === idx;
+
+                return (
+                  <div
+                    key={idx}
+                    style={{
+                      padding: '10px 14px',
+                      borderRadius: 'var(--radius-md)',
+                      backgroundColor: isPassed ? '#f0fdf4' : isCurrent ? '#f0fdfa' : '#f8fafc',
+                      border: `1px solid ${isPassed ? '#bbf7d0' : isCurrent ? '#99f6e4' : 'var(--border-color)'}`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                      fontSize: '12.5px',
+                      transition: 'all 0.25s ease'
+                    }}
+                  >
+                    {isPassed ? (
+                      <CheckCircle2 size={16} color="#16a34a" />
+                    ) : isCurrent ? (
+                      <RefreshCw size={14} className="animate-spin" color="var(--qudra-teal, #00B8B8)" />
+                    ) : (
+                      <div style={{ width: '16px', height: '16px', borderRadius: '50%', border: '2px solid var(--slate-300)' }} />
+                    )}
+                    <span style={{ color: isPassed ? '#166534' : isCurrent ? 'var(--qudra-teal-deep)' : 'var(--slate-700)', fontWeight: isPassed || isCurrent ? '700' : '500' }}>
+                      {tc.name}
+                    </span>
+                    {isPassed && (
+                      <span style={{ marginInlineStart: 'auto', fontSize: '11px', fontFamily: 'monospace', color: '#16a34a', fontWeight: '700' }}>
+                        {idx === 5 ? '62ms' : `${(idx + 1) * 2}ms`}
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
             </div>
 
             {/* Mint Evidence Callout Box */}
@@ -721,40 +753,111 @@ module.exports = { fetchRemoteAvatar };`;
           {(isRunning || hasRun) && (
             <div
               style={{
-                backgroundColor: '#000000',
-                borderTop: '1px solid #1e293b',
-                padding: '12px 18px',
-                fontFamily: 'Consolas, monospace',
+                backgroundColor: '#030712',
+                borderTop: '1px solid #1f2937',
+                fontFamily: 'Consolas, "Fira Code", monospace',
                 fontSize: '12px',
-                color: '#e2e8f0',
-                maxHeight: '160px',
+                color: '#e5e7eb',
+                maxHeight: '220px',
                 overflowY: 'auto',
                 direction: 'ltr',
                 textAlign: 'left'
               }}
             >
-              <div style={{ color: '#64748b', marginBottom: '4px' }}>
-                $ npx jest test/security.spec.js --verbose --runInBand
+              {/* Terminal Title Bar */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '8px 16px',
+                  backgroundColor: '#111827',
+                  borderBottom: '1px solid #1f2937',
+                  fontSize: '11px',
+                  color: '#9ca3af',
+                  letterSpacing: '0.02em',
+                  userSelect: 'none'
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#ef4444', display: 'inline-block' }} />
+                  <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#f59e0b', display: 'inline-block' }} />
+                  <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#10b981', display: 'inline-block' }} />
+                  <span style={{ marginInlineStart: '8px', fontWeight: '600', color: '#d1d5db' }}>
+                    sandbox-terminal — jest v29.7.0 (Node.js 22.4.1 MicroVM)
+                  </span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '10.5px' }}>
+                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: isRunning ? '#38bdf8' : '#10b981' }} />
+                  <span style={{ color: isRunning ? '#38bdf8' : '#10b981', fontWeight: '700' }}>
+                    {isRunning ? 'EXEC' : 'EXIT 0'}
+                  </span>
+                </div>
               </div>
-              {isRunning ? (
-                <div style={{ color: '#38bdf8', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span className="animate-spin">⏳</span>
-                  <span>Executing sandbox suite against Node.js 22.4 MicroVM...</span>
+
+              {/* Terminal Content */}
+              <div style={{ padding: '14px 18px', display: 'flex', flexDirection: 'column', gap: '6px', lineHeight: 1.5 }}>
+                <div style={{ color: '#6b7280' }}>
+                  $ npx jest test/security.spec.js --verbose --runInBand --detectOpenHandles
                 </div>
-              ) : (
-                <div>
-                  <div style={{ color: '#4ade80', fontWeight: '700' }}>PASS test/security.spec.js (1.42s)</div>
-                  <div style={{ color: '#94a3b8' }}>  PASS [TC-01] Rejects 127.0.0.1 loopback calls (3ms)</div>
-                  <div style={{ color: '#94a3b8' }}>  PASS [TC-02] Blocks AWS Cloud Metadata 169.254.169.254 (2ms)</div>
-                  <div style={{ color: '#94a3b8' }}>  PASS [TC-03] Blocks Private RFC-1918 CIDR 10.0.0.0/8 (3ms)</div>
-                  <div style={{ color: '#94a3b8' }}>  PASS [TC-04] Disallows file:// & gopher:// protocols (2ms)</div>
-                  <div style={{ color: '#94a3b8' }}>  PASS [TC-05] Enforces response size limit &lt;= 2MB (4ms)</div>
-                  <div style={{ color: '#94a3b8' }}>  PASS [TC-06] Successfully fetches verified public avatar (62ms)</div>
-                  <div style={{ color: '#4ade80', fontWeight: 'bold', marginTop: '6px', borderTop: '1px solid #222', paddingTop: '4px' }}>
-                    Test Suites: 1 passed, 1 total | Tests: 6 passed, 6 total | Time: 1.42s
+
+                {isRunning && (
+                  <div style={{ color: '#38bdf8', display: 'flex', alignItems: 'center', gap: '8px', padding: '4px 0' }}>
+                    <RefreshCw size={13} className="animate-spin" color="#38bdf8" />
+                    <span>Executing sandbox suite against Node.js 22.4.1 MicroVM [{testExecutionStep}/6 assertions verified]...</span>
                   </div>
-                </div>
-              )}
+                )}
+
+                {/* Progressive Test Results in Terminal */}
+                {(testExecutionStep >= 1 || hasRun) && (
+                  <div style={{ color: '#9ca3af' }}>
+                    <span style={{ color: '#4ade80', fontWeight: '800' }}>  PASS </span>
+                    <span>[TC-01] Rejects 127.0.0.1 localhost loopback calls (3ms)</span>
+                  </div>
+                )}
+                {(testExecutionStep >= 2 || hasRun) && (
+                  <div style={{ color: '#9ca3af' }}>
+                    <span style={{ color: '#4ade80', fontWeight: '800' }}>  PASS </span>
+                    <span>[TC-02] Blocks AWS Cloud Metadata 169.254.169.254 (2ms)</span>
+                  </div>
+                )}
+                {(testExecutionStep >= 3 || hasRun) && (
+                  <div style={{ color: '#9ca3af' }}>
+                    <span style={{ color: '#4ade80', fontWeight: '800' }}>  PASS </span>
+                    <span>[TC-03] Blocks Private RFC-1918 CIDR 10.0.0.0/8 (3ms)</span>
+                  </div>
+                )}
+                {(testExecutionStep >= 4 || hasRun) && (
+                  <div style={{ color: '#9ca3af' }}>
+                    <span style={{ color: '#4ade80', fontWeight: '800' }}>  PASS </span>
+                    <span>[TC-04] Disallows file:// & gopher:// protocols (2ms)</span>
+                  </div>
+                )}
+                {(testExecutionStep >= 5 || hasRun) && (
+                  <div style={{ color: '#9ca3af' }}>
+                    <span style={{ color: '#4ade80', fontWeight: '800' }}>  PASS </span>
+                    <span>[TC-05] Enforces response size limit &lt;= 2MB stream buffer (4ms)</span>
+                  </div>
+                )}
+                {(testExecutionStep >= 6 || hasRun) && (
+                  <div style={{ color: '#9ca3af' }}>
+                    <span style={{ color: '#4ade80', fontWeight: '800' }}>  PASS </span>
+                    <span>[TC-06] Successfully fetches verified public avatar (62ms)</span>
+                  </div>
+                )}
+
+                {hasRun && (
+                  <div style={{ marginTop: '8px', borderTop: '1px solid #1f2937', paddingTop: '8px' }}>
+                    <div style={{ display: 'inline-block', backgroundColor: '#166534', color: '#ffffff', padding: '2px 8px', borderRadius: '3px', fontWeight: '800', fontSize: '11px', marginInlineEnd: '8px' }}>
+                      PASS
+                    </div>
+                    <span style={{ color: '#f3f4f6', fontWeight: '700' }}>test/security.spec.js (1.42s)</span>
+                    <div style={{ color: '#4ade80', fontWeight: '700', marginTop: '6px' }}>
+                      Test Suites: 1 passed, 1 total | Tests: 6 passed, 6 total | Time: 1.42s
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
@@ -781,17 +884,40 @@ module.exports = { fetchRemoteAvatar };`;
               disabled={isRunning}
               className="btn btn-primary"
               style={{
-                backgroundColor: 'var(--qudra-teal, #00B8B8)',
+                backgroundColor: hasRun
+                  ? '#059669'
+                  : 'var(--qudra-teal, #00B8B8)',
+                borderColor: hasRun
+                  ? '#059669'
+                  : 'var(--qudra-teal, #00B8B8)',
                 color: '#ffffff',
                 fontWeight: '800',
                 gap: '8px',
-                padding: '9px 20px',
+                padding: '9px 22px',
                 fontSize: '13px',
-                borderRadius: 'var(--radius-md)'
+                borderRadius: 'var(--radius-md)',
+                boxShadow: hasRun ? '0 0 0 2px rgba(16, 185, 129, 0.25)' : 'none',
+                transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                display: 'inline-flex',
+                alignItems: 'center'
               }}
             >
-              <Play size={14} fill="#ffffff" />
-              <span>{isRunning ? (isRtl ? 'جارِ فحص واختبار الكود...' : 'Executing Tests...') : (isRtl ? 'تشغيل وفحص الكود ▶' : 'Run Tests ▶')}</span>
+              {isRunning ? (
+                <>
+                  <RefreshCw size={14} className="animate-spin" />
+                  <span>{isRtl ? `جارِ فحص الاختبارات (${testExecutionStep}/6)...` : `Executing Tests (${testExecutionStep}/6)...`}</span>
+                </>
+              ) : hasRun ? (
+                <>
+                  <CheckCircle2 size={16} color="#ffffff" />
+                  <span>{isRtl ? 'تم اجتياز كافة الاختبارات (6/6 بنجاح)' : 'Passed All 6 Tests'}</span>
+                </>
+              ) : (
+                <>
+                  <Play size={14} fill="#ffffff" />
+                  <span>{isRtl ? 'تشغيل وفحص الكود' : 'Run Tests'}</span>
+                </>
+              )}
             </button>
           </div>
         </div>

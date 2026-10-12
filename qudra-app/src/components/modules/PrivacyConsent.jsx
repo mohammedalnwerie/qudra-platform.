@@ -592,31 +592,70 @@ export default function PrivacyConsent({ isRtl = true }) {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <button
                       onClick={() => handleToggle(c.id)}
-                      className={`btn btn-sm ${c.enabled ? 'btn-primary' : 'btn-secondary'}`}
+                      role="switch"
+                      aria-checked={c.enabled}
                       style={{
-                        minWidth: '120px',
-                        backgroundColor: c.enabled ? '#008B8B' : '#FFFFFF',
-                        borderColor: c.enabled ? '#008B8B' : '#CBD5E1',
-                        color: c.enabled ? '#FFFFFF' : '#475569',
-                        fontWeight: '700',
-                        display: 'flex',
+                        display: 'inline-flex',
                         alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '6px',
-                        cursor: c.id === 'c-zero-scraping' ? 'not-allowed' : 'pointer'
+                        gap: '8px',
+                        padding: '6px 12px',
+                        borderRadius: '999px',
+                        border: c.enabled ? '1px solid #008B8B' : '1px solid #cbd5e1',
+                        backgroundColor: c.enabled ? '#f0fdfa' : '#f8fafc',
+                        cursor: c.id === 'c-zero-scraping' ? 'not-allowed' : 'pointer',
+                        transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                        boxShadow: c.enabled ? '0 1px 3px rgba(0, 139, 139, 0.15)' : 'none'
                       }}
+                      title={c.id === 'c-zero-scraping' ? (isRtl ? 'درع إلزامي لحمايتك' : 'Mandatory protection') : (isRtl ? 'تبديل حالة الإذن' : 'Toggle consent')}
                     >
-                      {c.enabled ? (
-                        <>
-                          <Check size={14} />
-                          <span>{isRtl ? 'مُفعّل (نشط)' : 'Active'}</span>
-                        </>
-                      ) : (
-                        <>
-                          <X size={14} />
-                          <span>{isRtl ? 'معطّل (مسحوب)' : 'Revoked'}</span>
-                        </>
-                      )}
+                      {/* Sliding Toggle Track & Knob */}
+                      <span
+                        style={{
+                          width: '36px',
+                          height: '20px',
+                          borderRadius: '999px',
+                          backgroundColor: c.enabled ? '#008B8B' : '#cbd5e1',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          padding: '2px',
+                          transition: 'background-color 0.25s ease',
+                          position: 'relative'
+                        }}
+                      >
+                        <span
+                          style={{
+                            width: '16px',
+                            height: '16px',
+                            borderRadius: '50%',
+                            backgroundColor: '#ffffff',
+                            boxShadow: '0 1px 2px rgba(0, 0, 0, 0.2)',
+                            transform: c.enabled ? (isRtl ? 'translateX(-16px)' : 'translateX(16px)') : 'translateX(0)',
+                            transition: 'transform 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                          }}
+                        >
+                          {c.enabled ? (
+                            <Check size={10} color="#008B8B" />
+                          ) : (
+                            <X size={10} color="#94a3b8" />
+                          )}
+                        </span>
+                      </span>
+
+                      {/* State Text Label */}
+                      <span
+                        style={{
+                          fontSize: '12px',
+                          fontWeight: '800',
+                          color: c.enabled ? '#006666' : '#64748b',
+                          minWidth: '60px',
+                          textAlign: isRtl ? 'right' : 'left'
+                        }}
+                      >
+                        {c.enabled ? (isRtl ? 'مُفعّل' : 'Active') : (isRtl ? 'معطّل' : 'Revoked')}
+                      </span>
                     </button>
                   </div>
                 </div>

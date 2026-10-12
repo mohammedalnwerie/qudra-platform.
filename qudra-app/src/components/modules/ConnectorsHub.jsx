@@ -20,7 +20,9 @@ import {
   SlidersHorizontal,
   ChevronDown,
   FolderGit2,
-  Zap
+  Zap,
+  Copy,
+  Key
 } from 'lucide-react';
 import TrustChip from '../common/TrustChip';
 import { MOCK_CONNECTORS } from '../../data/mockData';
@@ -40,6 +42,8 @@ export default function ConnectorsHub({ isRtl = true }) {
   const [connectors, setConnectors] = useState(MOCK_CONNECTORS);
   const [activeFilter, setActiveFilter] = useState('all'); // 'all' | 'official' | 'user' | 'fragile'
   const [syncingId, setSyncingId] = useState(null);
+  const [justSyncedId, setJustSyncedId] = useState(null);
+  const [copiedKeyId, setCopiedKeyId] = useState(null);
   const [modalConnector, setModalConnector] = useState(null); // Connector being connected via OAuth modal
   const [inspectConnector, setInspectConnector] = useState(null); // Connector details inspect modal
 
@@ -47,6 +51,8 @@ export default function ConnectorsHub({ isRtl = true }) {
     setSyncingId(id);
     setTimeout(() => {
       setSyncingId(null);
+      setJustSyncedId(id);
+      setTimeout(() => setJustSyncedId(null), 2500);
       setConnectors((prev) =>
         prev.map((c) =>
           c.id === id
@@ -56,6 +62,14 @@ export default function ConnectorsHub({ isRtl = true }) {
       );
       showToast(isRtl ? `تمت مزامنة بيانات ${name} بنجاح وتحديث محرك الأدلة.` : `${name} data successfully synced.`);
     }, 1200);
+  };
+
+  const handleCopyKey = (text, id) => {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text);
+    }
+    setCopiedKeyId(id);
+    setTimeout(() => setCopiedKeyId(null), 2500);
   };
 
   const handleOpenConnect = (connector) => {
@@ -353,16 +367,55 @@ export default function ConnectorsHub({ isRtl = true }) {
                     fontWeight: '700',
                     padding: '3px 10px',
                     borderRadius: 'var(--radius-full)',
-                    backgroundColor: isConnected ? 'var(--qudra-teal-light)' : '#f1f5f9',
-                    color: isConnected ? 'var(--qudra-teal-deep)' : 'var(--slate-500)',
-                    border: `1px solid ${isConnected ? 'var(--qudra-teal-border)' : 'var(--slate-200)'}`,
+                    backgroundColor: isSyncing
+                      ? '#eff6ff'
+                      : isJustSynced
+                      ? '#ecfdf5'
+                      : isConnected
+                      ? 'var(--qudra-teal-light)'
+                      : '#f1f5f9',
+                    color: isSyncing
+                      ? '#1d4ed8'
+                      : isJustSynced
+                      ? '#059669'
+                      : isConnected
+                      ? 'var(--qudra-teal-deep)'
+                      : 'var(--slate-500)',
+                    border: `1px solid ${
+                      isSyncing
+                        ? '#bfdbfe'
+                        : isJustSynced
+                        ? '#a7f3d0'
+                        : isConnected
+                        ? 'var(--qudra-teal-border)'
+                        : 'var(--slate-200)'
+                    }`,
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '4px'
+                    gap: '5px',
+                    transition: 'all 0.25s ease'
                   }}>
-                    {isConnected ? (
+                    {isSyncing ? (
                       <>
-                        <CheckCircle2 size={13} color="var(--qudra-teal-deep)" />
+                        <RefreshCw size={12} className="animate-spin" color="#1d4ed8" />
+                        <span>{isRtl ? 'جارِ المزامنة...' : 'Syncing...'}</span>
+                      </>
+                    ) : isJustSynced ? (
+                      <>
+                        <Check size={13} color="#059669" />
+                        <span>{isRtl ? 'تم التحديث بنجاح' : 'Updated'}</span>
+                      </>
+                    ) : isConnected ? (
+                      <>
+                        <span
+                          style={{
+                            width: '7px',
+                            height: '7px',
+                            borderRadius: '50%',
+                            backgroundColor: '#00B8B8',
+                            boxShadow: '0 0 0 2px rgba(0, 184, 184, 0.25)'
+                          }}
+                        />
                         <span>{isRtl ? 'نشط وموثق' : 'Active'}</span>
                       </>
                     ) : (
@@ -382,7 +435,7 @@ export default function ConnectorsHub({ isRtl = true }) {
                   backgroundColor: '#f8fafc',
                   borderRadius: 'var(--radius-md)',
                   border: '1px solid var(--slate-200)',
-                  marginBottom: '14px',
+                  marginBottom: '10px',
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
@@ -397,6 +450,109 @@ export default function ConnectorsHub({ isRtl = true }) {
                     <span>{conn.lastSync}</span>
                   </div>
                 </div>
+
+                {/* Webhook & Verification Key Copy Strip (Visible when connected) */}
+                {isConnected && (
+                  <div
+                    style={{
+                      padding: '10px 14px',
+                      backgroundColor: '#f8fafc',
+                      borderRadius: 'var(--radius-md)',
+                      border: '1px dashed var(--slate-300)',
+                      fontSize: '11.5px',
+                      marginBottom: '12px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '8px'
+                    }}
+                  >
+                    {/* Webhook Endpoint Row */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <Link2 size={12} color="var(--qudra-teal-deep)" />
+                        <span style={{ color: 'var(--slate-600)', fontWeight: '600' }}>
+                          {isRtl ? 'خطاف الويب (Webhook):' : 'Webhook URL:'}
+                        </span>
+                        <code style={{ fontSize: '11px', color: 'var(--slate-700)', fontFamily: 'monospace' }}>
+                          {`api.qudra.io/hooks/${conn.id.replace('conn-', '')}`}
+                        </code>
+                      </div>
+                      <button
+                        onClick={() => handleCopyKey(`https://api.qudra.io/v1/webhooks/${conn.id}/events`, `wh-${conn.id}`)}
+                        style={{
+                          border: copiedKeyId === `wh-${conn.id}` ? '1px solid #10b981' : '1px solid var(--slate-300)',
+                          backgroundColor: copiedKeyId === `wh-${conn.id}` ? '#ecfdf5' : '#ffffff',
+                          color: copiedKeyId === `wh-${conn.id}` ? '#059669' : 'var(--slate-700)',
+                          padding: '2px 8px',
+                          borderRadius: 'var(--radius-sm)',
+                          fontSize: '11px',
+                          fontWeight: '700',
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                          transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+                        }}
+                        title={isRtl ? 'نسخ رابط الويب هوك' : 'Copy Webhook URL'}
+                      >
+                        {copiedKeyId === `wh-${conn.id}` ? (
+                          <>
+                            <Check size={12} color="#059669" />
+                            <span style={{ color: '#059669' }}>{isRtl ? 'تم النسخ!' : 'Copied!'}</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy size={11} />
+                            <span>{isRtl ? 'نسخ الرابط' : 'Copy Link'}</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+
+                    {/* Integration Verification Key Row */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <Key size={12} color="var(--qudra-yellow-dark)" />
+                        <span style={{ color: 'var(--slate-600)', fontWeight: '600' }}>
+                          {isRtl ? 'مفتاح التحقق العام:' : 'Public Key:'}
+                        </span>
+                        <code style={{ fontSize: '11px', color: 'var(--slate-700)', fontFamily: 'monospace' }}>
+                          {`pk_live_${conn.id.replace('conn-', '')}_0x8f2a`}
+                        </code>
+                      </div>
+                      <button
+                        onClick={() => handleCopyKey(`pk_live_qudra_${conn.id.replace('conn-', '')}_0x8f2a901bcda901`, `pk-${conn.id}`)}
+                        style={{
+                          border: copiedKeyId === `pk-${conn.id}` ? '1px solid #10b981' : '1px solid var(--slate-300)',
+                          backgroundColor: copiedKeyId === `pk-${conn.id}` ? '#ecfdf5' : '#ffffff',
+                          color: copiedKeyId === `pk-${conn.id}` ? '#059669' : 'var(--slate-700)',
+                          padding: '2px 8px',
+                          borderRadius: 'var(--radius-sm)',
+                          fontSize: '11px',
+                          fontWeight: '700',
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                          transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+                        }}
+                        title={isRtl ? 'نسخ مفتاح التحقق' : 'Copy Verification Key'}
+                      >
+                        {copiedKeyId === `pk-${conn.id}` ? (
+                          <>
+                            <Check size={12} color="#059669" />
+                            <span style={{ color: '#059669' }}>{isRtl ? 'تم النسخ!' : 'Copied!'}</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy size={11} />
+                            <span>{isRtl ? 'نسخ المفتاح' : 'Copy Key'}</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                )}
 
                 {/* Risk & Safety Guarantee Note */}
                 <div style={{
@@ -426,11 +582,52 @@ export default function ConnectorsHub({ isRtl = true }) {
                     <button
                       onClick={() => handleSync(conn.id, conn.name)}
                       disabled={isSyncing}
-                      className="btn btn-secondary btn-sm"
-                      style={{ flex: 1, gap: '6px', fontSize: '12.5px' }}
+                      className="btn btn-sm"
+                      style={{
+                        flex: 1,
+                        gap: '6px',
+                        fontSize: '12.5px',
+                        fontWeight: '700',
+                        backgroundColor: isJustSynced
+                          ? '#ecfdf5'
+                          : isSyncing
+                          ? '#eff6ff'
+                          : '#ffffff',
+                        borderColor: isJustSynced
+                          ? '#10b981'
+                          : isSyncing
+                          ? '#bfdbfe'
+                          : 'var(--slate-200)',
+                        color: isJustSynced
+                          ? '#059669'
+                          : isSyncing
+                          ? '#1d4ed8'
+                          : 'var(--slate-700)',
+                        boxShadow: isJustSynced
+                          ? '0 0 0 2px rgba(16, 185, 129, 0.15)'
+                          : 'none',
+                        transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
                     >
-                      <RefreshCw size={13} className={isSyncing ? 'animate-spin' : ''} />
-                      <span>{isSyncing ? (isRtl ? 'جارِ المزامنة...' : 'Syncing...') : (isRtl ? 'مزامنة الأدلة' : 'Sync Evidence')}</span>
+                      {isSyncing ? (
+                        <>
+                          <RefreshCw size={13} className="animate-spin" />
+                          <span>{isRtl ? 'جارِ المزامنة...' : 'Syncing...'}</span>
+                        </>
+                      ) : isJustSynced ? (
+                        <>
+                          <Check size={14} color="#059669" />
+                          <span style={{ color: '#059669' }}>{isRtl ? 'تمت المزامنة بنجاح!' : 'Synced Successfully!'}</span>
+                        </>
+                      ) : (
+                        <>
+                          <RefreshCw size={13} />
+                          <span>{isRtl ? 'مزامنة الأدلة' : 'Sync Evidence'}</span>
+                        </>
+                      )}
                     </button>
 
                     <button
@@ -631,6 +828,85 @@ export default function ConnectorsHub({ isRtl = true }) {
               <p style={{ marginTop: '8px' }}><strong>{isRtl ? 'تاريخ آخر مزامنة: ' : 'Last Sync: '}</strong>{inspectConnector.lastSync}</p>
               <p style={{ marginTop: '8px' }}><strong>{isRtl ? 'حجم البيانات الموثقة: ' : 'Evidence Size: '}</strong>{inspectConnector.stats}</p>
               <p style={{ marginTop: '8px' }}><strong>{isRtl ? 'تنبيه الأمان: ' : 'Risk Note: '}</strong>{inspectConnector.riskNote}</p>
+
+              {/* Webhook & Public Key Details with Copy */}
+              <div style={{ marginTop: '14px', padding: '12px', backgroundColor: '#f8fafc', borderRadius: 'var(--radius-md)', border: '1px solid var(--slate-200)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: '11.5px', fontWeight: '700', color: 'var(--slate-700)' }}>
+                    {isRtl ? 'رابط Webhook المخصص:' : 'Webhook Endpoint:'}
+                  </span>
+                  <button
+                    onClick={() => handleCopyKey(`https://api.qudra.io/v1/webhooks/${inspectConnector.id}/events`, `inspect-wh-${inspectConnector.id}`)}
+                    style={{
+                      border: copiedKeyId === `inspect-wh-${inspectConnector.id}` ? '1px solid #10b981' : '1px solid var(--slate-300)',
+                      backgroundColor: copiedKeyId === `inspect-wh-${inspectConnector.id}` ? '#ecfdf5' : '#ffffff',
+                      color: copiedKeyId === `inspect-wh-${inspectConnector.id}` ? '#059669' : 'var(--slate-700)',
+                      padding: '3px 8px',
+                      borderRadius: 'var(--radius-sm)',
+                      fontSize: '11px',
+                      fontWeight: '700',
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    {copiedKeyId === `inspect-wh-${inspectConnector.id}` ? (
+                      <>
+                        <Check size={12} color="#059669" />
+                        <span>{isRtl ? 'تم النسخ!' : 'Copied!'}</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy size={11} />
+                        <span>{isRtl ? 'نسخ الرابط' : 'Copy'}</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+                <code style={{ fontSize: '11px', color: 'var(--slate-600)', fontFamily: 'monospace', wordBreak: 'break-all' }}>
+                  https://api.qudra.io/v1/webhooks/{inspectConnector.id}/events
+                </code>
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '4px' }}>
+                  <span style={{ fontSize: '11.5px', fontWeight: '700', color: 'var(--slate-700)' }}>
+                    {isRtl ? 'مفتاح التحقق العام (ECDSA):' : 'Public Verification Key:'}
+                  </span>
+                  <button
+                    onClick={() => handleCopyKey(`pk_live_qudra_${inspectConnector.id.replace('conn-', '')}_0x8f2a901bcda901`, `inspect-pk-${inspectConnector.id}`)}
+                    style={{
+                      border: copiedKeyId === `inspect-pk-${inspectConnector.id}` ? '1px solid #10b981' : '1px solid var(--slate-300)',
+                      backgroundColor: copiedKeyId === `inspect-pk-${inspectConnector.id}` ? '#ecfdf5' : '#ffffff',
+                      color: copiedKeyId === `inspect-pk-${inspectConnector.id}` ? '#059669' : 'var(--slate-700)',
+                      padding: '3px 8px',
+                      borderRadius: 'var(--radius-sm)',
+                      fontSize: '11px',
+                      fontWeight: '700',
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    {copiedKeyId === `inspect-pk-${inspectConnector.id}` ? (
+                      <>
+                        <Check size={12} color="#059669" />
+                        <span>{isRtl ? 'تم النسخ!' : 'Copied!'}</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy size={11} />
+                        <span>{isRtl ? 'نسخ المفتاح' : 'Copy'}</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+                <code style={{ fontSize: '11px', color: 'var(--slate-600)', fontFamily: 'monospace', wordBreak: 'break-all' }}>
+                  pk_live_qudra_{inspectConnector.id.replace('conn-', '')}_0x8f2a901bcda901
+                </code>
+              </div>
             </div>
 
             <button
