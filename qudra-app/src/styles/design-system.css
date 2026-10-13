@@ -69,25 +69,27 @@
   --slate-900: #0f172a;
 
   /* Typography */
-  --font-arabic: 'IBM Plex Sans Arabic', 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-latin: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-arabic: 'IBM Plex Sans Arabic', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-latin: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
 
   /* Radii */
-  --radius-xs: 6px;
+  --radius-xs: 5px;
   --radius-sm: 8px;
   --radius-md: 10px;
   --radius-lg: 14px;
   --radius-xl: 18px;
   --radius-full: 9999px;
 
-  /* Tactile Subtle Shadows */
-  --shadow-subtle: 0 1px 2px 0 rgba(26, 26, 26, 0.04);
-  --shadow-card: 0 1px 3px 0 rgba(26, 26, 26, 0.04), 0 4px 12px -2px rgba(26, 26, 26, 0.03);
-  --shadow-hover: 0 4px 16px -2px rgba(26, 26, 26, 0.07), 0 2px 6px -1px rgba(26, 26, 26, 0.04);
-  --shadow-drawer: -12px 0 32px rgba(26, 26, 26, 0.1);
-  --shadow-modal: 0 20px 40px -10px rgba(26, 26, 26, 0.14), 0 0 0 1px rgba(26, 26, 26, 0.06);
+  /* Tactile Subtle Shadows (Stripe / Linear Precision) */
+  --shadow-subtle: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
+  --shadow-card: 0 1px 3px 0 rgba(15, 23, 42, 0.05), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
+  --shadow-hover: 0 6px 16px -2px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.03);
+  --shadow-drawer: -12px 0 32px rgba(15, 23, 42, 0.12);
+  --shadow-modal: 0 20px 40px -10px rgba(15, 23, 42, 0.16), 0 0 0 1px rgba(15, 23, 42, 0.06);
 
-  --transition-smooth: 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  --focus-ring: 0 0 0 2.5px rgba(0, 139, 139, 0.25);
+  --transition-smooth: 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Eye-Comfort Dark Theme (وضع الراحة البصرية الليلي) */
@@ -205,7 +207,12 @@ h1, h2, h3, h4, h5, h6 {
 
 p {
   color: var(--slate-600);
-  line-height: 1.75;
+  line-height: 1.65;
+}
+
+.tabular-nums, table, .stat-value, [data-tabular] {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
 }
 
 /* Layout Container */
@@ -492,8 +499,13 @@ p {
   user-select: none;
 }
 
+.btn:focus-visible {
+  outline: 2px solid var(--qudra-teal);
+  outline-offset: 2px;
+}
+
 .btn:active {
-  transform: scale(0.99);
+  transform: scale(0.985);
 }
 
 .btn-primary {

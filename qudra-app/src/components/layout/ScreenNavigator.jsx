@@ -85,21 +85,21 @@ export default function ScreenNavigator({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="drawer-header" style={{ padding: '16px 20px', background: 'linear-gradient(135deg, #0f172a, #1e293b)', color: '#ffffff' }}>
+        <div className="drawer-header" style={{ padding: '16px 20px', backgroundColor: '#ffffff', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: 'var(--teal-600)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: '36px', height: '36px', borderRadius: '8px', backgroundColor: '#008B8B', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Layers size={20} color="#ffffff" />
             </div>
             <div>
-              <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#ffffff' }}>
+              <h3 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
                 {isRtl ? 'مستعرض ومفتش الـ 1,040 شاشة بالكامل' : '1,040 Screen Explorer & Matrix'}
               </h3>
-              <p style={{ fontSize: '11.5px', color: 'var(--slate-300)' }}>
+              <p style={{ fontSize: '12px', color: 'var(--slate-500)', margin: 0 }}>
                 {isRtl ? '26 وحدة × 40 حالة تفاعلية · 156 شاشة ارتكاز رئيسية · 884 متغيراً منهجياً' : '26 Modules x 40 States · 156 Anchors · 884 Systematic Variants'}
               </p>
             </div>
           </div>
-          <button onClick={onClose} className="btn btn-secondary btn-sm" style={{ padding: '6px', borderRadius: '50%', color: '#fff', backgroundColor: 'rgba(255,255,255,0.1)', borderColor: 'transparent' }}>
+          <button onClick={onClose} className="btn btn-secondary btn-sm" style={{ padding: '6px', borderRadius: '50%' }}>
             <X size={18} />
           </button>
         </div>

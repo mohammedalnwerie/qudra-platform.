@@ -39,7 +39,7 @@ export default function ExplainDrawer({ isOpen, onClose, data, isRtl = true }) {
               width: '32px',
               height: '32px',
               borderRadius: '8px',
-              background: 'linear-gradient(135deg, var(--teal-600), var(--indigo-600))',
+              backgroundColor: 'var(--qudra-teal)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -106,16 +106,16 @@ export default function ExplainDrawer({ isOpen, onClose, data, isRtl = true }) {
           {/* Legal / Ethical Transparency Guarantee */}
           <div style={{
             padding: '12px 14px',
-            backgroundColor: 'var(--indigo-50)',
-            border: '1px solid var(--indigo-200)',
+            backgroundColor: '#f8fafc',
+            border: '1px solid var(--border-color)',
             borderRadius: 'var(--radius-md)',
             display: 'flex',
             gap: '10px',
             fontSize: '12px',
-            color: 'var(--indigo-900)',
+            color: 'var(--slate-800)',
             lineHeight: 1.5
           }}>
-            <ShieldAlert size={18} style={{ flexShrink: 0, marginTop: '2px', color: 'var(--indigo-600)' }} />
+            <ShieldAlert size={18} style={{ flexShrink: 0, marginTop: '2px', color: 'var(--qudra-teal)' }} />
             <div>
               <strong>{isRtl ? 'ضمان الشفافية ومكافحة الصندوق الأسود:' : 'XAI Audit Guarantee:'}</strong>{' '}
               {current.legalNote}

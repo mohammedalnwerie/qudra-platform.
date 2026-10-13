@@ -224,55 +224,44 @@ export default function PrivacyConsent({ isRtl = true }) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      {/* Top Bento Header */}
+      {/* Top Header */}
       <div
         className="card"
         style={{
-          background: 'linear-gradient(135deg, #ffffff 0%, #F0FDFA 100%)',
-          borderColor: '#99F6E4',
-          padding: '24px 28px',
-          boxShadow: 'var(--shadow-sm)'
+          padding: '20px 24px',
+          backgroundColor: '#ffffff',
+          borderRadius: 'var(--radius-lg)',
+          border: '1px solid var(--border-color)',
+          boxShadow: 'var(--shadow-xs)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '16px'
         }}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
           <div style={{ maxWidth: '720px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-              <div
-                style={{
-                  width: '38px',
-                  height: '38px',
-                  borderRadius: '10px',
-                  backgroundColor: '#008B8B',
-                  color: '#ffffff',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  boxShadow: '0 2px 8px rgba(0, 139, 139, 0.25)'
-                }}
-              >
-                <ShieldCheck size={22} />
-              </div>
-              <h1 style={{ fontSize: '22px', fontWeight: '800', color: '#1A1A1A', margin: 0 }}>
-                {isRtl ? 'إعدادات الخصوصية وحماية البيانات' : 'Privacy & Data Protection'}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px', flexWrap: 'wrap' }}>
+              <h1 style={{ fontSize: '20px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
+                {isRtl ? 'إعدادات الخصوصية وحوكمة البيانات' : 'Privacy & Data Governance'}
               </h1>
               <span
                 style={{
-                  backgroundColor: '#E6FFFA',
+                  backgroundColor: '#f0fdfa',
                   color: '#006666',
                   fontSize: '11px',
                   fontWeight: '800',
-                  padding: '3px 10px',
-                  borderRadius: '999px',
-                  border: '1px solid #B2F5EA'
+                  padding: '2px 8px',
+                  borderRadius: 'var(--radius-full)',
+                  border: '1px solid #ccfbf1'
                 }}
               >
-                {isRtl ? 'متوافق مع نظام حماية البيانات PDPL' : 'Saudi PDPL Certified'}
+                {isRtl ? 'متوافق مع نظام PDPL السعودي' : 'Saudi PDPL Certified'}
               </span>
             </div>
-            <p style={{ fontSize: '13.5px', color: '#4B5563', lineHeight: 1.6, margin: 0 }}>
+            <p style={{ fontSize: '13px', color: 'var(--slate-600)', margin: 0 }}>
               {isRtl
-                ? 'تحكم بالكامل في ظهور بياناتك، وراجع الجهات التي اطلعت على ملفك، وأدر صلاحيات الحسابات المربوطة في أي وقت.'
-                : 'Control your profile visibility, inspect who viewed your skills, and manage connected account permissions at any time.'}
+                ? 'تحكم بالكامل في ظهور بياناتك، وراجع الجهات التي اطلعت على أدلتك، وأدر صلاحيات الحسابات المربوطة وفق معايير السيادة الرقمية.'
+                : 'Granular control over profile visibility, audit logs of data access, and instant revocation of third-party tokens.'}
             </p>
           </div>
 
@@ -337,9 +326,8 @@ export default function PrivacyConsent({ isRtl = true }) {
         {/* Legal Guarantees Strip */}
         <div
           style={{
-            marginTop: '18px',
             paddingTop: '14px',
-            borderTop: '1px solid #CCFBF1',
+            borderTop: '1px solid var(--border-color)',
             display: 'flex',
             flexWrap: 'wrap',
             gap: '20px',
