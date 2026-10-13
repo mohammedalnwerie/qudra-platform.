@@ -69,26 +69,20 @@ export default function ProblemAnalyzer({ onNavigate, onOpenExplain, isRtl = tru
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <h1 style={{ fontSize: '22px', fontWeight: '800', color: 'var(--qudra-obsidian, #1A1A1A)', margin: 0 }}>
-                    {isRtl ? 'تفكيك المشكلات والمطابقة المُفسرة' : 'Problem Deconstruction & Explainable Matching'}
+                    {isRtl ? 'توصيف المشروع وترشيح الكفاءات' : 'Project Scope & Talent Matching'}
                   </h1>
                   <span className="badge-teal" style={{ fontSize: '11px', padding: '2px 8px' }}>
-                    {isRtl ? 'الركيزة الثانية · M15/M16' : 'Pillar 2 · M15/M16'}
+                    {isRtl ? 'مطابقة شفافة' : 'Transparent Match'}
                   </span>
                 </div>
-                <p style={{ fontSize: '13px', color: 'var(--slate-500)', margin: '2px 0 0' }}>
-                  {isRtl ? 'مدخل المشروعات المعقدة: تفكيك دلالي للمشكلة ومطابقة مفسرة رياضياً 100% بدون خوارزميات غامضة' : 'Explainable Matching Engine: Zero algorithmic blackbox, backed by verified proofs'}
+                <p style={{ fontSize: '13.5px', color: 'var(--slate-600)', margin: '4px 0 0' }}>
+                  {isRtl ? 'نحلل متطلبات مشروعك التقنية ونرشح لك المستقلين الأنسب بناءً على أعمالهم الموثقة مع شرح واضح لنسبة التوافق.' : 'We analyze your project requirements and match you with verified freelancers with a transparent score breakdown.'}
                 </p>
               </div>
             </div>
 
-            <p style={{ fontSize: '14px', color: 'var(--slate-600)', lineHeight: 1.65, marginTop: '10px' }}>
-              {isRtl
-                ? 'في المنصات التقليدية يطرح العميل وصفاً عاماً فيرد المستقلون بعروض منسوخة، وتكون المطابقة صندوقاً أسود غير مبرر. في قُدرة، يطرح العميل مشكلته التقنية الواقعية؛ فيقوم المحرك بتفكيكها إلى متجهات قدرات محددة، ثم يطابقها مع سجلات الأدلة مع إبراز وزن وتأثير كل مهارة ودليل بالمللي.'
-                : 'Zero generic bidding or opaque algorithms: enterprise problems are decomposed into verifiable capability vectors and matched against cryptographic evidence with full mathematical provenance.'}
-            </p>
-
             {/* Client Context Pill */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '16px', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '14px', flexWrap: 'wrap' }}>
               <div
                 style={{
                   padding: '6px 12px',
@@ -104,7 +98,7 @@ export default function ProblemAnalyzer({ onNavigate, onOpenExplain, isRtl = tru
                 }}
               >
                 <Building2 size={13} color="var(--qudra-teal)" />
-                <span>{isRtl ? 'الجهة الطارحة: شركة مسار للتحول الرقمي (الرياض)' : 'Client: Masar Digital Transformation (Riyadh)'}</span>
+                <span>{isRtl ? 'العميل: شركة مسار للتحول الرقمي (الرياض)' : 'Client: Masar Digital Transformation (Riyadh)'}</span>
               </div>
 
               <div
@@ -122,7 +116,7 @@ export default function ProblemAnalyzer({ onNavigate, onOpenExplain, isRtl = tru
                 }}
               >
                 <Coins size={13} color="#16a34a" />
-                <span>{isRtl ? 'ميزانية صافية معفاة من العمولات الخفية (0% عمولة عميل)' : 'Zero Hidden Client Fees'}</span>
+                <span>{isRtl ? 'ميزانية صافية (0% عمولة على العميل)' : 'Zero Client Fees'}</span>
               </div>
             </div>
           </div>
@@ -144,10 +138,10 @@ export default function ProblemAnalyzer({ onNavigate, onOpenExplain, isRtl = tru
                 94%
               </div>
               <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--slate-500)', marginTop: '2px' }}>
-                {isRtl ? 'نسبة التطابق' : 'Match Score'}
+                {isRtl ? 'نسبة التوافق' : 'Match Score'}
               </div>
               <div style={{ fontSize: '10px', color: 'var(--qudra-teal)', marginTop: '1px' }}>
-                {isRtl ? 'مُفسَّرة بالكامل' : '100% Explainable'}
+                {isRtl ? 'موضحة بالكامل' : '100% Explainable'}
               </div>
             </div>
 
@@ -158,10 +152,10 @@ export default function ProblemAnalyzer({ onNavigate, onOpenExplain, isRtl = tru
                 5
               </div>
               <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--slate-500)', marginTop: '2px' }}>
-                {isRtl ? 'متجهات قدرات' : 'Vectors'}
+                {isRtl ? 'مهارات مطلوبة' : 'Skills Needed'}
               </div>
               <div style={{ fontSize: '10px', color: 'var(--slate-500)', marginTop: '1px' }}>
-                {isRtl ? '4 مطابقة + 1 فجوة' : '4 Matched · 1 Gap'}
+                {isRtl ? '4 مكتملة + 1 إضافية' : '4 Matched · 1 Extra'}
               </div>
             </div>
 
@@ -172,17 +166,17 @@ export default function ProblemAnalyzer({ onNavigate, onOpenExplain, isRtl = tru
                 60K
               </div>
               <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--slate-500)', marginTop: '2px' }}>
-                {isRtl ? 'ر.س الضمان' : 'SAR Escrow'}
+                {isRtl ? 'ر.س الميزانية' : 'SAR Budget'}
               </div>
               <div style={{ fontSize: '10px', color: '#16a34a', marginTop: '1px' }}>
-                {isRtl ? 'محمي بعقد ذكي' : 'Milestone Escrow'}
+                {isRtl ? 'محمية بالضمان المالي' : 'Milestone Escrow'}
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* 2. Step View Switcher Tabs (M15 Decomposition vs M16 Explainable Matching) */}
+      {/* 2. Step View Switcher Tabs */}
       <div style={{ display: 'flex', gap: '8px', borderBottom: '2px solid var(--border-color)', paddingBottom: '2px' }}>
         <button
           onClick={() => setActiveTab('match')}
@@ -203,7 +197,7 @@ export default function ProblemAnalyzer({ onNavigate, onOpenExplain, isRtl = tru
           }}
         >
           <Scale size={16} color={activeTab === 'match' ? 'var(--qudra-teal, #00B8B8)' : 'var(--slate-400)'} />
-          <span>{isRtl ? 'نتائج المطابقة المُفسَّرة مع الكفاءات (M16 Match)' : 'Explainable Match Results (M16)'}</span>
+          <span>{isRtl ? 'الكفاءات المرشحة وتفاصيل التوافق' : 'Matched Candidates & Breakdown'}</span>
           <span style={{ backgroundColor: activeTab === 'match' ? '#ccfbf1' : 'var(--slate-100)', color: activeTab === 'match' ? '#006666' : 'var(--slate-600)', padding: '1px 7px', borderRadius: '10px', fontSize: '11px', fontWeight: '800', transition: 'all 0.2s ease' }}>
             94%
           </span>
@@ -228,7 +222,7 @@ export default function ProblemAnalyzer({ onNavigate, onOpenExplain, isRtl = tru
           }}
         >
           <Layers size={16} color={activeTab === 'deconstruct' ? 'var(--qudra-teal, #00B8B8)' : 'var(--slate-400)'} />
-          <span>{isRtl ? 'محرر تفكيك المشكلة التقنية (M15 Input)' : 'Problem Decomposition Workspace (M15)'}</span>
+          <span>{isRtl ? 'توصيف متطلبات المشروع' : 'Project Scope & Requirements'}</span>
         </button>
       </div>
 
@@ -283,11 +277,11 @@ export default function ProblemAnalyzer({ onNavigate, onOpenExplain, isRtl = tru
                     >
                       <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                         <CheckCircle2 size={12} color="#166534" />
-                        <span>{isRtl ? 'المرشح الأول (Top Match)' : 'Top Matched Candidate'}</span>
+                        <span>{isRtl ? 'المرشح الأنسب' : 'Top Matched Candidate'}</span>
                       </span>
                     </span>
                     <span className="badge-teal" style={{ fontSize: '11px' }}>
-                      {isRtl ? 'جواز قدرات موثق W3C' : 'Verified Passport'}
+                      {isRtl ? 'ملف مهني موثق' : 'Verified Passport'}
                     </span>
                   </div>
 
@@ -296,7 +290,7 @@ export default function ProblemAnalyzer({ onNavigate, onOpenExplain, isRtl = tru
                   </div>
 
                   <div style={{ fontSize: '12px', color: 'var(--slate-400)', marginTop: '4px' }}>
-                    {USER_PERSONAS.freelancer.location} • {isRtl ? 'درجة الموثوقية التشفيرية: %94' : 'Trust Score: 94%'}
+                    {USER_PERSONAS.freelancer.location} • {isRtl ? 'معدل الموثوقية: %94' : 'Trust Score: 94%'}
                   </div>
                 </div>
               </div>
@@ -316,7 +310,7 @@ export default function ProblemAnalyzer({ onNavigate, onOpenExplain, isRtl = tru
                   %94
                 </div>
                 <div style={{ fontSize: '12px', fontWeight: '800', color: '#006666', marginTop: '6px' }}>
-                  {isRtl ? 'تطابق مُفسَّر بالكامل' : 'Explainable Match'}
+                  {isRtl ? 'نسبة التوافق الكلية' : 'Overall Match'}
                 </div>
                 <button
                   onClick={() => setShowMathModal(true)}
@@ -340,10 +334,10 @@ export default function ProblemAnalyzer({ onNavigate, onOpenExplain, isRtl = tru
             <div style={{ marginTop: '22px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
                 <h3 style={{ fontSize: '15px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
-                  {isRtl ? 'تحليل التفسير الرياضي لمطابقة القدرات والأدلة:' : 'Mathematical Proof Vector Breakdown:'}
+                  {isRtl ? 'تفصيل نقاط التوافق حسب متطلبات المشروع:' : 'Match Score Breakdown by Requirement:'}
                 </h3>
                 <span style={{ fontSize: '12px', color: 'var(--slate-500)' }}>
-                  {isRtl ? 'كل نقطة مدعومة برابط دليل تشفيري مسجل' : 'Each point is backed by an auditable proof hash'}
+                  {isRtl ? 'كل مهارة مرتبطة بعمل موثق في ملف المرشح' : 'Each skill is backed by verified work'}
                 </span>
               </div>
 
@@ -377,7 +371,7 @@ export default function ProblemAnalyzer({ onNavigate, onOpenExplain, isRtl = tru
                             {factor.name}
                           </span>
                           <span style={{ fontSize: '11.5px', color: 'var(--slate-500)', marginInlineStart: '8px' }}>
-                            ({isRtl ? 'الوزن المعماري: ' : 'Weight: '}{factor.weight}%)
+                            ({isRtl ? 'الأهمية: ' : 'Weight: '}{factor.weight}%)
                           </span>
                         </div>
                       </div>
@@ -419,7 +413,7 @@ export default function ProblemAnalyzer({ onNavigate, onOpenExplain, isRtl = tru
               >
                 <Zap size={16} color="var(--qudra-yellow-dark, #b45309)" />
                 <span>
-                  <strong>{isRtl ? 'توصية المحرك المعمارية: ' : 'Architectural Recommendation: '}</strong>
+                  <strong>{isRtl ? 'نصيحة لرفع التوافق إلى 100%: ' : 'Tip to reach 100% match: '}</strong>
                   {MOCK_PROBLEM.explainDetails.recommendation}
                 </span>
               </div>
@@ -440,7 +434,7 @@ export default function ProblemAnalyzer({ onNavigate, onOpenExplain, isRtl = tru
                 }}
               >
                 <ShieldCheck size={16} color="var(--qudra-yellow, #FFC107)" />
-                <span>{isRtl ? 'بدء التعاقد وحجز الضمان المالي (M21 Escrow)' : 'Initiate Milestone Escrow (M21)'}</span>
+                <span>{isRtl ? 'بدء التعاقد وحجز الضمان المالي' : 'Start Contract & Escrow'}</span>
               </button>
 
               <button
@@ -449,7 +443,7 @@ export default function ProblemAnalyzer({ onNavigate, onOpenExplain, isRtl = tru
                 style={{ gap: '6px', padding: '10px 18px', fontWeight: '700' }}
               >
                 <Users size={16} color="var(--qudra-teal, #008B8B)" />
-                <span>{isRtl ? 'سد الفجوة وتشكيل فريق متكامل (M20 Squad)' : 'Compose Squad (M20)'}</span>
+                <span>{isRtl ? 'إضافة عضو مكمل للفريق' : 'Add Complementary Member'}</span>
               </button>
 
               <button
@@ -458,7 +452,7 @@ export default function ProblemAnalyzer({ onNavigate, onOpenExplain, isRtl = tru
                 style={{ gap: '6px', padding: '10px 16px' }}
               >
                 <Scale size={15} />
-                <span>{isRtl ? 'فتح محرك التفسير المستقل' : 'Audit Drawer'}</span>
+                <span>{isRtl ? 'تفسير التقييم بالتفصيل' : 'Detailed Evaluation'}</span>
               </button>
             </div>
           </div>

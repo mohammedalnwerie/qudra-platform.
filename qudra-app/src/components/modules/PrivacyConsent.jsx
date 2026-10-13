@@ -135,36 +135,36 @@ export default function PrivacyConsent({ isRtl = true }) {
   const auditLogs = [
     {
       id: 'log-01',
-      actor: isRtl ? 'شركة مسار للتحول الرقمي (جهة عمل موثقة)' : 'Masar FinTech Enterprise (Verified Client)',
-      purpose: isRtl ? 'فحص التطابق لمشروع منصة المدفوعات السحابية (M15)' : 'Problem Matching Scan for Cloud Payment Platform',
-      scope: isRtl ? 'مصفوفة إتقان AWS ECS & Docker (بدون بيانات شخصية)' : 'AWS ECS & Docker Skill Vectors (PII Masked)',
+      actor: isRtl ? 'شركة مسار للتحول الرقمي (عميل موثق)' : 'Masar FinTech Enterprise (Verified Client)',
+      purpose: isRtl ? 'فحص التوافق لمشروع منصة المدفوعات السحابية' : 'Problem Matching Scan for Cloud Payment Platform',
+      scope: isRtl ? 'مهارات AWS ECS & Docker فقط (بدون بيانات شخصية)' : 'AWS ECS & Docker Skill Vectors (PII Masked)',
       timestamp: isRtl ? 'اليوم في 11:24 ص' : 'Today, 11:24 AM',
-      verdict: isRtl ? 'مُصرح به (مُقنّع ديموغرافياً)' : 'Authorized (Masked)',
+      verdict: isRtl ? 'مُصرح به (هوية محجوبة)' : 'Authorized (Masked)',
       txHash: '0x8f2a...c419'
     },
     {
       id: 'log-02',
-      actor: isRtl ? 'محرك التدقيق التشفيري لقُدرة (Verifier 0x4)' : 'QUDRA Protocol Verifier (Node 0x4)',
-      purpose: isRtl ? 'التحقق الدوري من صلاحية شجرة ميركل لجواز السفر' : 'Periodic Merkle Root Validity Re-verification',
-      scope: isRtl ? 'البصمات التشفيرية المجمعة (W3C StatusList2021)' : 'Aggregated Root Digest (W3C StatusList)',
+      actor: isRtl ? 'نظام التحقق الآلي في قُدرة' : 'QUDRA Protocol Verifier (Node 0x4)',
+      purpose: isRtl ? 'التحديث الدوري لصلاحية الشهادات الموثقة' : 'Periodic Merkle Root Validity Re-verification',
+      scope: isRtl ? 'رموز التحقق من الشهادات' : 'Aggregated Root Digest (W3C StatusList)',
       timestamp: isRtl ? 'اليوم في 08:00 ص' : 'Today, 08:00 AM',
       verdict: isRtl ? 'مُطابق 100%' : '100% Valid',
       txHash: '0x3c91...77d2'
     },
     {
       id: 'log-03',
-      actor: isRtl ? 'منصة التحديات العملية (M11 Practice Sandbox)' : 'Practice Challenge Sandbox (M11)',
-      purpose: isRtl ? 'سك دليل الإنجاز لاختبار حماية SSRF' : 'Minting Verified SSRF Security Proof Digest',
-      scope: isRtl ? 'نتائج فحص Jest والبيئة المعزولة' : 'Jest Console Execution Logs & Test Results',
+      actor: isRtl ? 'بيئة الاختبارات البرمجية العملية' : 'Practice Challenge Sandbox',
+      purpose: isRtl ? 'توثيق اجتياز اختبار حماية SSRF' : 'Minting Verified SSRF Security Proof Digest',
+      scope: isRtl ? 'نتيجة اجتياز الاختبار البرمجي فقط' : 'Jest Console Execution Logs & Test Results',
       timestamp: isRtl ? 'أمس في 05:12 م' : 'Yesterday, 05:12 PM',
-      verdict: isRtl ? 'تم إصدار الشهادة' : 'Minted Successfully',
+      verdict: isRtl ? 'تم توثيق المهارة' : 'Minted Successfully',
       txHash: '0xda71...e503'
     },
     {
       id: 'log-04',
-      actor: isRtl ? 'مُركِّب الفرق التكاملي (M20 Team Composer)' : 'Team Composer Engine (M20)',
-      purpose: isRtl ? 'تقييم فجوات المعمارية لتشكيل فريق مشروع مسار' : 'Squad Gap Analysis for Masar Project Squad',
-      scope: isRtl ? 'معامل التوافق الهندسي ومعدل الإنجاز' : 'Architecture Fit Score & Delivery Velocity',
+      actor: isRtl ? 'نظام تشكيل فرق العمل' : 'Team Composer Engine',
+      purpose: isRtl ? 'ترشيحك ضمن فريق مشروع مسار' : 'Squad Gap Analysis for Masar Project Squad',
+      scope: isRtl ? 'نسبة توافق المهارات ومعدل إنجاز المشاريع' : 'Architecture Fit Score & Delivery Velocity',
       timestamp: isRtl ? 'منذ يومين' : '2 days ago',
       verdict: isRtl ? 'مُصرح به' : 'Authorized',
       txHash: '0x992b...18a6'
@@ -176,7 +176,7 @@ export default function PrivacyConsent({ isRtl = true }) {
       prev.map((c) => {
         if (c.id === id) {
           if (c.id === 'c-zero-scraping') {
-            showToast(isRtl ? 'درع حظر الكشط إلزامي ولا يمكن تعطيله لحمايتك.' : 'Scraping shield is mandatory.', 'warning');
+            showToast(isRtl ? 'حماية الملكية الفكرية مفعلة دائماً ولا يمكن تعطيلها لحمايتك.' : 'IP protection shield is mandatory.', 'warning');
             return c;
           }
           const newState = !c.enabled;
@@ -201,7 +201,7 @@ export default function PrivacyConsent({ isRtl = true }) {
     );
     showToast(
       isRtl
-        ? `تم إلغاء ربط ${connectorName} ومحو الرموز السرية من الخوادم فورا.`
+        ? `تم إلغاء ربط ${connectorName} وإيقاف المزامنة فوراً.`
         : `Revoked ${connectorName} and purged tokens.`,
       'info'
     );
@@ -216,7 +216,7 @@ export default function PrivacyConsent({ isRtl = true }) {
     setPurgeInput('');
     showToast(
       isRtl
-        ? 'تم محو كافة البيانات الوصفية والرموز السرية وإبطال الروابط العامة امتثالاً للحق في النسيان.'
+        ? 'تم حذف بياناتك الشخصية وفصل جميع الحسابات المربوطة بنجاح.'
         : 'All personal metadata, tokens, and links purged successfully.',
       'success'
     );
@@ -235,7 +235,7 @@ export default function PrivacyConsent({ isRtl = true }) {
         }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>
-          <div style={{ maxWidth: '780px' }}>
+          <div style={{ maxWidth: '720px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
               <div
                 style={{
@@ -253,7 +253,7 @@ export default function PrivacyConsent({ isRtl = true }) {
                 <ShieldCheck size={22} />
               </div>
               <h1 style={{ fontSize: '22px', fontWeight: '800', color: '#1A1A1A', margin: 0 }}>
-                {isRtl ? 'مركز السيادة على البيانات والخصوصية الرقمية (M25)' : 'Data Sovereignty & Privacy Hub (M25)'}
+                {isRtl ? 'إعدادات الخصوصية وحماية البيانات' : 'Privacy & Data Protection'}
               </h1>
               <span
                 style={{
@@ -266,13 +266,13 @@ export default function PrivacyConsent({ isRtl = true }) {
                   border: '1px solid #B2F5EA'
                 }}
               >
-                {isRtl ? 'نظام حماية البيانات الشخصية PDPL' : 'Saudi PDPL Certified'}
+                {isRtl ? 'متوافق مع نظام حماية البيانات PDPL' : 'Saudi PDPL Certified'}
               </span>
             </div>
             <p style={{ fontSize: '13.5px', color: '#4B5563', lineHeight: 1.6, margin: 0 }}>
               {isRtl
-                ? 'بياناتك ملكك بالكامل. تطبق قُدرة سياسة المعالجة المشروطة دون كشط خفي ودون تخزين أكوادك المصدرية. يمكنك مراجعة كافة الاستعلامات، إلغاء ربط الحسابات فوراً، أو ممارسة الحق القانوني في محو السجلات.'
-                : 'Complete data ownership. Zero covert scraping, zero code storage. Full auditability, instant connector revocation, and cryptographic erasure under Saudi PDPL.'}
+                ? 'تحكم بالكامل في ظهور بياناتك، وراجع الجهات التي اطلعت على ملفك، وأدر صلاحيات الحسابات المربوطة في أي وقت.'
+                : 'Control your profile visibility, inspect who viewed your skills, and manage connected account permissions at any time.'}
             </p>
           </div>
 
@@ -289,10 +289,10 @@ export default function PrivacyConsent({ isRtl = true }) {
               }}
             >
               <div style={{ fontSize: '11px', color: '#64748B', fontWeight: '700' }}>
-                {isRtl ? 'المصادر النشطة' : 'Active Sources'}
+                {isRtl ? 'حسابات مربوطة' : 'Connected'}
               </div>
               <div style={{ fontSize: '18px', fontWeight: '900', color: '#008B8B' }}>
-                {connectors.filter((c) => c.status === 'active').length} {isRtl ? 'موصلات' : 'OAuth'}
+                {connectors.filter((c) => c.status === 'active').length} {isRtl ? 'حسابات' : 'Active'}
               </div>
             </div>
 

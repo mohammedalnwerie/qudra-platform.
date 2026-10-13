@@ -106,26 +106,20 @@ export default function ProjectWorkspace({ onNavigate, isRtl = true }) {
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <h1 style={{ fontSize: '22px', fontWeight: '800', color: 'var(--qudra-obsidian, #1A1A1A)', margin: 0 }}>
-                    {isRtl ? 'مساحة إنجاز المشروع والضمان المالي (M21)' : 'Project Workspace & Milestone Escrow'}
+                    {isRtl ? 'إدارة المشروع والضمان المالي' : 'Project Workspace & Milestone Escrow'}
                   </h1>
                   <span className="badge-teal" style={{ fontSize: '11px', padding: '2px 8px' }}>
-                    {isRtl ? 'المستوى M21 · ضمان مشفر' : 'M21 · Escrow Milestone'}
+                    {isRtl ? 'دفعات محمية' : 'Protected Escrow'}
                   </span>
                 </div>
-                <p style={{ fontSize: '13px', color: 'var(--slate-500)', margin: '2px 0 0' }}>
-                  {isRtl ? 'الحلقة المغلقة لقُدرة: إنجاز التسليم، إفراج الضمان المالي، وتوليد دليل مخرجات معتمد' : 'Virtuous loop: delivery approval triggers escrow release and mints immutable outcome proof'}
+                <p style={{ fontSize: '13.5px', color: 'var(--slate-600)', margin: '4px 0 0' }}>
+                  {isRtl ? 'تابع مراحل التسليم واعتمد الدفعات المالية بأمان؛ كل مرحلة مكتملة تضاف تلقائياً كعمل موثق في ملف الفريق.' : 'Track project milestones and release escrow payments safely; every completed milestone is automatically added to the team portfolio.'}
                 </p>
               </div>
             </div>
 
-            <p style={{ fontSize: '14px', color: 'var(--slate-600)', lineHeight: 1.65, marginTop: '10px' }}>
-              {isRtl
-                ? 'لا تنتهي المشروعات في قُدرة بمجرد تحويل الأموال؛ بل يمر كل مخرج باعتماد تشفيري رسمي، ويتم الإفراج التلقائي عن المبالغ المحجوزة بالضمان (SAR Escrow) دون استقطاع عمولات خفية. يتحول كل تسليم ناجح إلى "دليل مخرجات معتمد" يضاف فورياً لجواز قدرات الفريق.'
-                : 'Project delivery without opaque deductions: milestones release cryptographically secured funds directly to collaborators. Verified deliverables become immutable outcome evidence in capability passports.'}
-            </p>
-
             {/* Client Context Pill */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '16px', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '14px', flexWrap: 'wrap' }}>
               <div
                 style={{
                   padding: '6px 14px',
@@ -141,7 +135,7 @@ export default function ProjectWorkspace({ onNavigate, isRtl = true }) {
                 }}
               >
                 <Building2 size={13} color="var(--qudra-teal)" />
-                <span>{isRtl ? 'العميل: شركة مسار للتحول الرقمي • عقد ذكي رقم: #ESC-SA-2026-904' : 'Client: Masar Digital • Contract #ESC-SA-2026-904'}</span>
+                <span>{isRtl ? 'العميل: شركة مسار للتحول الرقمي • عقد رقم: #ESC-SA-2026-904' : 'Client: Masar Digital • Contract #ESC-SA-2026-904'}</span>
               </div>
 
               <div
@@ -159,7 +153,7 @@ export default function ProjectWorkspace({ onNavigate, isRtl = true }) {
                 }}
               >
                 <Coins size={13} color="#16a34a" />
-                <span>{isRtl ? 'حماية الضمان: 0% عمولة منصة (صافي 100% للفريق)' : 'Zero Hidden Platform Fees'}</span>
+                <span>{isRtl ? '0% عمولة منصة (صافي 100% للفريق)' : 'Zero Platform Fees'}</span>
               </div>
             </div>
           </div>
@@ -180,7 +174,7 @@ export default function ProjectWorkspace({ onNavigate, isRtl = true }) {
                 {isRtl ? 'إجمالي ميزانية العقد المحمية:' : 'Total Escrow Budget:'}
               </span>
               <span style={{ fontSize: '11.5px', color: 'var(--qudra-teal, #008B8B)', fontWeight: '800' }}>
-                {releasePercentage}% {isRtl ? 'مُفرَج عنه' : 'Released'}
+                {releasePercentage}% {isRtl ? 'تم تحويله' : 'Released'}
               </span>
             </div>
 
@@ -208,7 +202,7 @@ export default function ProjectWorkspace({ onNavigate, isRtl = true }) {
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--slate-600)', fontWeight: '600' }}>
               <span style={{ color: '#166534', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <CheckCircle2 size={12} color="#166534" />
-                <span>{releasedAmount.toLocaleString()} ر.س مُفرَج عنه</span>
+                <span>{releasedAmount.toLocaleString()} ر.س تم تحويله</span>
               </span>
               <span style={{ color: '#0369a1', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <Clock size={12} color="#0369a1" />
@@ -242,7 +236,7 @@ export default function ProjectWorkspace({ onNavigate, isRtl = true }) {
           }}
         >
           <FolderGit2 size={16} color={activeTab === 'milestones' ? 'var(--qudra-teal)' : 'var(--slate-400)'} />
-          <span>{isRtl ? 'مراحل العمل والضمان المالي (Milestones)' : 'Work Milestones & Escrow'}</span>
+          <span>{isRtl ? 'مراحل العمل والدفعات' : 'Work Milestones & Escrow'}</span>
           <span style={{ backgroundColor: 'var(--slate-100)', color: 'var(--slate-700)', padding: '1px 6px', borderRadius: '10px', fontSize: '11px', fontWeight: '800' }}>
             {milestones.filter(m => m.status === 'completed').length} / {milestones.length}
           </span>

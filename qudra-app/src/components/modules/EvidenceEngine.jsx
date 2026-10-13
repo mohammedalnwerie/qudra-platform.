@@ -147,26 +147,20 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <h1 style={{ fontSize: '22px', fontWeight: '800', color: 'var(--qudra-obsidian, #1A1A1A)', margin: 0 }}>
-                    {isRtl ? 'سجل الأدلة الرقمية المعتمدة' : 'Verified Digital Evidence Registry'}
+                    {isRtl ? 'سجل المهارات والشهادات الموثقة' : 'Verified Skills & Credentials'}
                   </h1>
                   <span className="badge-teal" style={{ fontSize: '11px', padding: '2px 8px' }}>
-                    {isRtl ? 'المستوى M05 · تشفيري' : 'M05 · Cryptographic'}
+                    {isRtl ? 'محدث تلقائياً' : 'Auto-Synced'}
                   </span>
                 </div>
-                <p style={{ fontSize: '13px', color: 'var(--slate-500)', margin: '2px 0 0' }}>
-                  {isRtl ? 'محرك التوثيق الرقمي: ربط المهارات بإثباتات رياضية وحسابية غير قابلة للتزوير' : 'Core Provenance: Linking skills to immutable cryptographic proofs and verified commits'}
+                <p style={{ fontSize: '13.5px', color: 'var(--slate-600)', margin: '4px 0 0' }}>
+                  {isRtl ? 'استعرض جميع مهاراتك الموثقة من مشاريعك وحساباتك المربوطة، وحوّل المهارات المضافة يدوياً إلى مهارات معتمدة.' : 'Review all skills verified from your projects and connected accounts, and upgrade self-added skills via practical tests.'}
                 </p>
               </div>
             </div>
 
-            <p style={{ fontSize: '14px', color: 'var(--slate-600)', lineHeight: 1.65, marginTop: '12px' }}>
-              {isRtl
-                ? 'قلب ركيزة الإثبات في قُدرة: تُسجل هنا كافة المساهمات والشهادات والمشاريع كأدلة ذات بصمة SHA-256 فريدة. لا مكان هنا للادعاءات العشوائية؛ كل مهارة معتمدة تقترن برابط تدقيق مستقل لتأهيلك الفوري للمشروعات الحساسة.'
-                : 'The cryptographic proof heart of QUDRA: commits, certificates, and deliveries are bound to SHA-256 verifiable receipts. Zero self-declared speculation; true competency backed by auditable evidence.'}
-            </p>
-
             {/* Quick Actions */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '18px', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '14px', flexWrap: 'wrap' }}>
               <button
                 onClick={() => onNavigate('M11')}
                 className="btn btn-primary"
@@ -180,7 +174,7 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
                 }}
               >
                 <Plus size={16} color="var(--qudra-yellow, #FFC107)" />
-                <span>{isRtl ? 'توليد دليل عبر تحدٍّ عملي' : 'Mint Proof via Challenge'}</span>
+                <span>{isRtl ? 'توثيق مهارة باختبار عملي' : 'Verify Skill via Test'}</span>
               </button>
 
               <button
@@ -189,17 +183,17 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
                 style={{ gap: '6px', padding: '9px 16px', fontSize: '13px' }}
               >
                 <LinkIcon size={14} color="var(--qudra-teal, #00B8B8)" />
-                <span>{isRtl ? 'إدارة الموصلات الخارجية (M03)' : 'Manage Connectors (M03)'}</span>
+                <span>{isRtl ? 'إدارة الحسابات المربوطة' : 'Connected Accounts'}</span>
               </button>
 
               <button
                 onClick={handleRefreshSync}
                 className="btn btn-secondary"
                 style={{ gap: '6px', padding: '9px 14px', fontSize: '13px' }}
-                title={isRtl ? 'إعادة التحقق من سلامة البصمات' : 'Verify Proof Integrity'}
+                title={isRtl ? 'تحديث حالة التوثيق' : 'Refresh verification status'}
               >
                 <RefreshCw size={14} />
-                <span>{isRtl ? 'فحص السجل' : 'Audit Ledger'}</span>
+                <span>{isRtl ? 'تحديث السجل' : 'Refresh'}</span>
               </button>
             </div>
           </div>
@@ -221,10 +215,10 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
                 {counts.proven}
               </div>
               <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--slate-500)', marginTop: '2px' }}>
-                {isRtl ? 'أدلة مثبتة (Proven)' : 'Proven Proofs'}
+                {isRtl ? 'مهارات موثقة' : 'Verified'}
               </div>
               <div style={{ fontSize: '10px', color: 'var(--qudra-teal)', marginTop: '1px' }}>
-                {isRtl ? 'موثقة تشفيرياً' : 'Cryptographically Verified'}
+                {isRtl ? 'معتمدة رسمياً' : 'Officially Proven'}
               </div>
             </div>
 
@@ -235,10 +229,10 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
                 {counts.claimed}
               </div>
               <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--slate-500)', marginTop: '2px' }}>
-                {isRtl ? 'ادعاءات معلنة' : 'Claimed'}
+                {isRtl ? 'مضافة يدوياً' : 'Self-Added'}
               </div>
               <div style={{ fontSize: '10px', color: '#0284C7', marginTop: '1px' }}>
-                {isRtl ? 'تنتظر التحدي' : 'Awaiting Challenge'}
+                {isRtl ? 'بانتظار التوثيق' : 'Needs Verification'}
               </div>
             </div>
 
@@ -249,10 +243,10 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
                 {counts.gap}
               </div>
               <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--slate-500)', marginTop: '2px' }}>
-                {isRtl ? 'فجوات مهارية' : 'Skill Gaps'}
+                {isRtl ? 'مهارات مطلوبة' : 'Skill Gaps'}
               </div>
               <div style={{ fontSize: '10px', color: '#D97706', marginTop: '1px' }}>
-                {isRtl ? 'تحتاج استكمالاً' : 'Target for M11'}
+                {isRtl ? 'فرص للتطوير' : 'Growth Targets'}
               </div>
             </div>
           </div>
@@ -308,7 +302,7 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
               padding: '6px 12px'
             }}
           >
-            {isRtl ? 'جميع الأدلة' : 'All Evidence'} ({counts.all})
+            {isRtl ? 'الكل' : 'All'} ({counts.all})
           </button>
 
           <button
@@ -327,7 +321,7 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
             }}
           >
             <ShieldCheck size={14} color="#008B8B" />
-            <span>{isRtl ? 'أدلة مثبتة' : 'Proven'}</span>
+            <span>{isRtl ? 'مهارات موثقة' : 'Verified'}</span>
             <span style={{ backgroundColor: '#ccfbf1', color: '#006666', padding: '1px 6px', borderRadius: '10px', fontSize: '11px', fontWeight: '800' }}>
               {counts.proven}
             </span>
@@ -349,7 +343,7 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
             }}
           >
             <Sparkles size={14} color="#0284C7" />
-            <span>{isRtl ? 'ادعاءات معلنة' : 'Claimed'}</span>
+            <span>{isRtl ? 'مضافة يدوياً' : 'Self-Added'}</span>
             <span style={{ backgroundColor: '#e0f2fe', color: '#0369a1', padding: '1px 6px', borderRadius: '10px', fontSize: '11px', fontWeight: '800' }}>
               {counts.claimed}
             </span>
@@ -371,7 +365,7 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
             }}
           >
             <AlertCircle size={14} color="#D97706" />
-            <span>{isRtl ? 'فجوات قائمة' : 'Gaps'}</span>
+            <span>{isRtl ? 'مهارات مطلوبة' : 'Skill Needed'}</span>
             <span style={{ backgroundColor: '#fef3c7', color: '#b45309', padding: '1px 6px', borderRadius: '10px', fontSize: '11px', fontWeight: '800' }}>
               {counts.gap}
             </span>
@@ -393,7 +387,7 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
             <input
               type="text"
               className="form-input"
-              placeholder={isRtl ? 'ابحث في الأدلة والمهارات...' : 'Search proofs & skills...'}
+              placeholder={isRtl ? 'ابحث في المهارات والشهادات...' : 'Search skills & credentials...'}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               style={{
@@ -432,12 +426,12 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
           {isRtl ? 'التصنيف:' : 'Category:'}
         </span>
         {[
-          { id: 'all', label: isRtl ? 'كافة التصنيفات' : 'All Categories' },
-          { id: 'مشروع حقيقي', label: isRtl ? 'مشاريع حقيقية (Projects)' : 'Projects' },
-          { id: 'تحدٍّ عملي', label: isRtl ? 'تحديات بيئة الاختبار (Challenges)' : 'Challenges' },
-          { id: 'كود ومستودع', label: isRtl ? 'أكواد ومستودعات (Code)' : 'Code' },
-          { id: 'شهادة رقمية', label: isRtl ? 'شهادات رقمية (Certs)' : 'Certificates' },
-          { id: 'فجوة مطلوبة', label: isRtl ? 'فجوات مطلوبة (Gaps)' : 'Gaps' }
+          { id: 'all', label: isRtl ? 'الكل' : 'All Categories' },
+          { id: 'مشروع حقيقي', label: isRtl ? 'مشاريع منجزة' : 'Projects' },
+          { id: 'تحدٍّ عملي', label: isRtl ? 'اختبارات عملية' : 'Challenges' },
+          { id: 'كود ومستودع', label: isRtl ? 'مستودعات برمجية' : 'Code' },
+          { id: 'شهادة رقمية', label: isRtl ? 'شهادات مهنية' : 'Certificates' },
+          { id: 'فجوة مطلوبة', label: isRtl ? 'مهارات مطلوبة' : 'Gaps' }
         ].map((cat) => (
           <button
             key={cat.id}

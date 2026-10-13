@@ -188,26 +188,20 @@ module.exports = { fetchRemoteAvatar };`;
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <h1 style={{ fontSize: '22px', fontWeight: '800', color: 'var(--qudra-obsidian, #1A1A1A)', margin: 0 }}>
-                    {isRtl ? 'بيئة التحديات العملية والتحقق المعزول' : 'Practical Sandbox & Automated Verification'}
+                    {isRtl ? 'الاختبارات البرمجية العملية' : 'Practical Coding Challenges'}
                   </h1>
                   <span className="badge-teal" style={{ fontSize: '11px', padding: '2px 8px' }}>
-                    {isRtl ? 'المستوى M11 · MicroVM' : 'M11 · MicroVM'}
+                    {isRtl ? 'بيئة تشغيل مباشرة' : 'Live Sandbox'}
                   </span>
                 </div>
-                <p style={{ fontSize: '13px', color: 'var(--slate-500)', margin: '2px 0 0' }}>
-                  {isRtl ? 'تحديات كودية واقعية لا أسئلة نظرية: إتمام التحدي ينتج دليلاً تشفيرياً فورياً' : 'Hands-on production engineering challenges. Passing mints cryptographic evidence.'}
+                <p style={{ fontSize: '13.5px', color: 'var(--slate-600)', margin: '4px 0 0' }}>
+                  {isRtl ? 'أثبت مهاراتك عملياً عبر حل مشكلات برمجية حقيقية؛ عند اجتياز الاختبارات يتم توثيق المهارة في ملفك تلقائياً.' : 'Prove your skills by solving real engineering problems; passing the test suite automatically verifies the skill on your profile.'}
                 </p>
               </div>
             </div>
 
-            <p style={{ fontSize: '14px', color: 'var(--slate-600)', lineHeight: 1.65, marginTop: '10px' }}>
-              {isRtl
-                ? 'حل المشكلات في قُدرة ليس اختبار اختيار من متعدد؛ إنها بيئة كودية حية معزولة (Isolated Sandbox) تحاكي بيئات الإنتاج الحقيقية. عند اجتياز كافة اختبارات الأمان، يُصدر النظام دليلاً تشفيرياً مثبتاً (Proven Evidence) يسد الفجوات في جواز قدراتك فورياً.'
-                : 'Competency proof through verified code execution: solve real architectural challenges, pass automated test matrices, and mint immutable cryptographic proof directly to your passport.'}
-            </p>
-
             {/* Sandbox Status Pills */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '16px', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '14px', flexWrap: 'wrap' }}>
               <div
                 style={{
                   padding: '6px 12px',
@@ -223,7 +217,7 @@ module.exports = { fetchRemoteAvatar };`;
                 }}
               >
                 <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#16a34a' }} />
-                <span>{isRtl ? 'بيئة التشغيل المعزولة جاهزة (Node 22 MicroVM)' : 'Isolated MicroVM Sandbox Ready'}</span>
+                <span>{isRtl ? 'بيئة التشغيل جاهزة (Node.js 22)' : 'Sandbox Environment Ready (Node.js 22)'}</span>
               </div>
 
               <div
@@ -237,7 +231,7 @@ module.exports = { fetchRemoteAvatar };`;
                   fontWeight: '600'
                 }}
               >
-                {isRtl ? 'المستوى: متوسط إلى متقدم (Senior) • 25 دقيقة' : 'Difficulty: Advanced • 25 mins'}
+                {isRtl ? 'المستوى: متقدم • الوقت المقدر: 25 دقيقة' : 'Difficulty: Advanced • 25 mins'}
               </div>
 
               {onNavigate && (
@@ -247,7 +241,7 @@ module.exports = { fetchRemoteAvatar };`;
                   style={{ gap: '5px', fontSize: '12px' }}
                 >
                   <Layers size={13} color="var(--qudra-teal, #008B8B)" />
-                  <span>{isRtl ? 'الرجوع لمحرك الأدلة (M05)' : 'Back to Evidence (M05)'}</span>
+                  <span>{isRtl ? 'العودة لسجل المهارات' : 'Back to Skills'}</span>
                 </button>
               )}
             </div>
@@ -270,7 +264,7 @@ module.exports = { fetchRemoteAvatar };`;
                 6 / 6
               </div>
               <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--slate-500)', marginTop: '2px' }}>
-                {isRtl ? 'اختبارات أمان' : 'Test Cases'}
+                {isRtl ? 'اختبارات الفحص' : 'Test Cases'}
               </div>
             </div>
 
@@ -281,7 +275,7 @@ module.exports = { fetchRemoteAvatar };`;
                 +15
               </div>
               <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--slate-500)', marginTop: '2px' }}>
-                {isRtl ? 'نقاط موثوقية' : 'Trust Delta'}
+                {isRtl ? 'نقاط موثوقية' : 'Trust Boost'}
               </div>
             </div>
 
@@ -289,10 +283,10 @@ module.exports = { fetchRemoteAvatar };`;
 
             <div style={{ textAlign: 'center' }}>
               <div style={{ fontSize: '22px', fontWeight: '900', color: '#16a34a', fontFamily: 'monospace' }}>
-                Tier 1
+                100%
               </div>
               <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--slate-500)', marginTop: '2px' }}>
-                {isRtl ? 'دليل مثبت' : 'Proven Tier'}
+                {isRtl ? 'توثيق فوري' : 'Instant Proof'}
               </div>
             </div>
           </div>

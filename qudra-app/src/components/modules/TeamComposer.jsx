@@ -67,26 +67,20 @@ export default function TeamComposer({ onNavigate, onOpenExplain, isRtl = true }
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <h1 style={{ fontSize: '22px', fontWeight: '800', color: 'var(--qudra-obsidian, #1A1A1A)', margin: 0 }}>
-                    {isRtl ? 'مُركِّب فرق العمل التكاملي (Squad Formation)' : 'Complementary Squad Formation'}
+                    {isRtl ? 'تشكيل فرق العمل المتكاملة' : 'Team Builder & Squad Formation'}
                   </h1>
                   <span className="badge-teal" style={{ fontSize: '11px', padding: '2px 8px' }}>
-                    {isRtl ? 'المستوى M20 · تكامل الكفاءات' : 'M20 · Collective Squad'}
+                    {isRtl ? 'تغطية 100% للمتطلبات' : 'Full Coverage'}
                   </span>
                 </div>
-                <p style={{ fontSize: '13px', color: 'var(--slate-500)', margin: '2px 0 0' }}>
-                  {isRtl ? 'تركيب الفرق التلقائي: سد الفجوات الفردية بكفاءات مكملة مع عقد ضمان موحد' : 'Assembling cross-functional squads: individual gaps bridged by verified peer proofs'}
+                <p style={{ fontSize: '13.5px', color: 'var(--slate-600)', margin: '4px 0 0' }}>
+                  {isRtl ? 'نجمع لك أفضل المستقلين الذين تكمل مهاراتهم بعضها البعض لإنجاز المشاريع الكبيرة بعقد ضمان مالي موحد وشفاف.' : 'Assemble complementary verified specialists to cover 100% of complex project requirements under a unified escrow contract.'}
                 </p>
               </div>
             </div>
 
-            <p style={{ fontSize: '14px', color: 'var(--slate-600)', lineHeight: 1.65, marginTop: '10px' }}>
-              {isRtl
-                ? 'المشروعات الكبرى نادراً ما يغطيها مستقل واحد بمفرده. في قُدرة، يحلل النظام فجوات المشكلة (مثل حاجة المشروع لمهندس Kafka متخصص مع خبير أمن NCA)، ويقترح تشكيل فريق متكامل يغطي 100% من المتطلبات، مع تقسيم مالي شفاف للضمان وعقد ذكي موحد.'
-                : 'Pillar 2 Collective Squad: Turning individual gaps into verified collaborative squads. Full capability coverage backed by mutual escrow contracts and transparent revenue splits.'}
-            </p>
-
             {/* Target Project Ref */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '16px', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '14px', flexWrap: 'wrap' }}>
               <div
                 style={{
                   padding: '6px 14px',
@@ -98,7 +92,7 @@ export default function TeamComposer({ onNavigate, onOpenExplain, isRtl = true }
                   fontWeight: '700'
                 }}
               >
-                {isRtl ? 'المشروع المستهدف: منصة التقنية المالية السعودية (FinTech - NCA)' : 'Target: Saudi FinTech Infrastructure'}
+                {isRtl ? 'المشروع: منصة التقنية المالية السعودية (FinTech)' : 'Project: Saudi FinTech Infrastructure'}
               </div>
 
               {onNavigate && (
@@ -108,7 +102,7 @@ export default function TeamComposer({ onNavigate, onOpenExplain, isRtl = true }
                   style={{ gap: '5px', fontSize: '12px' }}
                 >
                   <Layers size={13} color="var(--qudra-teal)" />
-                  <span>{isRtl ? 'عرض المشكلة في M15' : 'View Problem (M15)'}</span>
+                  <span>{isRtl ? 'عرض توصيف المشروع' : 'View Project Scope'}</span>
                 </button>
               )}
             </div>
@@ -452,7 +446,7 @@ export default function TeamComposer({ onNavigate, onOpenExplain, isRtl = true }
             }}
           >
             <Send size={15} color="var(--qudra-yellow, #FFC107)" />
-            <span>{isRtl ? 'تدشين المشروع في مساحة العمل (M21) ▶' : 'Launch Workspace (M21) ▶'}</span>
+            <span>{isRtl ? 'بدء المشروع في مساحة العمل' : 'Launch Project Workspace'}</span>
           </button>
         </div>
       </div>

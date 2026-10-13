@@ -43,24 +43,19 @@ export default function GenericStateView({
       <div className="hero-card" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-            <span style={{ backgroundColor: 'var(--teal-600)', color: '#fff', padding: '3px 8px', borderRadius: '4px', fontSize: '13px', fontWeight: '800', fontFamily: 'monospace' }}>
-              {qCode}
+            <span className="badge-pill" style={{ backgroundColor: 'var(--teal-50)', color: 'var(--teal-700)', border: '1px solid var(--teal-100)', fontSize: '12px', fontWeight: '700' }}>
+              {isRtl ? moduleData.nameAr : moduleData.nameEn}
             </span>
-            {stateData.isAnchor && (
-              <span className="badge-pill" style={{ backgroundColor: '#2563eb', color: '#fff', fontSize: '12px', fontWeight: '700' }}>
-                {isRtl ? 'شاشة ارتكاز رئيسية' : 'Anchor Screen'}
-              </span>
-            )}
-            <span style={{ fontSize: '13px', color: 'var(--slate-500)', fontWeight: '600' }}>
-              {moduleData.code} · {isRtl ? moduleData.nameAr : moduleData.nameEn}
+            <span style={{ fontSize: '12.5px', color: 'var(--slate-500)', fontWeight: '600' }}>
+              {isRtl ? stateData.category : 'Section'}
             </span>
           </div>
 
           <h2 style={{ fontSize: '22px', fontWeight: '800', color: 'var(--slate-900)' }}>
-            {isRtl ? stateData.nameAr : stateData.nameEn}
+            {isRtl ? `${moduleData.nameAr} — ${stateData.nameAr}` : `${moduleData.nameEn} — ${stateData.nameEn}`}
           </h2>
           <p style={{ fontSize: '13.5px', color: 'var(--slate-600)', marginTop: '4px' }}>
-            {isRtl ? 'المرجع والنمط المعتمد: ' : 'Reference Pattern: '}{moduleData.competitor}
+            {moduleData.competitor}
           </p>
         </div>
 
@@ -70,7 +65,7 @@ export default function GenericStateView({
           style={{ gap: '6px' }}
         >
           <Sparkles size={14} color="var(--indigo-600)" />
-          <span>{isRtl ? 'تفسير منطق الحالة' : 'Explain Logic'}</span>
+          <span>{isRtl ? 'كيف يعمل هذا القسم؟' : 'How it works'}</span>
         </button>
       </div>
 
@@ -93,12 +88,12 @@ export default function GenericStateView({
             <Layers size={30} />
           </div>
           <h3 style={{ fontSize: '18px', fontWeight: '800', color: 'var(--slate-900)', marginBottom: '8px' }}>
-            {isRtl ? `لا توجد بيانات مسجلة في ${moduleData.nameAr} بعد` : `No records yet in ${moduleData.nameEn}`}
+            {isRtl ? `لا توجد عناصر مضافة في «${moduleData.nameAr}» حتى الآن` : `No records yet in ${moduleData.nameEn}`}
           </h3>
-          <p style={{ fontSize: '14px', color: 'var(--slate-600)', maxWidth: '480px', margin: '0 auto 20px', lineHeight: 1.5 }}>
+          <p style={{ fontSize: '14px', color: 'var(--slate-600)', maxWidth: '460px', margin: '0 auto 20px', lineHeight: 1.6 }}>
             {isRtl
-              ? 'وفقاً لقاعدة قُدرة: الحالة الفارغة لا تلوم المستخدم، بل تقدم خطوة إيجابية واضحة للبدء بأول دليل فوري.'
-              : 'Qudra Rule: Empty states do not blame the user, but provide one direct, positive action.'}
+              ? 'ابدأ بربط حساباتك المهنية أو إضافة أول عمل موثق ليظهر هنا تلقائياً.'
+              : 'Start by connecting your professional accounts or adding your first verified item.'}
           </p>
           <button
             onClick={() => onNavigate('M03')}
@@ -106,7 +101,7 @@ export default function GenericStateView({
             style={{ gap: '6px' }}
           >
             <Plus size={16} />
-            <span>{isRtl ? 'ربط أول موصل للحصول على أول دليل' : 'Connect First Source'}</span>
+            <span>{isRtl ? 'ربط حساب مهني الآن' : 'Connect Account'}</span>
           </button>
         </div>
       )}
@@ -130,27 +125,27 @@ export default function GenericStateView({
             </div>
             <div>
               <h3 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--danger-color)', marginBottom: '6px' }}>
-                {isRtl ? 'تعذر التحقق من الموصل أو مزامنة الدليل' : 'Sync Verification Failed'}
+                {isRtl ? 'تعذر إتمام المزامنة مؤقتاً' : 'Sync Temporarily Unavailable'}
               </h3>
               <p style={{ fontSize: '13.5px', color: 'var(--slate-700)', lineHeight: 1.6, marginBottom: '16px' }}>
                 {isRtl
-                  ? 'حدث انقطاع مؤقت في نقطة النهاية للطرف الثالث. تم حفظ مسودتك محلياً ولن تفقد أي بيانات قمت بإدخالها (مبدأ الصمود أمام الاتصال المتقطع).'
-                  : 'Temporary endpoint disruption. Draft preserved locally; no inputs were lost thanks to offline resilience.'}
+                  ? 'حدث انقطاع مؤقت أثناء الاتصال بالخدمة الخارجية. تم حفظ بياناتك محلياً ولن تفقد أي تغييرات قمت بها.'
+                  : 'Temporary connection issue. Your draft is safely saved locally.'}
               </p>
               <div style={{ display: 'flex', gap: '10px' }}>
                 <button
-                  onClick={() => showToast(isRtl ? 'جارِ إعادة الاتصال بالخادم والتحقق من الاستجابة...' : 'Retrying endpoint verification...', 'info')}
+                  onClick={() => showToast(isRtl ? 'جارِ إعادة المحاولة وتحديث البيانات...' : 'Retrying connection...', 'info')}
                   className="btn btn-primary btn-sm"
                   style={{ gap: '6px', backgroundColor: 'var(--danger-color)' }}
                 >
                   <RefreshCw size={13} />
-                  <span>{isRtl ? 'إعادة المحاولة الفورية' : 'Retry Verification'}</span>
+                  <span>{isRtl ? 'إعادة المحاولة' : 'Try Again'}</span>
                 </button>
                 <button
                   onClick={() => onNavigate('M02')}
                   className="btn btn-secondary btn-sm"
                 >
-                  {isRtl ? 'العودة للرئيسية' : 'Back to Dashboard'}
+                  {isRtl ? 'العودة للرئيسية' : 'Back to Home'}
                 </button>
               </div>
             </div>
@@ -290,7 +285,7 @@ export default function GenericStateView({
         <div className="card">
           <div className="card-header">
             <h3 className="card-title">
-              {isRtl ? `عرض تفاصيل الحالة: ${stateData.nameAr}` : `State View: ${stateData.nameEn}`}
+              {isRtl ? `${moduleData.nameAr} — ${stateData.nameAr}` : `${moduleData.nameEn} — ${stateData.nameEn}`}
             </h3>
             <span className="badge-pill" style={{ backgroundColor: 'var(--slate-100)', color: 'var(--slate-700)' }}>
               {stateData.category}
@@ -304,13 +299,13 @@ export default function GenericStateView({
             border: '1px solid var(--slate-100)',
             marginBottom: '16px'
           }}>
-            <h4 style={{ fontSize: '15px', fontWeight: '700', color: 'var(--slate-900)', marginBottom: '8px' }}>
-              {isRtl ? `حالة ${stateData.nameAr} في ${moduleData.nameAr}` : `${stateData.nameEn} in ${moduleData.nameEn}`}
+            <h4 style={{ fontSize: '15px', fontWeight: '700', color: 'var(--slate-900)', marginBottom: '6px' }}>
+              {isRtl ? moduleData.nameAr : moduleData.nameEn}
             </h4>
             <p style={{ fontSize: '13.5px', color: 'var(--slate-600)', lineHeight: 1.6, marginBottom: '14px' }}>
               {isRtl
-                ? `هذه الشاشة تمثل الحالة التفاعلية [${stateData.nameAr}] المخصصة للوحدة [${moduleData.nameAr}]. تدعم كافة قواعد قُدرة المعمارية: Proven ≠ Claimed، وتدفق RTL منطقي، وتوثيق صريح لمصادر الأدلة.`
-                : `This view represents interactive state [${stateData.nameEn}] for module [${moduleData.nameEn}]. Fully adhering to Qudra core rules.`}
+                ? `${moduleData.competitor}. يمكنك استعراض وتحديث بياناتك الموثقة من خلال هذه الواجهة.`
+                : `${moduleData.competitor}. Review and manage your verified records directly from this view.`}
             </p>
 
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
@@ -319,17 +314,13 @@ export default function GenericStateView({
             </div>
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '12px', color: 'var(--slate-500)' }}>
-              {isRtl ? 'معرف الشاشة: ' : 'Screen ID: '}
-              <strong style={{ fontFamily: 'monospace' }}>{qCode}</strong>
-            </span>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
             <button
               onClick={() => onNavigate('M02')}
               className="btn btn-secondary btn-sm"
               style={{ gap: '6px' }}
             >
-              <span>{isRtl ? 'العودة للوحة الرئيسية' : 'Return to Home'}</span>
+              <span>{isRtl ? 'العودة للرئيسية' : 'Return to Home'}</span>
               <ArrowIcon size={14} />
             </button>
           </div>

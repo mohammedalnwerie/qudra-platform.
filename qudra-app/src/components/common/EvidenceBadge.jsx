@@ -21,16 +21,16 @@ export default function EvidenceBadge({ status, score, onClick, labelOverride, i
   );
 
   const defaultTextAr = isProven
-    ? 'دليل مُثبت'
+    ? 'مهارة موثقة'
     : isClaimed
-    ? 'مُعلن ذاتياً'
-    : 'فجوة قائمة';
+    ? 'مضاف يدوياً'
+    : 'مهارة مطلوبة';
 
   const defaultTextEn = isProven
-    ? 'Proven Evidence'
+    ? 'Verified Skill'
     : isClaimed
-    ? 'Self-Claimed'
-    : 'Capability Gap';
+    ? 'Self-Added'
+    : 'Skill Needed';
 
   const text = labelOverride || (isRtl ? defaultTextAr : defaultTextEn);
 
@@ -39,7 +39,7 @@ export default function EvidenceBadge({ status, score, onClick, labelOverride, i
       className={`badge-evidence ${badgeClass}`}
       onClick={onClick}
       style={{ cursor: onClick ? 'pointer' : 'default' }}
-      title={isProven ? 'تم التحقق من خلال موصل رسمي أو مراجعة معتمدة' : isClaimed ? 'ذكرها المستخدم؛ تتطلب تحدياً أو مراجعة لإثباتها' : 'مهارة ناقصة تحول دون التأهل الكامل'}
+      title={isProven ? 'تم التوثيق عبر ربط الحسابات أو اجتياز اختبار عملي' : isClaimed ? 'مهارة مضافة يدوياً؛ يمكنك توثيقها باختبار عملي سريع' : 'مهارة مطلوبة لإكمال متطلبات المشروع'}
     >
       {icon}
       <span>{text}</span>

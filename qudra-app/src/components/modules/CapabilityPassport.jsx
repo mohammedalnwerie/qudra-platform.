@@ -125,26 +125,20 @@ export default function CapabilityPassport({ currentPersona, isRtl = true }) {
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <h1 style={{ fontSize: '22px', fontWeight: '800', color: 'var(--qudra-obsidian, #1A1A1A)', margin: 0 }}>
-                    {isRtl ? 'جواز القدرات الرقمي الموثق' : 'Verifiable Capability Passport'}
+                    {isRtl ? 'جواز المهارات الموثق' : 'Verified Skill Passport'}
                   </h1>
                   <span className="badge-teal" style={{ fontSize: '11px', padding: '2px 8px' }}>
-                    {isRtl ? 'المستوى M07 · W3C VC' : 'M07 · W3C VC'}
+                    {isRtl ? 'جاهز للمشاركة' : 'Shareable'}
                   </span>
                 </div>
-                <p style={{ fontSize: '13px', color: 'var(--slate-500)', margin: '2px 0 0' }}>
-                  {isRtl ? 'الملف التوثيقي الموحد والمحمول: معتمد بشرياً وآلياً وخالٍ من الادعاءات غير المؤكدة' : 'The portable, tamper-evident competency passport: human and AI agent readable'}
+                <p style={{ fontSize: '13.5px', color: 'var(--slate-600)', margin: '4px 0 0' }}>
+                  {isRtl ? 'ملفك المهني الموحد الذي يجمع مهاراتك الموثقة وشهاداتك وأعمالك في رابط رسمي واحد.' : 'Your unified professional profile combining verified skills, certificates, and deliverables in one official link.'}
                 </p>
               </div>
             </div>
 
-            <p style={{ fontSize: '14px', color: 'var(--slate-600)', lineHeight: 1.65, marginTop: '12px' }}>
-              {isRtl
-                ? 'الركيزة الأولى لمنصة قُدرة: بديل السيرة الذاتية الورقية والادعاءات العشوائية. رابط موثق واحد يجمع كل أدلتك التشفيرية المعتمدة، يفهمه صاحب العمل البشري وتفهمه أدوات ووكلاء التوظيف بالذكاء الاصطناعي (AI Agents)، ومحمول خارج المنصة دون احتكار.'
-                : 'Pillar 1 in action: Replacing fragile paper resumes with cryptographically backed capability vectors. Portable across platforms, verifiable by employers and AI recruitment engines.'}
-            </p>
-
             {/* Quick Share Buttons */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '18px', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '14px', flexWrap: 'wrap' }}>
               <button
                 onClick={handleCopyUrl}
                 className="btn btn-primary"
@@ -182,7 +176,7 @@ export default function CapabilityPassport({ currentPersona, isRtl = true }) {
                 }}
               >
                 <Bot size={14} color="var(--qudra-teal, #008B8B)" />
-                <span>{isRtl ? 'كود الـ AI (JSON-LD)' : 'AI JSON-LD'}</span>
+                <span>{isRtl ? 'بيانات المطورين (JSON)' : 'Developer JSON'}</span>
               </button>
             </div>
           </div>
@@ -221,7 +215,7 @@ export default function CapabilityPassport({ currentPersona, isRtl = true }) {
             </div>
 
             <span style={{ fontSize: '11px', fontWeight: '900', color: '#b45309', letterSpacing: '0.08em', marginBottom: '2px' }}>
-              QUDRA SEAL OF TRUST
+              QUDRA VERIFIED
             </span>
 
             <div style={{ fontSize: '24px', fontWeight: '900', color: 'var(--qudra-teal, #008B8B)', fontFamily: 'monospace' }}>
@@ -229,12 +223,12 @@ export default function CapabilityPassport({ currentPersona, isRtl = true }) {
             </div>
 
             <span style={{ fontSize: '11.5px', color: 'var(--slate-500)', marginTop: '2px' }}>
-              {isRtl ? 'درجة الموثوقية التشفيرية' : 'Cryptographic Trust Score'}
+              {isRtl ? 'معدل الموثوقية العام' : 'Overall Trust Score'}
             </span>
 
-            <div style={{ marginTop: '10px', paddingTop: '10px', borderTop: '1px dashed var(--border-color)', width: '100%', fontSize: '11px', color: '#166534', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <div style={{ marginTop: '10px', paddingTop: '10px', borderTop: '1px dashed var(--border-color)', width: '100%', fontSize: '11px', color: '#166534', fontWeight: '700', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
               <CheckCircle2 size={13} color="#166534" />
-              <span>{isRtl ? 'معتمد بشهادة W3C VC 2.0' : 'W3C VC 2.0 Verified'}</span>
+              <span>{isRtl ? 'موثق ومعتمد رسمياً' : 'Officially Verified'}</span>
             </div>
           </div>
         </div>
@@ -409,7 +403,7 @@ export default function CapabilityPassport({ currentPersona, isRtl = true }) {
             }}
           >
             <Layers size={16} color={activeTab === 'matrix' ? 'var(--qudra-teal)' : 'var(--slate-400)'} />
-            <span>{isRtl ? 'مصفوفة القدرات المعتمدة (Matrix)' : 'Capability Matrix'}</span>
+            <span>{isRtl ? 'المهارات والخبرات المعتمدة' : 'Verified Skills'}</span>
           </button>
 
           <button
@@ -429,7 +423,7 @@ export default function CapabilityPassport({ currentPersona, isRtl = true }) {
             }}
           >
             <FileCode size={16} color={activeTab === 'proofs' ? 'var(--qudra-teal)' : 'var(--slate-400)'} />
-            <span>{isRtl ? 'سجل البصمات التشفيرية (Audit Proofs)' : 'Audit Proofs'}</span>
+            <span>{isRtl ? 'سجل الشهادات والأعمال الموثقة' : 'Verified Proofs'}</span>
             <span style={{ backgroundColor: 'var(--slate-100)', color: 'var(--slate-700)', padding: '1px 6px', borderRadius: '10px', fontSize: '11px', fontWeight: '800' }}>
               {visibleProofs.length}
             </span>
@@ -452,7 +446,7 @@ export default function CapabilityPassport({ currentPersona, isRtl = true }) {
             }}
           >
             <Bot size={16} color={activeTab === 'ai' ? 'var(--qudra-teal)' : 'var(--slate-400)'} />
-            <span>{isRtl ? 'نسخة الذكاء الاصطناعي (JSON-LD)' : 'AI Machine View'}</span>
+            <span>{isRtl ? 'بيانات الربط البرمجي (JSON)' : 'Machine-Readable JSON'}</span>
           </button>
         </div>
 
@@ -462,11 +456,11 @@ export default function CapabilityPassport({ currentPersona, isRtl = true }) {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
               <p style={{ fontSize: '13px', color: 'var(--slate-500)', margin: 0 }}>
                 {isRtl
-                  ? 'تم استنتاج كل قدرة بناءً على تحليل متعدد المصادر، وتصنيف الأكواد، ومخرجات العقود المنفذة.'
-                  : 'Every capability is synthesized from verifiable multi-source evidence and cryptographic challenge proofs.'}
+                  ? 'يتم احتساب مستوى كل مهارة تلقائياً بناءً على مشاريعك المنجزة وحساباتك المربوطة.'
+                  : 'Each skill level is calculated automatically from your completed projects and connected accounts.'}
               </p>
               <span style={{ fontSize: '12px', color: 'var(--slate-400)', fontWeight: '600' }}>
-                {isRtl ? 'انقر على أي مهارة لعرض أدلتها التشفيرية المباشرة' : 'Click any capability to inspect linked proofs'}
+                {isRtl ? 'اضغط على أي مهارة لعرض الشهادات والأعمال المرتبطة بها' : 'Click any skill to inspect linked proofs'}
               </span>
             </div>
 
