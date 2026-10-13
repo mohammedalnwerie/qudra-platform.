@@ -103,7 +103,7 @@ export default function CapabilityPassport({ currentPersona, isRtl = true }) {
   }, [selectedSkillFilter]);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+    <div className="page-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
       {/* 1. Unified Editorial Profile Banner (Contra / Read.cv Dossier Pattern) */}
       <div
         className="card"
@@ -463,71 +463,8 @@ export default function CapabilityPassport({ currentPersona, isRtl = true }) {
               <span>{isRtl ? 'بيانات الربط البرمجي (JSON)' : 'Machine-Readable JSON'}</span>
             </button>
           </div>
-          <button
-            onClick={() => { setActiveTab('matrix'); setSelectedSkillFilter(null); }}
-            style={{
-              padding: '10px 18px',
-              border: 'none',
-              background: 'none',
-              borderBottom: activeTab === 'matrix' ? '3px solid var(--qudra-teal, #00B8B8)' : '3px solid transparent',
-              fontWeight: activeTab === 'matrix' ? '800' : '600',
-              color: activeTab === 'matrix' ? 'var(--qudra-obsidian, #1A1A1A)' : 'var(--slate-500)',
-              fontSize: '13.5px',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px'
-            }}
-          >
-            <Layers size={16} color={activeTab === 'matrix' ? 'var(--qudra-teal)' : 'var(--slate-400)'} />
-            <span>{isRtl ? 'المهارات والخبرات المعتمدة' : 'Verified Skills'}</span>
-          </button>
 
-          <button
-            onClick={() => setActiveTab('proofs')}
-            style={{
-              padding: '10px 18px',
-              border: 'none',
-              background: 'none',
-              borderBottom: activeTab === 'proofs' ? '3px solid var(--qudra-teal, #00B8B8)' : '3px solid transparent',
-              fontWeight: activeTab === 'proofs' ? '800' : '600',
-              color: activeTab === 'proofs' ? 'var(--qudra-obsidian, #1A1A1A)' : 'var(--slate-500)',
-              fontSize: '13.5px',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px'
-            }}
-          >
-            <FileCode size={16} color={activeTab === 'proofs' ? 'var(--qudra-teal)' : 'var(--slate-400)'} />
-            <span>{isRtl ? 'سجل الشهادات والأعمال الموثقة' : 'Verified Proofs'}</span>
-            <span style={{ backgroundColor: 'var(--slate-100)', color: 'var(--slate-700)', padding: '1px 6px', borderRadius: '10px', fontSize: '11px', fontWeight: '800' }}>
-              {visibleProofs.length}
-            </span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('ai')}
-            style={{
-              padding: '10px 18px',
-              border: 'none',
-              background: 'none',
-              borderBottom: activeTab === 'ai' ? '3px solid var(--qudra-teal, #00B8B8)' : '3px solid transparent',
-              fontWeight: activeTab === 'ai' ? '800' : '600',
-              color: activeTab === 'ai' ? 'var(--qudra-obsidian, #1A1A1A)' : 'var(--slate-500)',
-              fontSize: '13.5px',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px'
-            }}
-          >
-            <Bot size={16} color={activeTab === 'ai' ? 'var(--qudra-teal)' : 'var(--slate-400)'} />
-            <span>{isRtl ? 'بيانات الربط البرمجي (JSON)' : 'Machine-Readable JSON'}</span>
-          </button>
-        </div>
-
-        {/* Tab 1: Capability Matrix */}
+          {/* Tab 1: Capability Matrix */}
         {activeTab === 'matrix' && (
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
@@ -550,7 +487,7 @@ export default function CapabilityPassport({ currentPersona, isRtl = true }) {
                 return (
                   <div
                     key={idx}
-                    className="card capability-item-box"
+                    className={`card capability-item-box card-interactive shimmer-card stagger-item stagger-item-${(idx % 4) + 1}`}
                     style={{
                       padding: '18px 20px',
                       borderRadius: 'var(--radius-lg)',
@@ -657,9 +594,10 @@ export default function CapabilityPassport({ currentPersona, isRtl = true }) {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {visibleProofs.map((ev) => (
+              {visibleProofs.map((ev, idx) => (
                 <div
                   key={ev.id}
+                  className={`card card-interactive shimmer-card stagger-item stagger-item-${(idx % 4) + 1}`}
                   style={{
                     padding: '14px 18px',
                     borderRadius: 'var(--radius-md)',
@@ -744,6 +682,7 @@ export default function CapabilityPassport({ currentPersona, isRtl = true }) {
             </pre>
           </div>
         )}
+        </div>
       </div>
 
       {/* 3. Share & Embed Modal */}

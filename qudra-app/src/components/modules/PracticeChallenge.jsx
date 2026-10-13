@@ -30,6 +30,7 @@ import {
 } from 'lucide-react';
 import { MOCK_INTERACTIVE_CHALLENGE } from '../../data/mockData';
 import { useToast } from '../common/ToastContext';
+import { triggerCelebration } from '../../utils/motion';
 
 export default function PracticeChallenge({ onNavigate, onEvidenceGenerated, isRtl = true }) {
   const { showToast } = useToast();
@@ -153,6 +154,7 @@ module.exports = { fetchRemoteAvatar };`;
     setTimeout(() => {
       setIsRunning(false);
       setHasRun(true);
+      triggerCelebration({ x: 0.65, y: 0.5 });
       showToast(
         isRtl
           ? 'اجتاز الكود كافة اختبارات الأمان الـ 6 بنجاح تام!'
@@ -179,6 +181,7 @@ module.exports = { fetchRemoteAvatar };`;
     const hash = '0x1c4d98a2e01b33f99017281bcda90192e20177bb3a01';
     setIsMinted(true);
     setMintedHash(hash);
+    triggerCelebration({ x: 0.5, y: 0.4 });
     showToast(
       isRtl
         ? 'تهانينا! تم إصدار الدليل التشفيري بنجاح بالبصمة 0x1c4d...e201 وإضافته إلى سجل الأدلة وجواز قدراتك.'
@@ -188,7 +191,7 @@ module.exports = { fetchRemoteAvatar };`;
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    <div className="page-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       {/* 1. Engineering Workbench Command Bar (Replaces bulky hero card) */}
       <div
         className="workbench-command-bar"

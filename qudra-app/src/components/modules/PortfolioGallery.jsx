@@ -77,7 +77,7 @@ export default function PortfolioGallery({ onNavigate, isRtl = true }) {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+    <div className="page-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
       {/* 1. Header Bar */}
       <div
         className="card"
@@ -172,10 +172,10 @@ export default function PortfolioGallery({ onNavigate, isRtl = true }) {
 
       {/* 3. Portfolio Showcase Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '16px' }}>
-        {filteredItems.map((item) => (
+        {filteredItems.map((item, idx) => (
           <div
             key={item.id}
-            className="card"
+            className={`card card-interactive shimmer-card stagger-item stagger-item-${(idx % 4) + 1}`}
             style={{
               padding: '22px',
               backgroundColor: '#ffffff',

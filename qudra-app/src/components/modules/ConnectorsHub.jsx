@@ -110,7 +110,7 @@ export default function ConnectorsHub({ isRtl = true }) {
   });
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
+    <div className="page-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
       {/* 1. Header Bar (Clean, no bulky hero cards) */}
       <div
         className="card"
@@ -199,7 +199,7 @@ export default function ConnectorsHub({ isRtl = true }) {
           </div>
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(290px, 1fr))', gap: '12px' }}>
-            {connectedList.map((conn) => {
+            {connectedList.map((conn, idx) => {
               const IconComp = ICON_COMPONENTS[conn.icon] || Link2;
               const isSyncing = syncingId === conn.id;
               const isJustSynced = justSyncedId === conn.id;
@@ -207,7 +207,7 @@ export default function ConnectorsHub({ isRtl = true }) {
               return (
                 <div
                   key={conn.id}
-                  className="card"
+                  className={`card card-interactive shimmer-card stagger-item stagger-item-${(idx % 4) + 1}`}
                   style={{
                     padding: '16px',
                     backgroundColor: '#ffffff',
@@ -351,13 +351,13 @@ export default function ConnectorsHub({ isRtl = true }) {
 
         {/* Available Connectors Cards */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(290px, 1fr))', gap: '12px' }}>
-          {filteredAvailable.map((conn) => {
+          {filteredAvailable.map((conn, idx) => {
             const IconComp = ICON_COMPONENTS[conn.icon] || Link2;
 
             return (
               <div
                 key={conn.id}
-                className="card"
+                className={`card card-interactive shimmer-card stagger-item stagger-item-${(idx % 4) + 1}`}
                 style={{
                   padding: '16px',
                   backgroundColor: '#ffffff',

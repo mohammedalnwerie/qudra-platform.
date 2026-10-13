@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { MOCK_TEAM_COMPOSITION, MOCK_PROBLEM } from '../../data/mockData';
 import { useToast } from '../common/ToastContext';
+import { triggerCelebration } from '../../utils/motion';
 
 export default function TeamComposer({ onNavigate, onOpenExplain, isRtl = true }) {
   const { showToast } = useToast();
@@ -55,12 +56,13 @@ export default function TeamComposer({ onNavigate, onOpenExplain, isRtl = true }
 
   const handleSignAndLaunch = () => {
     setShowContractModal(false);
+    triggerCelebration({ x: 0.5, y: 0.5 });
     showToast(isRtl ? 'تم توقيع عقد الضمان المالي المشترك وتدشين مساحة عمل المشروع بنجاح!' : 'Squad contract signed and workspace launched!');
     if (onNavigate) onNavigate('M21');
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+    <div className="page-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
       {/* 1. Header Bar (Clean, no bulky hero card) */}
       <div
         className="card"
@@ -135,7 +137,7 @@ export default function TeamComposer({ onNavigate, onOpenExplain, isRtl = true }
 
       {/* 2. Squad Canvas: 3 Complementary Specialist Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px' }}>
-        {MOCK_TEAM_COMPOSITION.members.map((member) => {
+        {MOCK_TEAM_COMPOSITION.members.map((member, idx) => {
           const key = member.id === 'm-1' ? 'karim' : member.id === 'm-2' ? 'ahmed' : 'lina';
           const sharePct = squadShares[key] || (key === 'karim' ? 50 : key === 'ahmed' ? 30 : 20);
           const payoutAmount = Math.round((sharePct / 100) * totalBudget);
@@ -143,7 +145,7 @@ export default function TeamComposer({ onNavigate, onOpenExplain, isRtl = true }
           return (
             <div
               key={member.id}
-              className="card"
+              className={`card card-interactive shimmer-card stagger-item stagger-item-${(idx % 4) + 1}`}
               style={{
                 backgroundColor: '#ffffff',
                 borderRadius: 'var(--radius-lg)',

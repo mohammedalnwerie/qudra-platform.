@@ -22,6 +22,7 @@ import {
   FileCheck2
 } from 'lucide-react';
 import { useToast } from '../common/ToastContext';
+import { triggerCelebration } from '../../utils/motion';
 
 export default function ProjectWorkspace({ onNavigate, isRtl = true }) {
   const { showToast } = useToast();
@@ -80,13 +81,14 @@ export default function ProjectWorkspace({ onNavigate, isRtl = true }) {
       prev.map((m) => (m.id === id ? { ...m, status: 'completed', proofMinted: generatedProofHash } : m))
     );
     setSelectedMilestoneForRelease(null);
+    triggerCelebration({ x: 0.5, y: 0.5 });
     showToast(isRtl
       ? 'تم اعتماد التسليم والإفراج عن 24,000 ر.س من الضمان المالي! تم توليد دليل مخرجات تشفيري وإضافته لجواز قدرات الفريق.'
       : 'Milestone approved! 24,000 SAR released and outcome evidence minted to capability passports.');
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+    <div className="page-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
       {/* 1. Header Bar (Clean, no bulky hero card) */}
       <div
         className="card"
@@ -237,7 +239,7 @@ export default function ProjectWorkspace({ onNavigate, isRtl = true }) {
             return (
               <div
                 key={m.id}
-                className="card"
+                className={`card card-interactive shimmer-card stagger-item stagger-item-${(idx % 4) + 1}`}
                 style={{
                   padding: '18px 22px',
                   backgroundColor: '#ffffff',

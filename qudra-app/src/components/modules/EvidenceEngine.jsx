@@ -135,7 +135,7 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+    <div className="page-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
       {/* 1. Header & Live Metrics Bar */}
       <div
         className="card"
@@ -423,6 +423,7 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
                   return (
                     <tr
                       key={item.id}
+                      className={`stagger-item stagger-item-${(idx % 4) + 1}`}
                       style={{
                         borderBottom: idx === filtered.length - 1 ? 'none' : '1px solid var(--border-color)',
                         backgroundColor: inspectItem?.id === item.id ? '#f0fdfa' : '#ffffff',
@@ -567,7 +568,7 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
       ) : (
         /* GRID VIEW (Modern Cards with Asymmetric Accent) */
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '14px' }}>
-          {filtered.map((item) => {
+          {filtered.map((item, idx) => {
             const isProven = item.status === 'proven';
             const isClaimed = item.status === 'claimed';
             const tier = getTierWeight(item.trustTier);
@@ -575,7 +576,7 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
             return (
               <div
                 key={item.id}
-                className="card"
+                className={`card card-interactive shimmer-card stagger-item stagger-item-${(idx % 4) + 1}`}
                 style={{
                   backgroundColor: '#ffffff',
                   borderRadius: 'var(--radius-lg)',

@@ -134,7 +134,7 @@ export default function ProblemAnalyzer({
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+    <div className="page-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
       {/* 1. Header Bar (Clean, no bulky hero cards) */}
       <div
         className="card"
@@ -430,13 +430,13 @@ export default function ProblemAnalyzer({
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {/* Candidates Comparison Strips (3 Candidates) */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '12px' }}>
-            {CANDIDATES.map((cand) => {
+            {CANDIDATES.map((cand, idx) => {
               const isSelected = cand.id === selectedCandidateId;
               return (
                 <div
                   key={cand.id}
                   onClick={() => setSelectedCandidateId(cand.id)}
-                  className="card"
+                  className={`card card-interactive shimmer-card stagger-item stagger-item-${(idx % 4) + 1}`}
                   style={{
                     padding: '16px 18px',
                     borderRadius: 'var(--radius-lg)',

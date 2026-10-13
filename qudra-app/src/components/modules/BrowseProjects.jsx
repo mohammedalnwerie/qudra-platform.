@@ -108,7 +108,7 @@ export default function BrowseProjects({ onNavigate, isRtl = true }) {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+    <div className="page-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
       {/* 1. Header Bar */}
       <div
         className="card"
@@ -251,13 +251,13 @@ export default function BrowseProjects({ onNavigate, isRtl = true }) {
 
       {/* 3. Opportunities List */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-        {filteredProjects.map((proj) => {
+        {filteredProjects.map((proj, idx) => {
           const isApplied = appliedProjectIds.includes(proj.id);
 
           return (
             <div
               key={proj.id}
-              className="card"
+              className={`card card-interactive shimmer-card stagger-item stagger-item-${(idx % 4) + 1}`}
               style={{
                 padding: '20px 24px',
                 backgroundColor: '#ffffff',

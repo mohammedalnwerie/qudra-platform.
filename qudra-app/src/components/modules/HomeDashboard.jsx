@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   ShieldCheck,
   Sparkles,
@@ -33,6 +33,7 @@ import EvidenceBadge from '../common/EvidenceBadge';
 import TrustChip from '../common/TrustChip';
 import { MOCK_EVIDENCE_ITEMS, MOCK_PROBLEM } from '../../data/mockData';
 import { useToast } from '../common/ToastContext';
+import { animateCounter, triggerCelebration } from '../../utils/motion';
 
 export default function HomeDashboard({
   currentPersona,
@@ -44,26 +45,41 @@ export default function HomeDashboard({
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
   const [copiedPassport, setCopiedPassport] = useState(false);
 
+  // Counter Refs
+  const m1Ref = useRef(null);
+  const m2Ref = useRef(null);
+  const m3Ref = useRef(null);
+  const m4Ref = useRef(null);
+
   // Calculate stats based on persona or defaults
   const provenCount = currentPersona?.provenCount || 12;
   const claimedCount = currentPersona?.claimedCount || 4;
   const gapCount = currentPersona?.gapCount || 2;
   const trustScore = currentPersona?.trustScore || 94;
 
+  useEffect(() => {
+    // Animate metric counters smoothly on mount
+    animateCounter(m1Ref.current, 0, provenCount, 1.1);
+    animateCounter(m2Ref.current, 0, 94, 1.25, { formatter: v => `${v}%` });
+    animateCounter(m3Ref.current, 0, gapCount, 0.9);
+    animateCounter(m4Ref.current, 0, trustScore, 1.3, { formatter: v => `${v}%` });
+  }, [provenCount, gapCount, trustScore]);
+
   const handleSharePassport = () => {
     if (navigator.clipboard) {
       navigator.clipboard.writeText('https://qudra.sa/p/did:qudra:sa:0x71c828e678a192ec492a');
     }
     setCopiedPassport(true);
+    triggerCelebration({ x: 0.85, y: 0.22 });
     showToast(isRtl ? 'تم نسخ الرابط العام لجواز القدرات بنجاح!' : 'Public Passport link copied to clipboard!');
     setTimeout(() => setCopiedPassport(false), 2200);
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
+    <div className="page-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
       {/* 1. Executive Editorial Header Banner */}
       <div
-        className="card"
+        className="card card-interactive"
         style={{
           padding: '24px 28px',
           backgroundColor: '#ffffff',
@@ -220,7 +236,7 @@ export default function HomeDashboard({
           </div>
 
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
-            <span style={{ fontSize: '28px', fontWeight: '800', color: 'var(--slate-900)', fontVariantNumeric: 'tabular-nums' }}>
+            <span ref={m1Ref} style={{ fontSize: '28px', fontWeight: '800', color: 'var(--slate-900)', fontVariantNumeric: 'tabular-nums' }}>
               {provenCount}
             </span>
             <span style={{ fontSize: '13px', color: 'var(--slate-500)', fontWeight: '600' }}>
@@ -236,7 +252,7 @@ export default function HomeDashboard({
 
         {/* Metric 2: Top Match */}
         <div
-          className="card"
+          className="card card-interactive"
           onClick={() => onNavigate && onNavigate('M16')}
           style={{
             padding: '20px 22px',
@@ -271,7 +287,7 @@ export default function HomeDashboard({
           </div>
 
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
-            <span style={{ fontSize: '28px', fontWeight: '800', color: 'var(--qudra-teal-deep)', fontVariantNumeric: 'tabular-nums' }}>
+            <span ref={m2Ref} style={{ fontSize: '28px', fontWeight: '800', color: 'var(--qudra-teal-deep)', fontVariantNumeric: 'tabular-nums' }}>
               94%
             </span>
             <span style={{ fontSize: '13px', color: 'var(--slate-700)', fontWeight: '700' }}>
@@ -287,7 +303,7 @@ export default function HomeDashboard({
 
         {/* Metric 3: Gaps Target */}
         <div
-          className="card"
+          className="card card-interactive"
           onClick={() => onNavigate && onNavigate('M11')}
           style={{
             padding: '20px 22px',
@@ -322,7 +338,7 @@ export default function HomeDashboard({
           </div>
 
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
-            <span style={{ fontSize: '28px', fontWeight: '800', color: 'var(--slate-900)', fontVariantNumeric: 'tabular-nums' }}>
+            <span ref={m3Ref} style={{ fontSize: '28px', fontWeight: '800', color: 'var(--slate-900)', fontVariantNumeric: 'tabular-nums' }}>
               {gapCount}
             </span>
             <span style={{ fontSize: '13px', color: 'var(--slate-500)', fontWeight: '600' }}>
@@ -338,7 +354,7 @@ export default function HomeDashboard({
 
         {/* Metric 4: Trust Score Rating */}
         <div
-          className="card"
+          className="card card-interactive"
           onClick={() => onNavigate && onNavigate('M07')}
           style={{
             padding: '20px 22px',
@@ -361,7 +377,7 @@ export default function HomeDashboard({
           </div>
 
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
-            <span style={{ fontSize: '28px', fontWeight: '800', color: 'var(--slate-900)', fontVariantNumeric: 'tabular-nums' }}>
+            <span ref={m4Ref} style={{ fontSize: '28px', fontWeight: '800', color: 'var(--slate-900)', fontVariantNumeric: 'tabular-nums' }}>
               {trustScore}%
             </span>
             <span style={{ fontSize: '13px', color: 'var(--slate-500)', fontWeight: '600' }}>
@@ -626,8 +642,9 @@ export default function HomeDashboard({
           ].map((act) => (
             <div
               key={act.id}
+              className="stagger-item card-interactive"
               style={{
-                padding: '10px 14px',
+                padding: '12px 16px',
                 borderRadius: 'var(--radius-md)',
                 backgroundColor: '#f8fafc',
                 border: '1px solid var(--border-color)',
@@ -636,11 +653,12 @@ export default function HomeDashboard({
                 alignItems: 'center',
                 flexWrap: 'wrap',
                 gap: '8px',
-                fontSize: '12px'
+                fontSize: '12px',
+                transition: 'all var(--transition-smooth)'
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <CheckCircle2 size={15} color="var(--qudra-teal)" />
+                <span className="beacon-dot" style={{ marginInlineEnd: '4px' }} />
                 <div>
                   <div style={{ fontWeight: '700', color: 'var(--slate-900)' }}>
                     {act.title}
