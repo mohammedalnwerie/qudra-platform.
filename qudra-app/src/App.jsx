@@ -18,6 +18,7 @@ import PrivacyConsent from './components/modules/PrivacyConsent';
 import BrowseProjects from './components/modules/BrowseProjects';
 import PortfolioGallery from './components/modules/PortfolioGallery';
 import GenericStateView from './components/modules/GenericStateView';
+import CinematicIntro from './components/common/CinematicIntro';
 
 import {
   MODULES_METADATA,
@@ -50,6 +51,13 @@ export default function App() {
   const [showDevPill, setShowDevPill] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [theme, setTheme] = useState(() => localStorage.getItem('qudra_theme') || 'light');
+  const [showIntro, setShowIntro] = useState(() => {
+    try {
+      return !sessionStorage.getItem('qudra_intro_seen');
+    } catch {
+      return false;
+    }
+  });
 
   // Sync RTL and lang attributes
   useEffect(() => {
@@ -141,6 +149,7 @@ export default function App() {
           onOpenScreenExplorer={() => setIsScreenNavOpen(true)}
           onOpenSidebar={() => setIsMobileSidebarOpen(true)}
           currentPersona={currentPersona}
+          onReplayIntro={() => setShowIntro(true)}
         />
 
         {/* Content View */}
@@ -237,6 +246,14 @@ export default function App() {
           )}
         </main>
       </div>
+
+      {/* Cinematic Brand Intro / Splash Experience */}
+      {showIntro && (
+        <CinematicIntro
+          onComplete={() => setShowIntro(false)}
+          isRtl={isRtl}
+        />
+      )}
 
       {/* Discreet Floating Dev Pill (Replaces the heavy dark top bar) */}
       {showDevPill && (

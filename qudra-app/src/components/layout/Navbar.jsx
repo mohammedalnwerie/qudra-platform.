@@ -14,7 +14,8 @@ import {
   Building2,
   Award,
   ExternalLink,
-  Lock
+  Lock,
+  Play
 } from 'lucide-react';
 import { USER_PERSONAS } from '../../data/mockData';
 
@@ -28,7 +29,8 @@ export default function Navbar({
   onOpenExplain,
   onOpenScreenExplorer,
   onOpenSidebar,
-  currentPersona
+  currentPersona,
+  onReplayIntro
 }) {
   const [isPersonaOpen, setIsPersonaOpen] = useState(false);
   const popoverRef = useRef(null);
@@ -96,9 +98,23 @@ export default function Navbar({
           <Menu size={20} />
         </button>
 
-        <div className="brand-logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          <div className="brand-icon-box">
-            <ShieldCheck size={20} />
+        <div
+          className="brand-logo"
+          onClick={() => {
+            if (onReplayIntro) onReplayIntro();
+            else window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          title={isRtl ? 'تشغيل المقدمة السينمائية للعلامة' : 'Play Cinematic Intro'}
+        >
+          <div className="brand-icon-box" style={{ overflow: 'hidden', padding: '3px' }}>
+            <img
+              src="/brand/qudra-emblem-clean.png"
+              alt="QUDRA"
+              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+              onError={(e) => {
+                e.target.style.display = 'none';
+              }}
+            />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.25 }}>
             <span style={{ fontSize: '18px', fontWeight: '800', color: 'var(--qudra-obsidian)' }}>
@@ -113,6 +129,17 @@ export default function Navbar({
 
       {/* Right Controls: Role, Language, Explain, Profile */}
       <div className="nav-actions">
+        {/* Cinematic Intro Button */}
+        <button
+          onClick={onReplayIntro}
+          className="btn btn-ghost btn-sm hide-on-mobile"
+          style={{ gap: '5px', color: 'var(--qudra-teal-deep)', fontSize: '12px', fontWeight: '600' }}
+          title={isRtl ? 'مشاهدة المقدمة السينمائية للشعار' : 'Watch Cinematic Intro'}
+        >
+          <Play size={13} color="var(--qudra-teal)" />
+          <span>{isRtl ? 'المقدمة' : 'Intro'}</span>
+        </button>
+
         {/* Explain AI Drawer Trigger */}
         <button
           onClick={onOpenExplain}
