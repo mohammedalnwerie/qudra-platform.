@@ -23,19 +23,29 @@ import {
   Lock,
   Info,
   CheckSquare,
-  Zap
+  Zap,
+  LayoutGrid,
+  List,
+  ChevronRight,
+  ChevronLeft,
+  Eye,
+  SlidersHorizontal,
+  Code
 } from 'lucide-react';
 import EvidenceBadge from '../common/EvidenceBadge';
 import TrustChip from '../common/TrustChip';
 import { MOCK_EVIDENCE_ITEMS } from '../../data/mockData';
+import { useToast } from '../common/ToastContext';
 
 export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true }) {
-  const [filterStatus, setFilterStatus] = useState('all');
+  const { showToast } = useToast();
+  const [viewMode, setViewMode] = useState('table'); // 'table' | 'grid'
+  const [filterStatus, setFilterStatus] = useState('all'); // 'all' | 'proven' | 'claimed' | 'gap'
   const [filterCategory, setFilterCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedReceipt, setSelectedReceipt] = useState(null);
+  const [inspectItem, setInspectItem] = useState(null); // Side Drawer Inspector Item
   const [copiedId, setCopiedId] = useState(null);
-  const [syncNotice, setSyncNotice] = useState(null);
+  const [isVerifyingSync, setIsVerifyingSync] = useState(false);
 
   // Status counts
   const counts = useMemo(() => {
@@ -70,19 +80,19 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
       navigator.clipboard.writeText(text);
     }
     setCopiedId(id);
-    setTimeout(() => setCopiedId(null), 2500);
+    setTimeout(() => setCopiedId(null), 2200);
   };
 
   const getTierWeight = (tier) => {
     switch (tier) {
       case 'official':
-        return { label: '1.0x', percent: '100%' };
+        return { label: '1.0x', percent: '100%', color: 'var(--qudra-teal-deep, #006666)' };
       case 'user_supplied':
-        return { label: '0.6x', percent: '60%' };
+        return { label: '0.6x', percent: '60%', color: '#0284c7' };
       case 'fragile':
-        return { label: '0.3x', percent: '30%' };
+        return { label: '0.3x', percent: '30%', color: '#b45309' };
       default:
-        return { label: '0.5x', percent: '50%' };
+        return { label: '0.5x', percent: '50%', color: 'var(--slate-600)' };
     }
   };
 
@@ -112,292 +122,178 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
         "jws": receipt.fullHash || receipt.proofHash
       }
     };
-    handleCopy(JSON.stringify(vcPayload, null, 2), `modal-w3c-${receipt.id}`);
+    handleCopy(JSON.stringify(vcPayload, null, 2), `drawer-w3c-${receipt.id}`);
+    showToast(isRtl ? 'تم نسخ وثيقة W3C التشفيرية بصيغة JSON-LD!' : 'W3C JSON-LD credential copied to clipboard!');
   };
 
   const handleRefreshSync = () => {
-    setSyncNotice(isRtl ? 'جاري التحقق من سلامة البصمات التشفيرية...' : 'Verifying cryptographic proof integrity...');
+    setIsVerifyingSync(true);
     setTimeout(() => {
-      setSyncNotice(isRtl ? 'تم التحقق من كافة البصمات: جميع الأدلة الـ 8 متطابقة مع السجل التشفيري بنجاح.' : 'Proof integrity verified: all 8 items match canonical ledger.');
-      setTimeout(() => setSyncNotice(null), 3500);
-    }, 1000);
+      setIsVerifyingSync(false);
+      showToast(isRtl ? 'تم فحص سلامة كافة البصمات: جميع الأدلة الـ 8 متطابقة مع السجل التشفيري بنجاح.' : 'Proof integrity verified: all 8 items match canonical ledger.');
+    }, 900);
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      {/* 1. Bento Hero Card (Light-First Triad: Yellow #FFC107, Teal #00B8B8, Obsidian #1A1A1A) */}
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      {/* 1. Header & Live Metrics Bar */}
       <div
-        className="card hero-bento"
+        className="card"
         style={{
-          background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+          padding: '20px 24px',
+          backgroundColor: '#ffffff',
           border: '1px solid var(--border-color)',
-          borderTop: '4px solid var(--qudra-yellow, #FFC107)',
-          padding: '28px 32px',
-          borderRadius: 'var(--radius-xl)',
-          position: 'relative',
-          overflow: 'hidden'
+          borderRadius: 'var(--radius-lg)',
+          boxShadow: 'var(--shadow-xs)',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '16px'
         }}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>
-          <div style={{ maxWidth: '680px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '10px' }}>
-              <div className="brand-icon-box" style={{ width: '42px', height: '42px', borderRadius: '10px', backgroundColor: 'var(--qudra-obsidian, #1A1A1A)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <ShieldCheck size={22} color="var(--qudra-teal, #00B8B8)" />
-              </div>
-              <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <h1 style={{ fontSize: '22px', fontWeight: '800', color: 'var(--qudra-obsidian, #1A1A1A)', margin: 0 }}>
-                    {isRtl ? 'سجل المهارات والشهادات الموثقة' : 'Verified Skills & Credentials'}
-                  </h1>
-                  <span className="badge-teal" style={{ fontSize: '11px', padding: '2px 8px' }}>
-                    {isRtl ? 'محدث تلقائياً' : 'Auto-Synced'}
-                  </span>
-                </div>
-                <p style={{ fontSize: '13.5px', color: 'var(--slate-600)', margin: '4px 0 0' }}>
-                  {isRtl ? 'استعرض جميع مهاراتك الموثقة من مشاريعك وحساباتك المربوطة، وحوّل المهارات المضافة يدوياً إلى مهارات معتمدة.' : 'Review all skills verified from your projects and connected accounts, and upgrade self-added skills via practical tests.'}
-                </p>
-              </div>
-            </div>
-
-            {/* Quick Actions */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '14px', flexWrap: 'wrap' }}>
-              <button
-                onClick={() => onNavigate('M11')}
-                className="btn btn-primary"
-                style={{
-                  backgroundColor: 'var(--qudra-obsidian, #1A1A1A)',
-                  color: '#ffffff',
-                  gap: '8px',
-                  padding: '9px 18px',
-                  fontWeight: '700',
-                  borderRadius: 'var(--radius-md)'
-                }}
-              >
-                <Plus size={16} color="var(--qudra-yellow, #FFC107)" />
-                <span>{isRtl ? 'توثيق مهارة باختبار عملي' : 'Verify Skill via Test'}</span>
-              </button>
-
-              <button
-                onClick={() => onNavigate('M03')}
-                className="btn btn-secondary"
-                style={{ gap: '6px', padding: '9px 16px', fontSize: '13px' }}
-              >
-                <LinkIcon size={14} color="var(--qudra-teal, #00B8B8)" />
-                <span>{isRtl ? 'إدارة الحسابات المربوطة' : 'Connected Accounts'}</span>
-              </button>
-
-              <button
-                onClick={handleRefreshSync}
-                className="btn btn-secondary"
-                style={{ gap: '6px', padding: '9px 14px', fontSize: '13px' }}
-                title={isRtl ? 'تحديث حالة التوثيق' : 'Refresh verification status'}
-              >
-                <RefreshCw size={14} />
-                <span>{isRtl ? 'تحديث السجل' : 'Refresh'}</span>
-              </button>
-            </div>
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <h1 style={{ fontSize: '20px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
+              {isRtl ? 'سجل الأدلة والمهارات الموثقة' : 'Cryptographic Evidence Ledger'}
+            </h1>
+            <span
+              style={{
+                fontSize: '11px',
+                fontWeight: '700',
+                padding: '2px 8px',
+                borderRadius: 'var(--radius-full)',
+                backgroundColor: '#f0fdfa',
+                color: '#006666',
+                border: '1px solid #ccfbf1'
+              }}
+            >
+              {isRtl ? 'سجل تشفيري مدقق' : 'Audited Ledger'}
+            </span>
           </div>
-
-          {/* Bento Live Stats Widget */}
-          <div
-            style={{
-              backgroundColor: '#ffffff',
-              border: '1px solid var(--border-color)',
-              borderRadius: 'var(--radius-lg)',
-              padding: '16px 20px',
-              display: 'flex',
-              gap: '24px',
-              boxShadow: 'var(--shadow-xs)'
-            }}
-          >
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '24px', fontWeight: '900', color: 'var(--qudra-teal, #008B8B)', fontFamily: 'monospace' }}>
-                {counts.proven}
-              </div>
-              <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--slate-500)', marginTop: '2px' }}>
-                {isRtl ? 'مهارات موثقة' : 'Verified'}
-              </div>
-              <div style={{ fontSize: '10px', color: 'var(--qudra-teal)', marginTop: '1px' }}>
-                {isRtl ? 'معتمدة رسمياً' : 'Officially Proven'}
-              </div>
-            </div>
-
-            <div style={{ width: '1px', backgroundColor: 'var(--border-color)' }} />
-
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '24px', fontWeight: '900', color: '#0284C7', fontFamily: 'monospace' }}>
-                {counts.claimed}
-              </div>
-              <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--slate-500)', marginTop: '2px' }}>
-                {isRtl ? 'مضافة يدوياً' : 'Self-Added'}
-              </div>
-              <div style={{ fontSize: '10px', color: '#0284C7', marginTop: '1px' }}>
-                {isRtl ? 'بانتظار التوثيق' : 'Needs Verification'}
-              </div>
-            </div>
-
-            <div style={{ width: '1px', backgroundColor: 'var(--border-color)' }} />
-
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '24px', fontWeight: '900', color: '#D97706', fontFamily: 'monospace' }}>
-                {counts.gap}
-              </div>
-              <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--slate-500)', marginTop: '2px' }}>
-                {isRtl ? 'مهارات مطلوبة' : 'Skill Gaps'}
-              </div>
-              <div style={{ fontSize: '10px', color: '#D97706', marginTop: '1px' }}>
-                {isRtl ? 'فرص للتطوير' : 'Growth Targets'}
-              </div>
-            </div>
-          </div>
+          <p style={{ fontSize: '13px', color: 'var(--slate-600)', margin: '4px 0 0' }}>
+            {isRtl
+              ? 'سجل غير قابل للتعديل يوثق كافة مهاراتك ومشاريعك عبر بصمات تشفيرية معتمدة وفق معايير W3C.'
+              : 'Tamper-evident ledger verifying skills & project outcomes using W3C Verifiable Credentials.'}
+          </p>
         </div>
 
-        {/* Sync notification banner if triggered */}
-        {syncNotice && (
-          <div
-            style={{
-              marginTop: '16px',
-              padding: '10px 16px',
-              borderRadius: 'var(--radius-md)',
-              backgroundColor: '#f0fdf4',
-              border: '1px solid #bbf7d0',
-              color: '#166534',
-              fontSize: '12.5px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px'
-            }}
+        {/* Action Group */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+          {onNavigate && (
+            <button
+              onClick={() => onNavigate('M11')}
+              className="btn btn-primary btn-sm"
+              style={{
+                backgroundColor: 'var(--qudra-obsidian, #1A1A1A)',
+                color: '#ffffff',
+                fontWeight: '700',
+                gap: '6px',
+                padding: '7px 14px'
+              }}
+            >
+              <Plus size={14} color="var(--qudra-yellow, #FFC107)" />
+              <span>{isRtl ? 'توثيق مهارة باختبار عملي' : 'Verify via Sandbox Test'}</span>
+            </button>
+          )}
+
+          <button
+            onClick={handleRefreshSync}
+            disabled={isVerifyingSync}
+            className="btn btn-secondary btn-sm"
+            style={{ gap: '6px', padding: '7px 12px' }}
+            title={isRtl ? 'إعادة التحقق من سلامة البصمات' : 'Verify proof integrity'}
           >
-            <CheckCircle2 size={16} color="#16a34a" />
-            <span>{syncNotice}</span>
-          </div>
-        )}
+            <RefreshCw size={13} className={isVerifyingSync ? 'animate-spin' : ''} />
+            <span>{isRtl ? 'تحقق من السجل' : 'Audit Proofs'}</span>
+          </button>
+        </div>
       </div>
 
-      {/* 2. Controls: Segmented Filter Tabs + Category Filters + Search */}
+      {/* 2. Ledger Controls Bar: Status Filter Tabs + Search + View Switcher */}
       <div
         style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
           flexWrap: 'wrap',
-          gap: '14px',
-          backgroundColor: '#ffffff',
-          padding: '14px 18px',
-          borderRadius: 'var(--radius-lg)',
-          border: '1px solid var(--border-color)',
-          boxShadow: 'var(--shadow-xs)'
+          gap: '12px'
         }}
       >
-        {/* Status Segmented Tabs */}
-        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', alignItems: 'center' }}>
-          <button
-            onClick={() => setFilterStatus('all')}
-            className={`btn btn-sm ${filterStatus === 'all' ? 'btn-primary' : 'btn-secondary'}`}
-            style={{
-              fontWeight: filterStatus === 'all' ? '800' : '600',
-              backgroundColor: filterStatus === 'all' ? 'var(--qudra-obsidian, #1A1A1A)' : 'transparent',
-              color: filterStatus === 'all' ? '#ffffff' : 'var(--slate-700)',
-              borderRadius: 'var(--radius-md)',
-              padding: '6px 12px'
-            }}
-          >
-            {isRtl ? 'الكل' : 'All'} ({counts.all})
-          </button>
-
-          <button
-            onClick={() => setFilterStatus('proven')}
-            className="btn btn-sm"
-            style={{
-              fontWeight: filterStatus === 'proven' ? '800' : '600',
-              backgroundColor: filterStatus === 'proven' ? '#f0fdfa' : 'transparent',
-              color: filterStatus === 'proven' ? '#006666' : 'var(--slate-700)',
-              border: filterStatus === 'proven' ? '1px solid #99f6e4' : '1px solid transparent',
-              borderRadius: 'var(--radius-md)',
-              padding: '6px 12px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px'
-            }}
-          >
-            <ShieldCheck size={14} color="#008B8B" />
-            <span>{isRtl ? 'مهارات موثقة' : 'Verified'}</span>
-            <span style={{ backgroundColor: '#ccfbf1', color: '#006666', padding: '1px 6px', borderRadius: '10px', fontSize: '11px', fontWeight: '800' }}>
-              {counts.proven}
-            </span>
-          </button>
-
-          <button
-            onClick={() => setFilterStatus('claimed')}
-            className="btn btn-sm"
-            style={{
-              fontWeight: filterStatus === 'claimed' ? '800' : '600',
-              backgroundColor: filterStatus === 'claimed' ? '#f0f9ff' : 'transparent',
-              color: filterStatus === 'claimed' ? '#0369a1' : 'var(--slate-700)',
-              border: filterStatus === 'claimed' ? '1px solid #bae6fd' : '1px solid transparent',
-              borderRadius: 'var(--radius-md)',
-              padding: '6px 12px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px'
-            }}
-          >
-            <Sparkles size={14} color="#0284C7" />
-            <span>{isRtl ? 'مضافة يدوياً' : 'Self-Added'}</span>
-            <span style={{ backgroundColor: '#e0f2fe', color: '#0369a1', padding: '1px 6px', borderRadius: '10px', fontSize: '11px', fontWeight: '800' }}>
-              {counts.claimed}
-            </span>
-          </button>
-
-          <button
-            onClick={() => setFilterStatus('gap')}
-            className="btn btn-sm"
-            style={{
-              fontWeight: filterStatus === 'gap' ? '800' : '600',
-              backgroundColor: filterStatus === 'gap' ? '#fffbeb' : 'transparent',
-              color: filterStatus === 'gap' ? '#b45309' : 'var(--slate-700)',
-              border: filterStatus === 'gap' ? '1px solid #fde68a' : '1px solid transparent',
-              borderRadius: 'var(--radius-md)',
-              padding: '6px 12px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px'
-            }}
-          >
-            <AlertCircle size={14} color="#D97706" />
-            <span>{isRtl ? 'مهارات مطلوبة' : 'Skill Needed'}</span>
-            <span style={{ backgroundColor: '#fef3c7', color: '#b45309', padding: '1px 6px', borderRadius: '10px', fontSize: '11px', fontWeight: '800' }}>
-              {counts.gap}
-            </span>
-          </button>
+        {/* Status Filter Buttons */}
+        <div
+          style={{
+            display: 'flex',
+            gap: '4px',
+            backgroundColor: '#f1f5f9',
+            padding: '3px',
+            borderRadius: 'var(--radius-md)',
+            border: '1px solid var(--border-color)'
+          }}
+        >
+          {[
+            { id: 'all', labelAr: `الكل (${counts.all})`, labelEn: `All (${counts.all})`, icon: Layers },
+            { id: 'proven', labelAr: `موثقة رسمياً (${counts.proven})`, labelEn: `Proven (${counts.proven})`, icon: CheckCircle2, color: 'var(--qudra-teal-deep)' },
+            { id: 'claimed', labelAr: `مضافة يدوياً (${counts.claimed})`, labelEn: `Self-Added (${counts.claimed})`, icon: Sparkles, color: '#0284c7' },
+            { id: 'gap', labelAr: `مهارات مطلوبة (${counts.gap})`, labelEn: `Gaps (${counts.gap})`, icon: AlertCircle, color: '#b45309' }
+          ].map((tab) => {
+            const Icon = tab.icon;
+            const isActive = filterStatus === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setFilterStatus(tab.id)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '5px 12px',
+                  borderRadius: 'var(--radius-sm)',
+                  border: 'none',
+                  backgroundColor: isActive ? '#ffffff' : 'transparent',
+                  color: isActive ? (tab.color || 'var(--slate-900)') : 'var(--slate-600)',
+                  fontWeight: isActive ? '800' : '500',
+                  fontSize: '12px',
+                  cursor: 'pointer',
+                  boxShadow: isActive ? 'var(--shadow-xs)' : 'none',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                <Icon size={13} color={tab.color || 'var(--slate-500)'} />
+                <span>{isRtl ? tab.labelAr : tab.labelEn}</span>
+              </button>
+            );
+          })}
         </div>
 
-        {/* Search input with live clear */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ position: 'relative', width: '260px' }}>
+        {/* Right Controls: Category Filter + Search Box + Table/Grid Switcher */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+          {/* Search Input */}
+          <div style={{ position: 'relative', width: '220px' }}>
             <Search
-              size={14}
+              size={13}
               style={{
                 position: 'absolute',
-                top: '11px',
-                insetInlineStart: '12px',
+                top: '10px',
+                insetInlineStart: '10px',
                 color: 'var(--slate-400)'
               }}
             />
             <input
               type="text"
-              className="form-input"
-              placeholder={isRtl ? 'ابحث في المهارات والشهادات...' : 'Search skills & credentials...'}
+              placeholder={isRtl ? 'بحث في السجل...' : 'Search ledger...'}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               style={{
-                paddingInlineStart: '34px',
-                paddingInlineEnd: searchQuery ? '30px' : '12px',
-                height: '36px',
-                fontSize: '13px',
+                width: '100%',
+                paddingInlineStart: '30px',
+                paddingInlineEnd: searchQuery ? '26px' : '10px',
+                height: '32px',
+                fontSize: '12px',
                 borderRadius: 'var(--radius-md)',
-                borderColor: 'var(--border-color)',
-                backgroundColor: '#ffffff'
+                border: '1px solid var(--border-color)',
+                backgroundColor: '#ffffff',
+                boxSizing: 'border-box'
               }}
             />
             {searchQuery && (
@@ -405,687 +301,563 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
                 onClick={() => setSearchQuery('')}
                 style={{
                   position: 'absolute',
-                  top: '10px',
-                  insetInlineEnd: '10px',
+                  top: '8px',
+                  insetInlineEnd: '8px',
                   background: 'none',
                   border: 'none',
                   cursor: 'pointer',
                   color: 'var(--slate-400)'
                 }}
               >
-                <X size={14} />
+                <X size={13} />
               </button>
             )}
+          </div>
+
+          {/* Table / Grid Mode Toggle */}
+          <div
+            style={{
+              display: 'flex',
+              backgroundColor: '#f1f5f9',
+              padding: '2px',
+              borderRadius: 'var(--radius-md)',
+              border: '1px solid var(--border-color)'
+            }}
+          >
+            <button
+              onClick={() => setViewMode('table')}
+              style={{
+                padding: '5px 8px',
+                borderRadius: 'var(--radius-sm)',
+                border: 'none',
+                backgroundColor: viewMode === 'table' ? '#ffffff' : 'transparent',
+                color: viewMode === 'table' ? 'var(--slate-900)' : 'var(--slate-500)',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                boxShadow: viewMode === 'table' ? 'var(--shadow-xs)' : 'none'
+              }}
+              title={isRtl ? 'عرض جدول البيانات (Table)' : 'Table View'}
+            >
+              <List size={14} />
+            </button>
+            <button
+              onClick={() => setViewMode('grid')}
+              style={{
+                padding: '5px 8px',
+                borderRadius: 'var(--radius-sm)',
+                border: 'none',
+                backgroundColor: viewMode === 'grid' ? '#ffffff' : 'transparent',
+                color: viewMode === 'grid' ? 'var(--slate-900)' : 'var(--slate-500)',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                boxShadow: viewMode === 'grid' ? 'var(--shadow-xs)' : 'none'
+              }}
+              title={isRtl ? 'عرض شبكة البطاقات (Grid)' : 'Grid View'}
+            >
+              <LayoutGrid size={14} />
+            </button>
           </div>
         </div>
       </div>
 
-      {/* 3. Category Filter Chips */}
-      <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', alignItems: 'center', padding: '0 4px' }}>
-        <span style={{ fontSize: '12px', fontWeight: '700', color: 'var(--slate-400)', marginInlineEnd: '4px' }}>
-          {isRtl ? 'التصنيف:' : 'Category:'}
-        </span>
-        {[
-          { id: 'all', label: isRtl ? 'الكل' : 'All Categories' },
-          { id: 'مشروع حقيقي', label: isRtl ? 'مشاريع منجزة' : 'Projects' },
-          { id: 'تحدٍّ عملي', label: isRtl ? 'اختبارات عملية' : 'Challenges' },
-          { id: 'كود ومستودع', label: isRtl ? 'مستودعات برمجية' : 'Code' },
-          { id: 'شهادة رقمية', label: isRtl ? 'شهادات مهنية' : 'Certificates' },
-          { id: 'فجوة مطلوبة', label: isRtl ? 'مهارات مطلوبة' : 'Gaps' }
-        ].map((cat) => (
+      {/* 3. Main Data Container (High-Density Table OR Grid) */}
+      {filtered.length === 0 ? (
+        <div
+          className="card"
+          style={{
+            padding: '40px 20px',
+            textAlign: 'center',
+            backgroundColor: '#ffffff',
+            borderRadius: 'var(--radius-lg)',
+            border: '1px dashed var(--border-color)'
+          }}
+        >
+          <Info size={28} color="var(--slate-400)" style={{ margin: '0 auto 10px' }} />
+          <h3 style={{ fontSize: '15px', fontWeight: '700', color: 'var(--slate-800)', margin: '0 0 4px' }}>
+            {isRtl ? 'لا توجد أدلة مطابقة للمعايير المحددة' : 'No matching evidence found'}
+          </h3>
+          <p style={{ fontSize: '12.5px', color: 'var(--slate-500)', margin: '0 0 14px' }}>
+            {isRtl ? 'جرّب تعديل الفلتر أو مسح مصطلح البحث' : 'Try clearing your search query or switching filters.'}
+          </p>
           <button
-            key={cat.id}
-            onClick={() => setFilterCategory(cat.id)}
-            style={{
-              padding: '4px 10px',
-              borderRadius: 'var(--radius-full)',
-              border: filterCategory === cat.id ? '1px solid var(--slate-900)' : '1px solid var(--border-color)',
-              backgroundColor: filterCategory === cat.id ? 'var(--slate-900)' : '#ffffff',
-              color: filterCategory === cat.id ? '#ffffff' : 'var(--slate-600)',
-              fontSize: '11.5px',
-              fontWeight: filterCategory === cat.id ? '700' : '500',
-              cursor: 'pointer',
-              transition: 'all 0.15s ease'
-            }}
+            onClick={() => { setFilterStatus('all'); setFilterCategory('all'); setSearchQuery(''); }}
+            className="btn btn-secondary btn-sm"
           >
-            {cat.label}
+            {isRtl ? 'إعادة ضبط الفلاتر' : 'Reset Filters'}
           </button>
-        ))}
-      </div>
+        </div>
+      ) : viewMode === 'table' ? (
+        /* TABLE VIEW (High-Density Enterprise Ledger) */
+        <div
+          className="card"
+          style={{
+            backgroundColor: '#ffffff',
+            borderRadius: 'var(--radius-lg)',
+            border: '1px solid var(--border-color)',
+            overflow: 'hidden',
+            boxShadow: 'var(--shadow-xs)'
+          }}
+        >
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: isRtl ? 'right' : 'left', fontSize: '12.5px' }}>
+              <thead>
+                <tr style={{ backgroundColor: '#f8fafc', borderBottom: '1px solid var(--border-color)', color: 'var(--slate-600)', fontSize: '11.5px', fontWeight: '700' }}>
+                  <th style={{ padding: '12px 16px' }}>{isRtl ? 'الحالة' : 'Status'}</th>
+                  <th style={{ padding: '12px 16px' }}>{isRtl ? 'المهارة / العمل الموثق' : 'Evidence / Skill'}</th>
+                  <th style={{ padding: '12px 16px' }}>{isRtl ? 'المصدر المعتمد' : 'Connector Source'}</th>
+                  <th style={{ padding: '12px 16px' }}>{isRtl ? 'وزن الموثوقية' : 'Trust Weight'}</th>
+                  <th style={{ padding: '12px 16px' }}>{isRtl ? 'البصمة التشفيرية' : 'Proof Hash'}</th>
+                  <th style={{ padding: '12px 16px' }}>{isRtl ? 'تاريخ التدقيق' : 'Verified At'}</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'center' }}>{isRtl ? 'فحص الدليل' : 'Inspect'}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map((item, idx) => {
+                  const isProven = item.status === 'proven';
+                  const isClaimed = item.status === 'claimed';
+                  const isGap = item.status === 'gap';
+                  const tier = getTierWeight(item.trustTier);
 
-      {/* 4. Evidence Cards List */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-        {filtered.length === 0 ? (
-          <div
-            className="card"
-            style={{
-              padding: '48px 24px',
-              textAlign: 'center',
-              backgroundColor: '#ffffff',
-              borderRadius: 'var(--radius-lg)',
-              border: '1px dashed var(--border-color)'
-            }}
-          >
-            <Info size={32} color="var(--slate-400)" style={{ margin: '0 auto 12px' }} />
-            <h3 style={{ fontSize: '16px', fontWeight: '700', color: 'var(--slate-800)', marginBottom: '4px' }}>
-              {isRtl ? 'لا توجد أدلة مطابقة للمعايير المحددة' : 'No evidence items match your filters'}
-            </h3>
-            <p style={{ fontSize: '13px', color: 'var(--slate-500)', marginBottom: '16px' }}>
-              {isRtl ? 'جرّب تغيير حالة الفلتر أو مسح مصطلح البحث' : 'Try clearing your search query or selecting a different status filter.'}
-            </p>
-            <button
-              onClick={() => { setFilterStatus('all'); setFilterCategory('all'); setSearchQuery(''); }}
-              className="btn btn-secondary btn-sm"
-            >
-              {isRtl ? 'إعادة ضبط الفلاتر' : 'Reset Filters'}
-            </button>
+                  return (
+                    <tr
+                      key={item.id}
+                      style={{
+                        borderBottom: idx === filtered.length - 1 ? 'none' : '1px solid var(--border-color)',
+                        backgroundColor: inspectItem?.id === item.id ? '#f0fdfa' : '#ffffff',
+                        transition: 'background-color 0.15s ease'
+                      }}
+                    >
+                      {/* Status */}
+                      <td style={{ padding: '12px 16px', whiteSpace: 'nowrap' }}>
+                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                          <span
+                            style={{
+                              width: '7px',
+                              height: '7px',
+                              borderRadius: '50%',
+                              backgroundColor: isProven ? '#16a34a' : isClaimed ? '#0284c7' : '#d97706'
+                            }}
+                          />
+                          <span
+                            style={{
+                              fontSize: '11.5px',
+                              fontWeight: '700',
+                              color: isProven ? '#166534' : isClaimed ? '#0369a1' : '#b45309'
+                            }}
+                          >
+                            {isProven ? (isRtl ? 'موثق' : 'Proven') : isClaimed ? (isRtl ? 'مضاف يدوياً' : 'Self-Added') : (isRtl ? 'فجوة مطلوبة' : 'Gap')}
+                          </span>
+                        </div>
+                      </td>
+
+                      {/* Evidence Title & Skills */}
+                      <td style={{ padding: '12px 16px' }}>
+                        <div style={{ fontWeight: '700', color: 'var(--slate-900)', fontSize: '13px' }}>
+                          {item.title}
+                        </div>
+                        <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', marginTop: '4px' }}>
+                          {item.skills.map((s, i) => (
+                            <span
+                              key={i}
+                              style={{
+                                fontSize: '11px',
+                                padding: '1px 6px',
+                                borderRadius: '3px',
+                                backgroundColor: '#f1f5f9',
+                                color: 'var(--slate-700)'
+                              }}
+                            >
+                              {s}
+                            </span>
+                          ))}
+                        </div>
+                      </td>
+
+                      {/* Connector Source */}
+                      <td style={{ padding: '12px 16px', whiteSpace: 'nowrap' }}>
+                        <span
+                          style={{
+                            fontSize: '11.5px',
+                            fontWeight: '600',
+                            padding: '3px 8px',
+                            borderRadius: 'var(--radius-sm)',
+                            backgroundColor: '#f8fafc',
+                            border: '1px solid var(--border-color)',
+                            color: 'var(--slate-700)',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px'
+                          }}
+                        >
+                          <LinkIcon size={11} color="var(--qudra-teal)" />
+                          <span>{item.source}</span>
+                        </span>
+                      </td>
+
+                      {/* Trust Weight */}
+                      <td style={{ padding: '12px 16px', whiteSpace: 'nowrap' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span style={{ fontSize: '12px', fontWeight: '800', fontFamily: 'monospace', color: tier.color }}>
+                            {tier.label}
+                          </span>
+                          <span style={{ fontSize: '11px', color: 'var(--slate-500)' }}>
+                            ({tier.percent})
+                          </span>
+                        </div>
+                      </td>
+
+                      {/* Proof Hash with Copy button */}
+                      <td style={{ padding: '12px 16px', whiteSpace: 'nowrap' }}>
+                        {item.proofHash ? (
+                          <button
+                            onClick={() => handleCopy(item.proofHash, item.id)}
+                            style={{
+                              padding: '3px 8px',
+                              borderRadius: '4px',
+                              backgroundColor: '#f8fafc',
+                              border: '1px solid var(--border-color)',
+                              color: copiedId === item.id ? '#16a34a' : 'var(--slate-600)',
+                              fontSize: '11px',
+                              fontFamily: 'monospace',
+                              cursor: 'pointer',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '5px'
+                            }}
+                            title={isRtl ? 'نسخ البصمة التشفيرية' : 'Copy Hash'}
+                          >
+                            {copiedId === item.id ? <Check size={11} color="#16a34a" /> : <Copy size={11} />}
+                            <span>{copiedId === item.id ? (isRtl ? 'تم النسخ!' : 'Copied!') : item.proofHash}</span>
+                          </button>
+                        ) : (
+                          <span style={{ color: 'var(--slate-400)', fontSize: '11px' }}>—</span>
+                        )}
+                      </td>
+
+                      {/* Verification Date */}
+                      <td style={{ padding: '12px 16px', whiteSpace: 'nowrap', color: 'var(--slate-600)', fontSize: '12px', fontFamily: 'monospace' }}>
+                        {item.verifiedAt || '—'}
+                      </td>
+
+                      {/* Inspect Drawer CTA */}
+                      <td style={{ padding: '12px 16px', textAlign: 'center', whiteSpace: 'nowrap' }}>
+                        <button
+                          onClick={() => setInspectItem(item)}
+                          className="btn btn-secondary btn-sm"
+                          style={{
+                            padding: '4px 8px',
+                            fontSize: '11.5px',
+                            gap: '4px',
+                            color: 'var(--qudra-teal-deep)'
+                          }}
+                        >
+                          <Eye size={12} />
+                          <span>{isRtl ? 'فحص' : 'Inspect'}</span>
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
-        ) : (
-          filtered.map((item) => {
+        </div>
+      ) : (
+        /* GRID VIEW (Modern Cards with Asymmetric Accent) */
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '14px' }}>
+          {filtered.map((item) => {
             const isProven = item.status === 'proven';
             const isClaimed = item.status === 'claimed';
-            const isGap = item.status === 'gap';
-
-            const borderColor = isProven
-              ? 'var(--qudra-teal, #00B8B8)'
-              : isClaimed
-              ? '#0284C7'
-              : '#D97706';
+            const tier = getTierWeight(item.trustTier);
 
             return (
               <div
                 key={item.id}
-                className="card evidence-item-card"
+                className="card"
                 style={{
                   backgroundColor: '#ffffff',
                   borderRadius: 'var(--radius-lg)',
                   border: '1px solid var(--border-color)',
-                  borderInlineStart: `5px solid ${borderColor}`,
-                  padding: '20px 24px',
+                  padding: '16px 18px',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '14px',
+                  justifyContent: 'space-between',
+                  gap: '12px',
                   boxShadow: 'var(--shadow-xs)',
-                  transition: 'box-shadow 0.2s ease, transform 0.2s ease'
+                  transition: 'transform 0.15s ease, box-shadow 0.15s ease'
                 }}
               >
-                {/* Top Row: Title, Category Badge, Status Badge, Trust Tier */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px' }}>
-                  <div style={{ maxWidth: '780px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '6px' }}>
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '8px', marginBottom: '8px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                       <span
                         style={{
+                          width: '7px',
+                          height: '7px',
+                          borderRadius: '50%',
+                          backgroundColor: isProven ? '#16a34a' : isClaimed ? '#0284c7' : '#d97706'
+                        }}
+                      />
+                      <span style={{ fontSize: '11px', fontWeight: '700', color: 'var(--slate-500)' }}>
+                        {item.category}
+                      </span>
+                    </div>
+                    <span
+                      style={{
+                        fontSize: '11px',
+                        fontWeight: '800',
+                        fontFamily: 'monospace',
+                        color: tier.color,
+                        padding: '1px 6px',
+                        borderRadius: '3px',
+                        backgroundColor: '#f8fafc',
+                        border: '1px solid var(--border-color)'
+                      }}
+                    >
+                      {tier.label}
+                    </span>
+                  </div>
+
+                  <h3 style={{ fontSize: '14px', fontWeight: '800', color: 'var(--slate-900)', margin: '0 0 6px' }}>
+                    {item.title}
+                  </h3>
+                  <p style={{ fontSize: '12px', color: 'var(--slate-600)', lineHeight: 1.5, margin: '0 0 10px' }}>
+                    {item.summary}
+                  </p>
+
+                  <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                    {item.skills.map((s, idx) => (
+                      <span
+                        key={idx}
+                        style={{
                           fontSize: '11px',
-                          fontWeight: '700',
-                          padding: '2px 8px',
-                          borderRadius: 'var(--radius-sm)',
-                          backgroundColor: 'var(--slate-100)',
+                          padding: '1px 6px',
+                          borderRadius: '3px',
+                          backgroundColor: '#f1f5f9',
                           color: 'var(--slate-700)'
                         }}
                       >
-                        {item.category}
+                        {s}
                       </span>
-                      <h3 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
-                        {item.title}
-                      </h3>
-                      <EvidenceBadge status={item.status} score={item.confidenceScore} isRtl={isRtl} />
-                      <TrustChip tier={item.trustTier} isRtl={isRtl} />
-                    </div>
-
-                    <p style={{ fontSize: '13.5px', color: 'var(--slate-600)', lineHeight: 1.6, margin: '4px 0 0' }}>
-                      {item.summary}
-                    </p>
-                  </div>
-
-                  {/* Actions Top */}
-                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                    <button
-                      onClick={onOpenExplain}
-                      className="btn btn-secondary btn-sm"
-                      style={{ gap: '5px', fontSize: '12.5px', padding: '6px 12px' }}
-                      title={isRtl ? 'عرض تفسير محرك المطابقة المستقل' : 'View Explainability Audit'}
-                    >
-                      <Scale size={13} color="var(--qudra-teal, #008B8B)" />
-                      <span>{isRtl ? 'تفسير الدليل' : 'Explain'}</span>
-                    </button>
-
-                    {item.sourceUrl && item.sourceUrl !== '#' && (
-                      <a
-                        href={item.sourceUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="btn btn-secondary btn-sm"
-                        style={{ gap: '5px', fontSize: '12.5px', padding: '6px 12px' }}
-                      >
-                        <ExternalLink size={13} />
-                        <span>{isRtl ? 'المصدر المباشر' : 'Source'}</span>
-                      </a>
-                    )}
-
-                    {isGap && (
-                      <button
-                        onClick={() => onNavigate('M11')}
-                        className="btn btn-sm"
-                        style={{
-                          backgroundColor: '#fef3c7',
-                          color: '#b45309',
-                          border: '1px solid #fde68a',
-                          fontWeight: '700',
-                          gap: '6px',
-                          fontSize: '12.5px',
-                          padding: '6px 12px'
-                        }}
-                      >
-                        <Zap size={13} />
-                        <span>{isRtl ? 'سد الفجوة الآن' : 'Bridge Gap'}</span>
-                      </button>
-                    )}
+                    ))}
                   </div>
                 </div>
 
-                {/* Skills tags row */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', alignItems: 'center' }}>
-                  <span style={{ fontSize: '11.5px', fontWeight: '700', color: 'var(--slate-400)' }}>
-                    {isRtl ? 'المهارات المعتمدة: ' : 'Skills: '}
+                <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: '11px', color: 'var(--slate-500)' }}>
+                    {item.source}
                   </span>
-                  {item.skills.map((s, idx) => (
-                    <span
-                      key={idx}
-                      style={{
-                        padding: '3px 9px',
-                        borderRadius: 'var(--radius-sm)',
-                        backgroundColor: isProven ? '#f0fdfa' : isClaimed ? '#f0f9ff' : '#fffbeb',
-                        border: `1px solid ${isProven ? '#ccfbf1' : isClaimed ? '#e0f2fe' : '#fef3c7'}`,
-                        fontSize: '11.5px',
-                        fontWeight: '600',
-                        color: isProven ? '#006666' : isClaimed ? '#0369a1' : '#b45309',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '5px'
-                      }}
-                    >
-                      <span
-                        style={{
-                          width: '6px',
-                          height: '6px',
-                          borderRadius: '50%',
-                          backgroundColor: isProven ? '#00B8B8' : isClaimed ? '#0284C7' : '#D97706'
-                        }}
-                      />
-                      {s}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Tabular Metrics Strip (Verification Date, Weight, Confidence) */}
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '14px',
-                    flexWrap: 'wrap',
-                    padding: '8px 12px',
-                    backgroundColor: '#f8fafc',
-                    borderRadius: 'var(--radius-md)',
-                    border: '1px solid var(--border-color)',
-                    fontSize: '12px'
-                  }}
-                >
-                  {/* Verification Date */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <span style={{ color: 'var(--slate-500)', fontWeight: '600' }}>
-                      {isRtl ? 'تاريخ التدقيق:' : 'Verified Date:'}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: 'Consolas, monospace',
-                        fontVariantNumeric: 'tabular-nums',
-                        fontWeight: '700',
-                        color: 'var(--slate-800)',
-                        letterSpacing: '0.02em'
-                      }}
-                    >
-                      {item.verifiedAt || (isRtl ? 'قيد التدقيق' : 'Pending')}
-                    </span>
-                  </div>
-
-                  <span style={{ color: 'var(--slate-300)' }}>•</span>
-
-                  {/* Proof Weight */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <span style={{ color: 'var(--slate-500)', fontWeight: '600' }}>
-                      {isRtl ? 'وزن الاعتماد:' : 'Trust Weight:'}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: 'Consolas, monospace',
-                        fontVariantNumeric: 'tabular-nums',
-                        fontWeight: '800',
-                        color: isProven ? '#006666' : isClaimed ? '#0369a1' : '#b45309',
-                        backgroundColor: isProven ? '#ccfbf1' : isClaimed ? '#e0f2fe' : '#fef3c7',
-                        padding: '1px 6px',
-                        borderRadius: '4px'
-                      }}
-                    >
-                      {getTierWeight(item.trustTier).label} ({getTierWeight(item.trustTier).percent})
-                    </span>
-                  </div>
-
-                  <span style={{ color: 'var(--slate-300)' }}>•</span>
-
-                  {/* Confidence Percentage */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <span style={{ color: 'var(--slate-500)', fontWeight: '600' }}>
-                      {isRtl ? 'نسبة الثقة:' : 'Confidence:'}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: 'Consolas, monospace',
-                        fontVariantNumeric: 'tabular-nums',
-                        fontWeight: '900',
-                        color: isProven ? '#166534' : isClaimed ? '#0369a1' : '#b45309',
-                        backgroundColor: isProven ? '#dcfce7' : isClaimed ? '#e0f2fe' : '#fef3c7',
-                        padding: '1px 7px',
-                        borderRadius: '4px'
-                      }}
-                    >
-                      %{item.confidenceScore}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Cryptographic Proof Hash Strip & Evaluator */}
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    flexWrap: 'wrap',
-                    gap: '10px',
-                    paddingTop: '12px',
-                    borderTop: '1px solid var(--border-color)',
-                    fontSize: '12px',
-                    color: 'var(--slate-500)'
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        backgroundColor: '#f8fafc',
-                        border: '1px solid var(--border-color)',
-                        padding: '4px 8px',
-                        borderRadius: 'var(--radius-sm)',
-                        fontFamily: 'monospace',
-                        fontVariantNumeric: 'tabular-nums',
-                        fontSize: '11.5px',
-                        color: 'var(--slate-800)',
-                        fontWeight: '600'
-                      }}
-                    >
-                      <FileCode size={13} color="var(--qudra-teal, #008B8B)" />
-                      <span>{item.proofHash}</span>
-                    </div>
-
-                    {item.proofHash !== 'غير متوفر' && (
-                      <>
-                        <button
-                          onClick={() => handleCopy(item.fullHash || item.proofHash, `card-${item.id}`)}
-                          className="btn btn-xs"
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '5px',
-                            padding: '4px 10px',
-                            borderRadius: 'var(--radius-sm)',
-                            border: copiedId === `card-${item.id}` ? '1px solid #10b981' : '1px solid var(--border-color)',
-                            backgroundColor: copiedId === `card-${item.id}` ? '#ecfdf5' : '#ffffff',
-                            color: copiedId === `card-${item.id}` ? '#059669' : 'var(--slate-700)',
-                            fontSize: '11px',
-                            fontWeight: '700',
-                            cursor: 'pointer',
-                            transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-                            boxShadow: copiedId === `card-${item.id}` ? '0 0 0 2px rgba(16, 185, 129, 0.2)' : 'none'
-                          }}
-                          title={isRtl ? 'نسخ بصمة التشفير' : 'Copy cryptographic hash'}
-                        >
-                          {copiedId === `card-${item.id}` ? (
-                            <>
-                              <Check size={14} color="#059669" />
-                              <span style={{ color: '#059669' }}>{isRtl ? 'تم النسخ!' : 'Copied!'}</span>
-                            </>
-                          ) : (
-                            <>
-                              <Copy size={12} color="var(--slate-500)" />
-                              <span>{isRtl ? 'نسخ البصمة' : 'Copy Hash'}</span>
-                            </>
-                          )}
-                        </button>
-
-                        <button
-                          onClick={() => setSelectedReceipt(item)}
-                          style={{
-                            background: 'none',
-                            border: 'none',
-                            color: 'var(--qudra-teal, #008B8B)',
-                            fontSize: '11.5px',
-                            fontWeight: '700',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '4px',
-                            padding: '2px 6px'
-                          }}
-                        >
-                          <Lock size={12} />
-                          <span>{isRtl ? 'فحص الإثبات التشفيري' : 'Inspect Proof Receipt'}</span>
-                        </button>
-                      </>
-                    )}
-                  </div>
-
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <CheckSquare size={13} color="var(--slate-400)" />
-                    <span>
-                      <strong>{isRtl ? 'طريقة التحقق: ' : 'Verification: '}</strong>
-                      {item.evaluator}
-                    </span>
-                  </div>
+                  <button
+                    onClick={() => setInspectItem(item)}
+                    className="btn btn-secondary btn-sm"
+                    style={{ fontSize: '11.5px', padding: '3px 8px', gap: '4px' }}
+                  >
+                    <Eye size={12} color="var(--qudra-teal)" />
+                    <span>{isRtl ? 'تفاصيل الدليل' : 'Details'}</span>
+                  </button>
                 </div>
               </div>
             );
-          })
-        )}
-      </div>
+          })}
+        </div>
+      )}
 
-      {/* 5. Cryptographic Proof Receipt Modal (High Fidelity) */}
-      {selectedReceipt && (
+      {/* 4. Slide-Over Evidence Inspector Drawer (W3C Verifiable Credential) */}
+      {inspectItem && (
         <div
-          className="modal-backdrop"
-          onClick={() => setSelectedReceipt(null)}
           style={{
             position: 'fixed',
-            inset: 0,
-            backgroundColor: 'rgba(15, 23, 42, 0.65)',
-            backdropFilter: 'blur(4px)',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(15, 23, 42, 0.45)',
+            backdropFilter: 'blur(3px)',
+            zIndex: 1050,
             display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            padding: '20px'
+            justifyContent: isRtl ? 'flex-start' : 'flex-end',
+            animation: 'fadeIn 0.2s ease'
           }}
+          onClick={() => setInspectItem(null)}
         >
           <div
-            className="modal-container"
-            onClick={(e) => e.stopPropagation()}
             style={{
-              backgroundColor: '#ffffff',
-              borderRadius: 'var(--radius-xl)',
-              maxWidth: '640px',
               width: '100%',
-              padding: '28px',
-              boxShadow: 'var(--shadow-xl)',
-              border: '1px solid var(--border-color)',
-              position: 'relative'
+              maxWidth: '460px',
+              height: '100%',
+              backgroundColor: '#ffffff',
+              boxShadow: 'var(--shadow-lg)',
+              display: 'flex',
+              flexDirection: 'column',
+              overflowY: 'auto'
             }}
+            onClick={(e) => e.stopPropagation()}
           >
-            {/* Modal Header */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div style={{ width: '38px', height: '38px', borderRadius: '10px', backgroundColor: '#f0fdfa', border: '1px solid #99f6e4', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <ShieldCheck size={22} color="#008B8B" />
-                </div>
-                <div>
-                  <h3 style={{ fontSize: '18px', fontWeight: '800', color: 'var(--qudra-obsidian, #1A1A1A)', margin: 0 }}>
-                    {isRtl ? 'إيصال الإثبات التشفيري المعتمد' : 'Cryptographic Proof Receipt'}
-                  </h3>
-                  <p style={{ fontSize: '12px', color: 'var(--slate-500)', margin: '2px 0 0' }}>
-                    {isRtl ? 'سجل البصمة الرقمية المطابق لمعيار W3C Verifiable Credentials' : 'W3C Verifiable Credential standard compliant proof receipt'}
-                  </p>
-                </div>
+            {/* Drawer Header */}
+            <div
+              style={{
+                padding: '18px 20px',
+                borderBottom: '1px solid var(--border-color)',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                backgroundColor: '#f8fafc'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <ShieldCheck size={18} color="var(--qudra-teal)" />
+                <h3 style={{ fontSize: '15px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
+                  {isRtl ? 'فحص الدليل التشفيري (W3C)' : 'W3C Credential Inspector'}
+                </h3>
               </div>
-
               <button
-                onClick={() => setSelectedReceipt(null)}
+                onClick={() => setInspectItem(null)}
                 style={{
                   background: 'none',
                   border: 'none',
-                  color: 'var(--slate-400)',
                   cursor: 'pointer',
+                  color: 'var(--slate-500)',
                   padding: '4px'
                 }}
               >
-                <X size={20} />
+                <X size={18} />
               </button>
             </div>
 
-            {/* Verification Status Pill */}
-            <div
-              style={{
-                backgroundColor: '#f0fdf4',
-                border: '1px solid #bbf7d0',
-                borderRadius: 'var(--radius-md)',
-                padding: '10px 14px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                marginBottom: '18px',
-                fontSize: '12.5px',
-                color: '#166534',
-                fontWeight: '600'
-              }}
-            >
-              <CheckCircle2 size={16} color="#16a34a" />
-              <span>
-                {isRtl
-                  ? 'تم التحقق من سلامة البصمة: التوقيع الرقمي سليم ومطابق للمفتاح العام للمصدر.'
-                  : 'Valid cryptographic signature: matches authorized validator public key.'}
-              </span>
-            </div>
-
-            {/* Receipt Details Grid */}
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '12px',
-                backgroundColor: '#f8fafc',
-                borderRadius: 'var(--radius-lg)',
-                padding: '16px',
-                border: '1px solid var(--border-color)',
-                fontSize: '12.5px'
-              }}
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ color: 'var(--slate-500)', fontWeight: '600' }}>
-                  {isRtl ? 'عنوان الدليل:' : 'Proof Title:'}
+            {/* Drawer Body */}
+            <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '18px' }}>
+              <div>
+                <span style={{ fontSize: '11px', fontWeight: '700', color: 'var(--slate-400)', textTransform: 'uppercase' }}>
+                  {isRtl ? 'اسم المهارة / السجل' : 'Credential Subject'}
                 </span>
-                <span style={{ fontWeight: '800', color: 'var(--slate-900)' }}>
-                  {selectedReceipt.title}
-                </span>
+                <h2 style={{ fontSize: '17px', fontWeight: '800', color: 'var(--slate-900)', margin: '4px 0 6px' }}>
+                  {inspectItem.title}
+                </h2>
+                <p style={{ fontSize: '13px', color: 'var(--slate-600)', lineHeight: 1.5, margin: 0 }}>
+                  {inspectItem.summary}
+                </p>
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ color: 'var(--slate-500)', fontWeight: '600' }}>
-                  {isRtl ? 'تاريخ التوثيق بالسجل:' : 'Verification Date:'}
-                </span>
-                <span style={{ fontWeight: '800', color: 'var(--slate-900)', fontFamily: 'Consolas, monospace', fontVariantNumeric: 'tabular-nums' }}>
-                  {selectedReceipt.verifiedAt || (isRtl ? '2026-09-15' : '2026-09-15')}
-                </span>
+              {/* Status & Trust Metrics */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                <div style={{ padding: '10px 12px', borderRadius: 'var(--radius-md)', backgroundColor: '#f8fafc', border: '1px solid var(--border-color)' }}>
+                  <span style={{ fontSize: '11px', color: 'var(--slate-500)' }}>{isRtl ? 'مستوى الثقة' : 'Trust Tier'}</span>
+                  <div style={{ fontSize: '13px', fontWeight: '800', color: 'var(--slate-900)', marginTop: '2px' }}>
+                    {inspectItem.trustTier === 'official' ? (isRtl ? 'رسمي (1.0x)' : 'Official (1.0x)') : inspectItem.trustTier === 'user_supplied' ? (isRtl ? 'مقدم من المستخدم (0.6x)' : 'User (0.6x)') : (isRtl ? 'غير مدقق (0.3x)' : 'Fragile (0.3x)')}
+                  </div>
+                </div>
+
+                <div style={{ padding: '10px 12px', borderRadius: 'var(--radius-md)', backgroundColor: '#f8fafc', border: '1px solid var(--border-color)' }}>
+                  <span style={{ fontSize: '11px', color: 'var(--slate-500)' }}>{isRtl ? 'عقدة الإصدار والتدقيق' : 'Issuer DID Node'}</span>
+                  <div style={{ fontSize: '12px', fontWeight: '700', color: 'var(--qudra-teal-deep)', marginTop: '2px', fontFamily: 'monospace' }}>
+                    did:qudra:sa-node-01
+                  </div>
+                </div>
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ color: 'var(--slate-500)', fontWeight: '600' }}>
-                  {isRtl ? 'المستوى وثقة المصدر:' : 'Trust Tier:'}
-                </span>
-                <TrustChip tier={selectedReceipt.trustTier} isRtl={isRtl} />
-              </div>
-
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ color: 'var(--slate-500)', fontWeight: '600' }}>
-                  {isRtl ? 'وزن الاعتماد التشفيري:' : 'Cryptographic Weight:'}
-                </span>
-                <span style={{ fontWeight: '800', color: 'var(--qudra-teal-deep, #006666)', fontFamily: 'Consolas, monospace', fontVariantNumeric: 'tabular-nums' }}>
-                  {getTierWeight(selectedReceipt.trustTier).label} ({getTierWeight(selectedReceipt.trustTier).percent})
-                </span>
-              </div>
-
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ color: 'var(--slate-500)', fontWeight: '600' }}>
-                  {isRtl ? 'مستوى الثقة الحسابي:' : 'Confidence Metric:'}
-                </span>
-                <span style={{ fontWeight: '900', color: 'var(--qudra-teal, #008B8B)', fontFamily: 'Consolas, monospace', fontVariantNumeric: 'tabular-nums', fontSize: '15px' }}>
-                  %{selectedReceipt.confidenceScore}
-                </span>
-              </div>
-
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ color: 'var(--slate-500)', fontWeight: '600' }}>
-                  {isRtl ? 'المصدر المعتمد:' : 'Verified Origin:'}
-                </span>
-                <span style={{ color: 'var(--slate-700)', fontFamily: 'monospace' }}>
-                  {selectedReceipt.source}
-                </span>
-              </div>
-
-              {/* Hash with copy button */}
-              <div style={{ borderTop: '1px dashed var(--border-color)', paddingTop: '10px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                  <span style={{ color: 'var(--slate-500)', fontWeight: '700', fontSize: '11.5px' }}>
-                    {isRtl ? 'التجزئة التشفيرية الكاملة (SHA-256 Digest):' : 'Full SHA-256 Digest:'}
+              {/* Cryptographic Hash */}
+              {inspectItem.proofHash && (
+                <div>
+                  <span style={{ fontSize: '11px', fontWeight: '700', color: 'var(--slate-500)', display: 'block', marginBottom: '4px' }}>
+                    {isRtl ? 'بصمة الهاش التشفيرية (SHA-256):' : 'Cryptographic Hash (SHA-256):'}
                   </span>
-                  <button
-                    onClick={() => handleCopy(selectedReceipt.fullHash || selectedReceipt.proofHash, `modal-hash-${selectedReceipt.id}`)}
+                  <div
                     style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '5px',
-                      padding: '4px 10px',
+                      padding: '8px 10px',
                       borderRadius: 'var(--radius-sm)',
-                      border: copiedId === `modal-hash-${selectedReceipt.id}` ? '1px solid #10b981' : '1px solid #cbd5e1',
-                      backgroundColor: copiedId === `modal-hash-${selectedReceipt.id}` ? '#ecfdf5' : '#ffffff',
-                      color: copiedId === `modal-hash-${selectedReceipt.id}` ? '#059669' : 'var(--qudra-teal, #008B8B)',
+                      backgroundColor: '#0f172a',
+                      color: '#38bdf8',
+                      fontFamily: 'Consolas, monospace',
                       fontSize: '11.5px',
-                      fontWeight: '700',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-                      boxShadow: copiedId === `modal-hash-${selectedReceipt.id}` ? '0 0 0 2px rgba(16, 185, 129, 0.2)' : 'none'
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      direction: 'ltr'
                     }}
                   >
-                    {copiedId === `modal-hash-${selectedReceipt.id}` ? (
-                      <>
-                        <Check size={14} color="#059669" />
-                        <span style={{ color: '#059669' }}>{isRtl ? 'تم النسخ!' : 'Copied!'}</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy size={12} />
-                        <span>{isRtl ? 'نسخ البصمة (SHA-256)' : 'Copy Hash'}</span>
-                      </>
-                    )}
+                    <span>{inspectItem.fullHash || inspectItem.proofHash}</span>
+                    <button
+                      onClick={() => handleCopy(inspectItem.fullHash || inspectItem.proofHash, `drawer-${inspectItem.id}`)}
+                      style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}
+                    >
+                      {copiedId === `drawer-${inspectItem.id}` ? <Check size={12} color="#4ade80" /> : <Copy size={12} />}
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* JSON-LD Payload Preview */}
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                  <span style={{ fontSize: '11px', fontWeight: '700', color: 'var(--slate-500)' }}>
+                    W3C Verifiable Credential (JSON-LD):
+                  </span>
+                  <button
+                    onClick={() => handleCopyW3cReceipt(inspectItem)}
+                    className="btn btn-secondary btn-sm"
+                    style={{ padding: '2px 8px', fontSize: '11px', gap: '4px' }}
+                  >
+                    <Code size={11} />
+                    <span>{isRtl ? 'نسخ الوثيقة' : 'Copy JSON'}</span>
                   </button>
                 </div>
-                <div
+
+                <pre
                   style={{
-                    backgroundColor: '#ffffff',
-                    border: '1px solid var(--border-color)',
-                    padding: '8px 10px',
-                    borderRadius: 'var(--radius-sm)',
-                    fontFamily: 'monospace',
-                    fontVariantNumeric: 'tabular-nums',
+                    backgroundColor: '#020617',
+                    color: '#94a3b8',
+                    padding: '12px',
+                    borderRadius: 'var(--radius-md)',
                     fontSize: '11px',
-                    color: 'var(--slate-800)',
-                    wordBreak: 'break-all',
-                    lineHeight: 1.4
+                    fontFamily: 'monospace',
+                    lineHeight: 1.5,
+                    maxHeight: '200px',
+                    overflowY: 'auto',
+                    direction: 'ltr',
+                    textAlign: 'left',
+                    margin: 0
                   }}
                 >
-                  {selectedReceipt.fullHash || selectedReceipt.proofHash}
-                </div>
+                  {JSON.stringify({
+                    "@context": ["https://www.w3.org/2018/credentials/v1"],
+                    "id": `urn:qudra:evidence:${inspectItem.id}`,
+                    "type": ["VerifiableCredential"],
+                    "issuer": "did:qudra:verifier:sa-node-01",
+                    "issuanceDate": inspectItem.verifiedAt || "2026-09-15T00:00:00Z",
+                    "credentialSubject": {
+                      "title": inspectItem.title,
+                      "skills": inspectItem.skills,
+                      "trustTier": inspectItem.trustTier
+                    },
+                    "proof": {
+                      "type": "Ed25519Signature2020",
+                      "jws": inspectItem.proofHash
+                    }
+                  }, null, 2)}
+                </pre>
               </div>
 
-              {/* Skills linked */}
-              <div style={{ borderTop: '1px dashed var(--border-color)', paddingTop: '10px' }}>
-                <div style={{ color: 'var(--slate-500)', fontWeight: '700', fontSize: '11.5px', marginBottom: '6px' }}>
-                  {isRtl ? 'المهارات المقترنة بالدليل:' : 'Bound Capabilities:'}
-                </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                  {selectedReceipt.skills.map((s, idx) => (
-                    <span
-                      key={idx}
-                      style={{
-                        padding: '2px 8px',
-                        backgroundColor: '#ffffff',
-                        border: '1px solid var(--border-color)',
-                        borderRadius: 'var(--radius-sm)',
-                        fontSize: '11px',
-                        fontWeight: '600',
-                        color: 'var(--slate-700)'
-                      }}
-                    >
-                      {s}
-                    </span>
-                  ))}
-                </div>
+              {/* Action */}
+              <div style={{ marginTop: 'auto', paddingTop: '14px', borderTop: '1px solid var(--border-color)' }}>
+                {onNavigate && (
+                  <button
+                    onClick={() => { setInspectItem(null); onNavigate('M07'); }}
+                    className="btn btn-primary"
+                    style={{
+                      width: '100%',
+                      backgroundColor: 'var(--qudra-obsidian, #1A1A1A)',
+                      color: '#ffffff',
+                      fontWeight: '800',
+                      gap: '8px'
+                    }}
+                  >
+                    <ShieldCheck size={15} color="var(--qudra-yellow)" />
+                    <span>{isRtl ? 'استعراض في جواز القدرات' : 'View in Capability Passport'}</span>
+                  </button>
+                )}
               </div>
-            </div>
-
-            {/* Modal Footer */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '20px', flexWrap: 'wrap', gap: '10px' }}>
-              <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                <button
-                  onClick={onOpenExplain}
-                  className="btn btn-secondary btn-sm"
-                  style={{ gap: '6px', fontSize: '12px' }}
-                >
-                  <Scale size={13} color="var(--qudra-teal, #008B8B)" />
-                  <span>{isRtl ? 'فتح محرك التفسير' : 'Open Explain Engine'}</span>
-                </button>
-
-                <button
-                  onClick={() => handleCopyW3cReceipt(selectedReceipt)}
-                  className="btn btn-secondary btn-sm"
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    fontSize: '12px',
-                    fontWeight: '700',
-                    border: copiedId === `modal-w3c-${selectedReceipt.id}` ? '1px solid #10b981' : '1px solid var(--border-color)',
-                    backgroundColor: copiedId === `modal-w3c-${selectedReceipt.id}` ? '#ecfdf5' : '#ffffff',
-                    color: copiedId === `modal-w3c-${selectedReceipt.id}` ? '#059669' : 'var(--slate-700)',
-                    transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
-                  }}
-                  title={isRtl ? 'نسخ إيصال W3C Verifiable Credential الكامل بصيغة JSON' : 'Copy canonical W3C JSON receipt'}
-                >
-                  {copiedId === `modal-w3c-${selectedReceipt.id}` ? (
-                    <>
-                      <Check size={14} color="#059669" />
-                      <span>{isRtl ? 'تم نسخ إيصال W3C!' : 'W3C Receipt Copied!'}</span>
-                    </>
-                  ) : (
-                    <>
-                      <FileCode size={13} color="var(--qudra-teal, #008B8B)" />
-                      <span>{isRtl ? 'نسخ إيصال W3C (JSON)' : 'Copy W3C Receipt'}</span>
-                    </>
-                  )}
-                </button>
-              </div>
-
-              <button
-                onClick={() => setSelectedReceipt(null)}
-                className="btn btn-primary btn-sm"
-                style={{
-                  backgroundColor: 'var(--qudra-obsidian, #1A1A1A)',
-                  color: '#ffffff',
-                  padding: '8px 18px',
-                  fontWeight: '700',
-                  borderRadius: 'var(--radius-md)'
-                }}
-              >
-                {isRtl ? 'إغلاق الإيصال' : 'Close Receipt'}
-              </button>
             </div>
           </div>
         </div>

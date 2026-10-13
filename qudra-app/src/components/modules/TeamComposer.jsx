@@ -18,7 +18,8 @@ import {
   FileText,
   X,
   ExternalLink,
-  Zap
+  Zap,
+  Building2
 } from 'lucide-react';
 import { MOCK_TEAM_COMPOSITION, MOCK_PROBLEM } from '../../data/mockData';
 import { useToast } from '../common/ToastContext';
@@ -44,448 +45,350 @@ export default function TeamComposer({ onNavigate, onOpenExplain, isRtl = true }
     { skill: 'Distributed Streaming (Apache Kafka)', coveredBy: 'م. أحمد الشناوي', score: 98, status: 'gap_bridged' }
   ];
 
+  const handleShareChange = (memberKey, newShare) => {
+    const val = Math.max(5, Math.min(80, Number(newShare)));
+    setSquadShares((prev) => ({
+      ...prev,
+      [memberKey]: val
+    }));
+  };
+
+  const handleSignAndLaunch = () => {
+    setShowContractModal(false);
+    showToast(isRtl ? 'تم توقيع عقد الضمان المالي المشترك وتدشين مساحة عمل المشروع بنجاح!' : 'Squad contract signed and workspace launched!');
+    if (onNavigate) onNavigate('M21');
+  };
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      {/* 1. Bento Hero Card (Light-First Triad: Yellow #FFC107, Teal #00B8B8, Obsidian #1A1A1A) */}
-      <div
-        className="card hero-bento"
-        style={{
-          background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-          border: '1px solid var(--border-color)',
-          borderTop: '4px solid var(--qudra-yellow, #FFC107)',
-          padding: '26px 30px',
-          borderRadius: 'var(--radius-xl)',
-          position: 'relative'
-        }}
-      >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>
-          <div style={{ maxWidth: '680px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-              <div className="brand-icon-box" style={{ width: '42px', height: '42px', borderRadius: '10px', backgroundColor: 'var(--qudra-obsidian, #1A1A1A)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Users size={22} color="var(--qudra-yellow, #FFC107)" />
-              </div>
-              <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <h1 style={{ fontSize: '22px', fontWeight: '800', color: 'var(--qudra-obsidian, #1A1A1A)', margin: 0 }}>
-                    {isRtl ? 'تشكيل فرق العمل المتكاملة' : 'Team Builder & Squad Formation'}
-                  </h1>
-                  <span className="badge-teal" style={{ fontSize: '11px', padding: '2px 8px' }}>
-                    {isRtl ? 'تغطية 100% للمتطلبات' : 'Full Coverage'}
-                  </span>
-                </div>
-                <p style={{ fontSize: '13.5px', color: 'var(--slate-600)', margin: '4px 0 0' }}>
-                  {isRtl ? 'نجمع لك أفضل المستقلين الذين تكمل مهاراتهم بعضها البعض لإنجاز المشاريع الكبيرة بعقد ضمان مالي موحد وشفاف.' : 'Assemble complementary verified specialists to cover 100% of complex project requirements under a unified escrow contract.'}
-                </p>
-              </div>
-            </div>
-
-            {/* Target Project Ref */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '14px', flexWrap: 'wrap' }}>
-              <div
-                style={{
-                  padding: '6px 14px',
-                  borderRadius: 'var(--radius-full)',
-                  backgroundColor: '#f8fafc',
-                  border: '1px solid var(--border-color)',
-                  color: 'var(--slate-700)',
-                  fontSize: '12px',
-                  fontWeight: '700'
-                }}
-              >
-                {isRtl ? 'المشروع: منصة التقنية المالية السعودية (FinTech)' : 'Project: Saudi FinTech Infrastructure'}
-              </div>
-
-              {onNavigate && (
-                <button
-                  onClick={() => onNavigate('M15')}
-                  className="btn btn-secondary btn-sm"
-                  style={{ gap: '5px', fontSize: '12px' }}
-                >
-                  <Layers size={13} color="var(--qudra-teal)" />
-                  <span>{isRtl ? 'عرض توصيف المشروع' : 'View Project Scope'}</span>
-                </button>
-              )}
-            </div>
-          </div>
-
-          {/* Bento Live Coverage Metrics */}
-          <div
-            style={{
-              backgroundColor: '#ffffff',
-              border: '1px solid var(--border-color)',
-              borderRadius: 'var(--radius-lg)',
-              padding: '16px 20px',
-              display: 'flex',
-              gap: '20px',
-              boxShadow: 'var(--shadow-xs)'
-            }}
-          >
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '26px', fontWeight: '900', color: '#16a34a', fontFamily: 'monospace' }}>
-                100%
-              </div>
-              <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--slate-500)', marginTop: '2px' }}>
-                {isRtl ? 'التغطية المعمارية' : 'Full Coverage'}
-              </div>
-              <div style={{ fontSize: '10px', color: '#16a34a', marginTop: '1px' }}>
-                {isRtl ? 'صفر فجوات مهارية' : 'Zero Gaps'}
-              </div>
-            </div>
-
-            <div style={{ width: '1px', backgroundColor: 'var(--border-color)' }} />
-
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '26px', fontWeight: '900', color: 'var(--qudra-teal, #008B8B)', fontFamily: 'monospace' }}>
-                3
-              </div>
-              <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--slate-500)', marginTop: '2px' }}>
-                {isRtl ? 'كفاءات معتمدة' : 'Specialists'}
-              </div>
-              <div style={{ fontSize: '10px', color: 'var(--qudra-teal)', marginTop: '1px' }}>
-                {isRtl ? 'جوازات موثقة' : 'Verified Passports'}
-              </div>
-            </div>
-
-            <div style={{ width: '1px', backgroundColor: 'var(--border-color)' }} />
-
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: '3px' }}>
-                <span style={{ fontSize: '26px', fontWeight: '900', color: '#1A1A1A', fontVariantNumeric: 'tabular-nums' }}>
-                  60K
-                </span>
-                <span style={{ fontSize: '11px', fontWeight: '800', color: '#008B8B' }}>
-                  {isRtl ? 'ر.س' : 'SAR'}
-                </span>
-              </div>
-              <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--slate-500)', marginTop: '2px' }}>
-                {isRtl ? 'الضمان المالي' : 'SAR Escrow'}
-              </div>
-              <div style={{ fontSize: '10px', color: '#16a34a', fontWeight: '700', marginTop: '1px' }}>
-                {isRtl ? 'صافي 100% للفريق' : '100% Net Split'}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* 2. Interactive Capability Coverage Matrix */}
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      {/* 1. Header Bar (Clean, no bulky hero card) */}
       <div
         className="card"
         style={{
+          padding: '20px 24px',
           backgroundColor: '#ffffff',
-          borderRadius: 'var(--radius-xl)',
           border: '1px solid var(--border-color)',
-          padding: '22px 26px',
-          boxShadow: 'var(--shadow-xs)'
-        }}
-      >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap', gap: '10px' }}>
-          <div>
-            <h3 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
-              {isRtl ? 'مصفوفة سد الفجوات والتكامل المعماري للمشروع' : 'Squad Capability Coverage & Gap Bridging Matrix'}
-            </h3>
-            <p style={{ fontSize: '12.5px', color: 'var(--slate-500)', margin: '3px 0 0' }}>
-              {isRtl ? 'يوضح كيف يكمل كل عضو أدلة زميله لتحقيق نسبة تغطية تامة 100%' : 'How peer competencies interlock to achieve 100% total requirement coverage'}
-            </p>
-          </div>
-
-          <span
-            style={{
-              padding: '4px 10px',
-              borderRadius: 'var(--radius-full)',
-              backgroundColor: '#f0fdf4',
-              color: '#166534',
-              border: '1px solid #bbf7d0',
-              fontSize: '11.5px',
-              fontWeight: '800',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px'
-            }}
-          >
-            <CheckCircle2 size={14} color="#16a34a" />
-            <span>{isRtl ? 'تم سد فجوة Kafka بنجاح عبر م. أحمد الشناوي' : 'Kafka Gap Bridged by Eng. Ahmed'}</span>
-          </span>
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '10px' }}>
-          {coverageMatrix.map((item, idx) => (
-            <div
-              key={idx}
-              style={{
-                padding: '12px 14px',
-                borderRadius: 'var(--radius-md)',
-                backgroundColor: item.status === 'gap_bridged' ? '#f0fdfa' : '#f8fafc',
-                border: `1px solid ${item.status === 'gap_bridged' ? '#99f6e4' : 'var(--border-color)'}`,
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '6px'
-              }}
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '12.5px', fontWeight: '700', color: 'var(--slate-900)' }}>
-                  {item.skill}
-                </span>
-                <span style={{ fontWeight: '800', fontFamily: 'monospace', fontSize: '12px', color: 'var(--qudra-teal, #008B8B)' }}>
-                  %{item.score}
-                </span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '11.5px', color: 'var(--slate-500)' }}>
-                <span>{isRtl ? 'المكلف بالتنفيذ: ' : 'Assigned: '}<strong>{item.coveredBy}</strong></span>
-                {item.status === 'gap_bridged' && (
-                  <span style={{ backgroundColor: '#ccfbf1', color: '#006666', padding: '1px 6px', borderRadius: '4px', fontWeight: '800', fontSize: '10px' }}>
-                    {isRtl ? 'سد فجوة' : 'Gap Bridged'}
-                  </span>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* 3. Recommended Squad Members with Revenue Split */}
-      <div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-          <h3 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
-            {isRtl ? 'أعضاء الفريق المتكامل (3 كفاءات معتمدة):' : 'Proposed Squad Members (3 Verified Specialists):'}
-          </h3>
-          <span style={{ fontSize: '12px', color: 'var(--slate-500)' }}>
-            {isRtl ? 'تم التحقق من هوياتهم وأدلتهم التشفيرية' : 'All members have verified credentials & national IDs'}
-          </span>
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '16px' }}>
-          {MOCK_TEAM_COMPOSITION.map((member, idx) => {
-            const sharePercent = member.isSelf ? squadShares.karim : idx === 1 ? squadShares.ahmed : squadShares.lina;
-            const shareAmount = (totalBudget * sharePercent) / 100;
-
-            return (
-              <div
-                key={idx}
-                className="card squad-member-card"
-                style={{
-                  backgroundColor: '#ffffff',
-                  borderRadius: 'var(--radius-xl)',
-                  border: '1px solid var(--border-color)',
-                  borderTop: `4px solid ${member.isSelf ? 'var(--qudra-yellow, #FFC107)' : 'var(--qudra-teal, #00B8B8)'}`,
-                  padding: '22px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  boxShadow: 'var(--shadow-xs)',
-                  gap: '16px'
-                }}
-              >
-                <div>
-                  {/* Member Top Identity */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '14px' }}>
-                    <img
-                      src={member.avatar}
-                      alt={member.member}
-                      style={{
-                        width: '54px',
-                        height: '54px',
-                        borderRadius: '50%',
-                        objectFit: 'cover',
-                        border: `2px solid ${member.isSelf ? 'var(--qudra-yellow)' : 'var(--qudra-teal)'}`
-                      }}
-                    />
-                    <div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <h4 style={{ fontSize: '15px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
-                          {member.member}
-                        </h4>
-                        {member.isSelf && (
-                          <span style={{ fontSize: '10px', backgroundColor: 'var(--qudra-obsidian, #1A1A1A)', color: '#fff', padding: '1px 6px', borderRadius: '4px', fontWeight: '800' }}>
-                            {isRtl ? 'أنت (قائد الفريق)' : 'You (Lead)'}
-                          </span>
-                        )}
-                      </div>
-                      <div style={{ fontSize: '12px', color: 'var(--qudra-teal-deep, #006666)', fontWeight: '700', marginTop: '2px' }}>
-                        {member.role}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Match & Escrow Split Capsule */}
-                  <div
-                    style={{
-                      backgroundColor: '#f8fafc',
-                      borderRadius: 'var(--radius-md)',
-                      border: '1px solid var(--border-color)',
-                      padding: '10px 14px',
-                      marginBottom: '14px',
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      fontSize: '12px'
-                    }}
-                  >
-                    <div>
-                      <span style={{ color: 'var(--slate-500)', display: 'block' }}>{isRtl ? 'مطابقة الدور:' : 'Role Match:'}</span>
-                      <strong style={{ color: 'var(--qudra-teal, #008B8B)', fontSize: '14px' }}>%{member.matchRate}</strong>
-                    </div>
-
-                    <div style={{ textAlign: isRtl ? 'left' : 'right' }}>
-                      <span style={{ color: 'var(--slate-500)', display: 'block', fontSize: '11px' }}>{isRtl ? 'حصة الضمان المالي:' : 'Escrow Split:'}</span>
-                      <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px', justifyContent: isRtl ? 'flex-start' : 'flex-end', marginTop: '2px' }}>
-                        <strong style={{ color: '#1A1A1A', fontSize: '14px', fontVariantNumeric: 'tabular-nums' }}>
-                          {shareAmount.toLocaleString()} {isRtl ? 'ر.س' : 'SAR'}
-                        </strong>
-                        <span style={{ fontSize: '10.5px', fontWeight: '800', color: '#008B8B', backgroundColor: '#E6FFFA', padding: '1px 5px', borderRadius: '4px' }}>
-                          {sharePercent}%
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Covered Capabilities List */}
-                  <div>
-                    <span style={{ fontSize: '11px', fontWeight: '700', color: 'var(--slate-400)', display: 'block', marginBottom: '6px' }}>
-                      {isRtl ? 'المهام والقدرات المسندة:' : 'Assigned Responsibilities:'}
-                    </span>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                      {member.coverage.map((cov, i) => (
-                        <span
-                          key={i}
-                          style={{
-                            fontSize: '11px',
-                            fontWeight: '600',
-                            padding: '3px 8px',
-                            borderRadius: 'var(--radius-sm)',
-                            backgroundColor: '#f0fdfa',
-                            border: '1px solid #ccfbf1',
-                            color: '#006666',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '4px'
-                          }}
-                        >
-                          <Check size={11} color="#008B8B" />
-                          <span>{cov}</span>
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Member Card Actions */}
-                <div style={{ display: 'flex', gap: '8px', borderTop: '1px solid var(--border-color)', paddingTop: '12px' }}>
-                  <button
-                    onClick={onOpenExplain}
-                    className="btn btn-secondary btn-sm"
-                    style={{ flex: 1, gap: '4px', fontSize: '11.5px' }}
-                  >
-                    <Sparkles size={12} color="var(--qudra-teal)" />
-                    <span>{isRtl ? 'سبب التعيين' : 'Explain'}</span>
-                  </button>
-                  <button
-                    onClick={() => onNavigate('M07')}
-                    className="btn btn-secondary btn-sm"
-                    style={{ fontSize: '11.5px' }}
-                  >
-                    {isRtl ? 'جواز القدرات ↗' : 'Passport ↗'}
-                  </button>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* 4. Action Footer Card: Launch Workspace & Smart Escrow Preview */}
-      <div
-        className="card"
-        style={{
-          backgroundColor: '#ffffff',
-          borderRadius: 'var(--radius-xl)',
-          border: '1px solid var(--border-color)',
-          padding: '22px 28px',
+          borderRadius: 'var(--radius-lg)',
+          boxShadow: 'var(--shadow-xs)',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
           flexWrap: 'wrap',
-          gap: '16px',
-          boxShadow: 'var(--shadow-sm)'
+          gap: '16px'
         }}
       >
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-            <ShieldCheck size={18} color="var(--qudra-teal)" />
-            <h4 style={{ fontSize: '15px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
-              {isRtl ? 'جاهز لتدشين مساحة العمل المشتركة وتفعيل الضمان المالي؟' : 'Ready to launch collaborative workspace & escrow?'}
-            </h4>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <h1 style={{ fontSize: '20px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
+              {isRtl ? 'تشكيل الفريق وتوزيع الضمان المالي' : 'Squad Composer & Escrow Distribution'}
+            </h1>
+            <span
+              style={{
+                fontSize: '11px',
+                fontWeight: '700',
+                padding: '2px 8px',
+                borderRadius: 'var(--radius-full)',
+                backgroundColor: '#f0fdf4',
+                color: '#166534',
+                border: '1px solid #bbf7d0'
+              }}
+            >
+              {isRtl ? 'تغطية 100% للمتطلبات' : '100% Requirement Coverage'}
+            </span>
           </div>
-          <p style={{ fontSize: '12.5px', color: 'var(--slate-500)', margin: 0 }}>
+          <p style={{ fontSize: '13px', color: 'var(--slate-600)', margin: '4px 0 0' }}>
             {isRtl
-              ? 'سيتم توليد عقد ضمان مالي مشفر موحد بقيمة 60,000 ر.س مع توزيع تلقائي لمستحقات كل عضو عند تسليم المراحل.'
-              : 'Generates a unified 60,000 SAR milestone escrow contract with automated split releases upon deliverables.'}
+              ? 'تجميع كفاءات موثقة لتغطية كافة الثغرات المعمارية لمشروع التقنية المالية بعقد ضمان مالي موحد.'
+              : 'Assemble complementary verified specialists covering 100% of FinTech requirements under one contract.'}
           </p>
         </div>
 
-        <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
-          <button
-            onClick={() => setShowContractModal(true)}
-            className="btn btn-secondary"
-            style={{ gap: '6px', fontSize: '13px' }}
-          >
-            <FileText size={15} />
-            <span>{isRtl ? 'معاينة العقد الذكي' : 'Preview Contract'}</span>
-          </button>
+        {/* Action Group */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+          {onNavigate && (
+            <button
+              onClick={() => onNavigate('M15')}
+              className="btn btn-secondary btn-sm"
+              style={{ gap: '6px', fontSize: '12px', padding: '7px 12px' }}
+            >
+              <Layers size={13} color="var(--qudra-teal)" />
+              <span>{isRtl ? 'توصيف المشروع (M15)' : 'Project Scope'}</span>
+            </button>
+          )}
 
           <button
-            onClick={() => onNavigate('M21')}
-            className="btn btn-primary"
+            onClick={() => setShowContractModal(true)}
+            className="btn btn-primary btn-sm"
             style={{
               backgroundColor: 'var(--qudra-obsidian, #1A1A1A)',
               color: '#ffffff',
-              gap: '8px',
-              padding: '10px 22px',
               fontWeight: '800',
-              borderRadius: 'var(--radius-md)'
+              gap: '6px',
+              padding: '7px 16px'
             }}
           >
-            <Send size={15} color="var(--qudra-yellow, #FFC107)" />
-            <span>{isRtl ? 'بدء المشروع في مساحة العمل' : 'Launch Project Workspace'}</span>
+            <ShieldCheck size={14} color="var(--qudra-yellow, #FFC107)" />
+            <span>{isRtl ? 'إصدار عقد الضمان المشترك' : 'Generate Unified Contract'}</span>
           </button>
         </div>
       </div>
 
-      {/* 5. Smart Escrow Contract Modal */}
+      {/* 2. Squad Canvas: 3 Complementary Specialist Cards */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px' }}>
+        {MOCK_TEAM_COMPOSITION.members.map((member) => {
+          const key = member.id === 'm-1' ? 'karim' : member.id === 'm-2' ? 'ahmed' : 'lina';
+          const sharePct = squadShares[key] || (key === 'karim' ? 50 : key === 'ahmed' ? 30 : 20);
+          const payoutAmount = Math.round((sharePct / 100) * totalBudget);
+
+          return (
+            <div
+              key={member.id}
+              className="card"
+              style={{
+                backgroundColor: '#ffffff',
+                borderRadius: 'var(--radius-lg)',
+                border: '1px solid var(--border-color)',
+                padding: '20px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                gap: '14px',
+                boxShadow: 'var(--shadow-xs)',
+                position: 'relative'
+              }}
+            >
+              <div>
+                {/* Header: Avatar, Name, Role */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                  <img
+                    src={member.avatar}
+                    alt={member.name}
+                    style={{
+                      width: '50px',
+                      height: '50px',
+                      borderRadius: '50%',
+                      objectFit: 'cover',
+                      border: '2px solid var(--qudra-teal, #00B8B8)'
+                    }}
+                  />
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <h3 style={{ fontSize: '15px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
+                        {member.name}
+                      </h3>
+                      <span
+                        style={{
+                          fontSize: '10px',
+                          fontWeight: '800',
+                          padding: '1px 6px',
+                          borderRadius: 'var(--radius-full)',
+                          backgroundColor: '#f0fdf4',
+                          color: '#166534',
+                          border: '1px solid #bbf7d0'
+                        }}
+                      >
+                        {isRtl ? 'موثق' : 'Verified'}
+                      </span>
+                    </div>
+                    <span style={{ fontSize: '11.5px', color: 'var(--slate-500)', display: 'block', marginTop: '2px' }}>
+                      {member.role}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Covered Specialized Skills */}
+                <div style={{ marginBottom: '12px' }}>
+                  <span style={{ fontSize: '11px', fontWeight: '700', color: 'var(--slate-400)', display: 'block', marginBottom: '6px' }}>
+                    {isRtl ? 'المهارات المضمونة في العقد:' : 'Guaranteed Core Skills:'}
+                  </span>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
+                    {member.skills.map((skill, idx) => (
+                      <span
+                        key={idx}
+                        style={{
+                          padding: '2px 7px',
+                          borderRadius: '4px',
+                          backgroundColor: '#f0fdfa',
+                          border: '1px solid #ccfbf1',
+                          color: '#006666',
+                          fontSize: '11px',
+                          fontWeight: '700',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px'
+                        }}
+                      >
+                        <Check size={11} color="#008B8B" />
+                        <span>{skill}</span>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Escrow Payout Share Slider */}
+              <div
+                style={{
+                  padding: '12px 14px',
+                  borderRadius: 'var(--radius-md)',
+                  backgroundColor: '#f8fafc',
+                  border: '1px solid var(--border-color)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '6px'
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px' }}>
+                  <span style={{ fontWeight: '700', color: 'var(--slate-700)' }}>
+                    {isRtl ? 'حصة الضمان المالي:' : 'Escrow Split:'}
+                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ fontSize: '13px', fontWeight: '900', fontFamily: 'monospace', color: 'var(--qudra-teal-deep)' }}>
+                      {sharePct}%
+                    </span>
+                    <span style={{ fontSize: '11.5px', color: 'var(--slate-500)' }}>
+                      ({payoutAmount.toLocaleString()} ر.س)
+                    </span>
+                  </div>
+                </div>
+
+                <input
+                  type="range"
+                  min="10"
+                  max="70"
+                  value={sharePct}
+                  onChange={(e) => handleShareChange(key, e.target.value)}
+                  style={{ width: '100%', accentColor: 'var(--qudra-teal, #00B8B8)', cursor: 'pointer' }}
+                />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* 3. Requirement Coverage Matrix Table */}
+      <div
+        className="card"
+        style={{
+          backgroundColor: '#ffffff',
+          borderRadius: 'var(--radius-lg)',
+          border: '1px solid var(--border-color)',
+          padding: '20px 24px',
+          boxShadow: 'var(--shadow-xs)'
+        }}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+          <div>
+            <h3 style={{ fontSize: '15px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
+              {isRtl ? 'مصفوفة تغطية المتطلبات المعمارية' : 'Architectural Coverage Matrix'}
+            </h3>
+            <span style={{ fontSize: '12px', color: 'var(--slate-500)' }}>
+              {isRtl ? 'تكامل المهارات يغطي 100% من متطلبات بنية الفنتك' : '100% coverage with zero architectural blind spots'}
+            </span>
+          </div>
+
+          <span
+            style={{
+              fontSize: '11.5px',
+              fontWeight: '800',
+              padding: '3px 10px',
+              borderRadius: 'var(--radius-full)',
+              backgroundColor: '#f0fdf4',
+              color: '#166534',
+              border: '1px solid #bbf7d0',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px'
+            }}
+          >
+            <CheckCircle2 size={13} color="#166534" />
+            <span>{isRtl ? 'لا توجد فجوات مهارية' : 'Zero Skill Gaps'}</span>
+          </span>
+        </div>
+
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: isRtl ? 'right' : 'left', fontSize: '12.5px' }}>
+            <thead>
+              <tr style={{ backgroundColor: '#f8fafc', borderBottom: '1px solid var(--border-color)', color: 'var(--slate-600)', fontSize: '11.5px', fontWeight: '700' }}>
+                <th style={{ padding: '10px 14px' }}>{isRtl ? 'المتطلب المعماري' : 'Requirement'}</th>
+                <th style={{ padding: '10px 14px' }}>{isRtl ? 'المسؤول المغطي' : 'Assigned Member'}</th>
+                <th style={{ padding: '10px 14px' }}>{isRtl ? 'درجة الإتقان' : 'Score'}</th>
+                <th style={{ padding: '10px 14px' }}>{isRtl ? 'حالة التغطية' : 'Coverage Status'}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {coverageMatrix.map((row, idx) => (
+                <tr key={idx} style={{ borderBottom: idx === coverageMatrix.length - 1 ? 'none' : '1px solid var(--border-color)' }}>
+                  <td style={{ padding: '12px 14px', fontWeight: '700', color: 'var(--slate-900)' }}>
+                    {row.skill}
+                  </td>
+                  <td style={{ padding: '12px 14px', color: 'var(--slate-700)' }}>
+                    {row.coveredBy}
+                  </td>
+                  <td style={{ padding: '12px 14px', fontFamily: 'monospace', fontWeight: '800', color: 'var(--qudra-teal-deep)' }}>
+                    {row.score}%
+                  </td>
+                  <td style={{ padding: '12px 14px' }}>
+                    <span
+                      style={{
+                        padding: '2px 8px',
+                        borderRadius: 'var(--radius-sm)',
+                        backgroundColor: '#f0fdf4',
+                        color: '#166534',
+                        fontSize: '11px',
+                        fontWeight: '700',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px'
+                      }}
+                    >
+                      <CheckCircle2 size={11} color="#16a34a" />
+                      <span>{row.status === 'gap_bridged' ? (isRtl ? 'تم سد الفجوة بنجاح' : 'Gap Bridged') : (isRtl ? 'مغطى بالكامل' : 'Covered')}</span>
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* 4. Unified Contract Modal */}
       {showContractModal && (
         <div
-          className="modal-backdrop"
-          onClick={() => setShowContractModal(false)}
           style={{
             position: 'fixed',
             inset: 0,
-            backgroundColor: 'rgba(15, 23, 42, 0.65)',
-            backdropFilter: 'blur(4px)',
+            backgroundColor: 'rgba(15, 23, 42, 0.55)',
+            backdropFilter: 'blur(3px)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            zIndex: 1000,
+            zIndex: 1100,
             padding: '20px'
           }}
+          onClick={() => setShowContractModal(false)}
         >
           <div
-            className="modal-container"
-            onClick={(e) => e.stopPropagation()}
             style={{
               backgroundColor: '#ffffff',
               borderRadius: 'var(--radius-xl)',
-              maxWidth: '580px',
+              maxWidth: '560px',
               width: '100%',
               padding: '26px',
               boxShadow: 'var(--shadow-xl)',
-              border: '1px solid var(--border-color)'
+              border: '1px solid var(--border-color)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '16px'
             }}
+            onClick={(e) => e.stopPropagation()}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <Coins size={22} color="var(--qudra-teal)" />
-                <h3 style={{ fontSize: '18px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
-                  {isRtl ? 'مسودة عقد الضمان المالي الجماعي (Escrow)' : 'Collective Escrow Agreement'}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <FileText size={18} color="var(--qudra-teal)" />
+                <h3 style={{ fontSize: '16px', fontWeight: '800', margin: 0, color: 'var(--slate-900)' }}>
+                  {isRtl ? 'عقد الضمان المالي الموحد للفريق' : 'Unified Squad Escrow Contract'}
                 </h3>
               </div>
               <button onClick={() => setShowContractModal(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--slate-400)' }}>
@@ -493,39 +396,29 @@ export default function TeamComposer({ onNavigate, onOpenExplain, isRtl = true }
               </button>
             </div>
 
-            <div style={{ backgroundColor: '#f0fdf4', border: '1px solid #bbf7d0', padding: '10px 14px', borderRadius: 'var(--radius-md)', color: '#166534', fontSize: '12.5px', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <CheckCircle2 size={16} color="#16a34a" />
-              <span>{isRtl ? 'صفر عمولات خفية: إجمالي المبلغ المودع 60,000 ر.س يصل كاملاً لأعضاء الفريق.' : 'Zero hidden fees: 100% of 60,000 SAR is distributed directly to squad members.'}</span>
+            <div style={{ backgroundColor: '#f8fafc', padding: '14px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', fontSize: '12px', color: 'var(--slate-700)', lineHeight: 1.6 }}>
+              <div>• <strong>{isRtl ? 'المشروع:' : 'Project:'}</strong> {MOCK_PROBLEM.title}</div>
+              <div>• <strong>{isRtl ? 'إجمالي الميزانية في الضمان:' : 'Total Escrow Budget:'}</strong> 60,000 ر.س (0% عمولة على العميل)</div>
+              <div>• <strong>{isRtl ? 'توزيع المستحقات:' : 'Payout Split:'}</strong> كريم 50% (30k)، أحمد 30% (18k)، لينا 20% (12k)</div>
+              <div>• <strong>{isRtl ? 'آلية الصرف:' : 'Release Terms:'}</strong> الإفراج عن الدفعات مرتبط بمخرجات المراحل (Milestones) الموثقة فقط.</div>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '12.5px', backgroundColor: '#f8fafc', padding: '14px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', marginBottom: '16px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span>{isRtl ? 'كريم المنشاوي (قائد الفريق):' : 'Karim (Lead):'}</span>
-                <strong>30,000 ر.س (50%)</strong>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span>{isRtl ? 'م. أحمد الشناوي (مهندس Kafka):' : 'Ahmed (Kafka):'}</span>
-                <strong>18,000 ر.س (30%)</strong>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span>{isRtl ? 'أ. لينا العتيبي (أخصائية التوافق):' : 'Lina (Compliance):'}</span>
-                <strong>12,000 ر.س (20%)</strong>
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
-              <button onClick={() => setShowContractModal(false)} className="btn btn-secondary btn-sm">
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button onClick={() => setShowContractModal(false)} className="btn btn-secondary" style={{ flex: 1, fontSize: '12.5px' }}>
                 {isRtl ? 'إلغاء' : 'Cancel'}
               </button>
               <button
-                onClick={() => {
-                  setShowContractModal(false);
-                  if (onNavigate) onNavigate('M21');
+                onClick={handleSignAndLaunch}
+                className="btn btn-primary"
+                style={{
+                  flex: 1,
+                  backgroundColor: 'var(--qudra-obsidian, #1A1A1A)',
+                  color: '#ffffff',
+                  fontWeight: '800',
+                  fontSize: '12.5px'
                 }}
-                className="btn btn-primary btn-sm"
-                style={{ backgroundColor: 'var(--qudra-obsidian, #1A1A1A)', color: '#fff', padding: '8px 18px' }}
               >
-                {isRtl ? 'موافقة وتدشين مساحة العمل' : 'Agree & Launch'}
+                {isRtl ? 'توقيع وتدشين مساحة العمل' : 'Sign & Launch Workspace'}
               </button>
             </div>
           </div>

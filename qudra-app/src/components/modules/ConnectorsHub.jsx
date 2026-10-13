@@ -22,7 +22,11 @@ import {
   FolderGit2,
   Zap,
   Copy,
-  Key
+  Key,
+  Globe,
+  Database,
+  Building2,
+  CheckSquare
 } from 'lucide-react';
 import TrustChip from '../common/TrustChip';
 import { MOCK_CONNECTORS } from '../../data/mockData';
@@ -40,12 +44,15 @@ const ICON_COMPONENTS = {
 export default function ConnectorsHub({ isRtl = true }) {
   const { showToast } = useToast();
   const [connectors, setConnectors] = useState(MOCK_CONNECTORS);
-  const [activeFilter, setActiveFilter] = useState('all'); // 'all' | 'official' | 'user' | 'fragile'
+  const [activeDirectoryCategory, setActiveDirectoryCategory] = useState('all');
   const [syncingId, setSyncingId] = useState(null);
   const [justSyncedId, setJustSyncedId] = useState(null);
   const [copiedKeyId, setCopiedKeyId] = useState(null);
-  const [modalConnector, setModalConnector] = useState(null); // Connector being connected via OAuth modal
-  const [inspectConnector, setInspectConnector] = useState(null); // Connector details inspect modal
+  const [modalConnector, setModalConnector] = useState(null); // OAuth connection modal
+  const [inspectConnector, setInspectConnector] = useState(null); // Inspect details modal
+
+  const connectedList = connectors.filter((c) => c.status === 'connected');
+  const availableList = connectors.filter((c) => c.status !== 'connected');
 
   const handleSync = (id, name) => {
     setSyncingId(id);
@@ -60,8 +67,8 @@ export default function ConnectorsHub({ isRtl = true }) {
             : c
         )
       );
-      showToast(isRtl ? `تمت مزامنة بيانات ${name} بنجاح وتحديث محرك الأدلة.` : `${name} data successfully synced.`);
-    }, 1200);
+      showToast(isRtl ? `تمت مزامنة بيانات ${name} وتحديث سجل الأدلة.` : `${name} data successfully synced.`);
+    }, 1100);
   };
 
   const handleCopyKey = (text, id) => {
@@ -69,7 +76,7 @@ export default function ConnectorsHub({ isRtl = true }) {
       navigator.clipboard.writeText(text);
     }
     setCopiedKeyId(id);
-    setTimeout(() => setCopiedKeyId(null), 2500);
+    setTimeout(() => setCopiedKeyId(null), 2200);
   };
 
   const handleOpenConnect = (connector) => {
@@ -80,10 +87,12 @@ export default function ConnectorsHub({ isRtl = true }) {
     if (!modalConnector) return;
     setConnectors((prev) =>
       prev.map((c) =>
-        c.id === modalConnector.id ? { ...c, status: 'connected', lastSync: isRtl ? 'تم الربط الآن' : 'Just connected' } : c
+        c.id === modalConnector.id
+          ? { ...c, status: 'connected', lastSync: isRtl ? 'تم الربط الآن' : 'Just connected' }
+          : c
       )
     );
-    showToast(isRtl ? `تم ربط ${modalConnector.name} بنجاح كـ ${modalConnector.type === 'official' ? 'موصل رسمي موثوق' : 'مصدر أدلة معتمد'}.` : `${modalConnector.name} connected successfully.`);
+    showToast(isRtl ? `تم ربط ${modalConnector.name} بنجاح كـ ${modalConnector.type === 'official' ? 'موصل رسمي معتمد' : 'مصدر أدلة'}.` : `${modalConnector.name} connected successfully.`);
     setModalConnector(null);
   };
 
@@ -91,722 +100,495 @@ export default function ConnectorsHub({ isRtl = true }) {
     setConnectors((prev) =>
       prev.map((c) => (c.id === id ? { ...c, status: 'available' } : c))
     );
-    showToast(isRtl ? `تم إلغاء ربط ${name} وتجميد الأدلة المرتبطة به.` : `${name} disconnected.`);
+    showToast(isRtl ? `تم إلغاء ربط ${name}.` : `${name} disconnected.`);
   };
 
-  // Filter logic
-  const filteredConnectors = connectors.filter((c) => {
-    if (activeFilter === 'all') return true;
-    return c.type === activeFilter;
+  // Filter available catalog
+  const filteredAvailable = availableList.filter((c) => {
+    if (activeDirectoryCategory === 'all') return true;
+    return c.type === activeDirectoryCategory;
   });
 
-  const connectedCount = connectors.filter((c) => c.status === 'connected').length;
-  const officialCount = connectors.filter((c) => c.type === 'official').length;
-  const userCount = connectors.filter((c) => c.type === 'user').length;
-  const fragileCount = connectors.filter((c) => c.type === 'fragile').length;
-
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
-      {/* 1. Header Hero Card — Bento Style, Pure Light-First */}
-      <div className="card" style={{
-        padding: '30px 32px',
-        backgroundColor: '#ffffff',
-        border: '1px solid var(--slate-200)',
-        borderRadius: 'var(--radius-xl)',
-        boxShadow: 'var(--shadow-card)',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          insetInlineStart: 0,
-          width: '100%',
-          height: '4px',
-          background: 'linear-gradient(90deg, var(--qudra-teal) 0%, var(--qudra-yellow) 100%)'
-        }} />
-
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>
-          <div style={{ maxWidth: '720px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
-              <div style={{
-                width: '38px',
-                height: '38px',
-                borderRadius: 'var(--radius-md)',
-                backgroundColor: 'var(--qudra-obsidian)',
-                color: 'var(--qudra-teal)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 2px 6px rgba(26,26,26,0.15)'
-              }}>
-                <Link2 size={20} />
-              </div>
-              <div>
-                <h1 style={{ fontSize: '22px', fontWeight: '800', color: 'var(--qudra-obsidian)' }}>
-                  {isRtl ? 'ربط الحسابات والمنصات المهنية' : 'Connected Professional Accounts'}
-                </h1>
-                <span style={{ fontSize: '13px', color: 'var(--slate-600)', fontWeight: '500' }}>
-                  {isRtl ? 'اربط حساباتك في GitHub وLinkedIn ومنصات الشهادات لتوثيق مهاراتك ومشاريعك تلقائياً وبأمان تام.' : 'Connect your GitHub, LinkedIn, and certification accounts to verify your skills automatically and safely.'}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Quick Metrics Bento Widget */}
-          <div style={{
-            display: 'flex',
-            gap: '12px',
-            backgroundColor: '#f8fafc',
-            padding: '12px 16px',
-            borderRadius: 'var(--radius-lg)',
-            border: '1px solid var(--slate-200)',
-            flexWrap: 'wrap'
-          }}>
-            <div style={{ textAlign: 'center', padding: '0 8px' }}>
-              <div style={{ fontSize: '20px', fontWeight: '800', color: 'var(--qudra-teal-deep)' }}>
-                {connectedCount} / {connectors.length}
-              </div>
-              <div style={{ fontSize: '11px', color: 'var(--slate-500)', fontWeight: '600' }}>
-                {isRtl ? 'حسابات مربوطة' : 'Connected'}
-              </div>
-            </div>
-
-            <div style={{ width: '1px', backgroundColor: 'var(--slate-200)' }} />
-
-            <div style={{ textAlign: 'center', padding: '0 8px' }}>
-              <div style={{ fontSize: '20px', fontWeight: '800', color: 'var(--qudra-obsidian)' }}>
-                32
-              </div>
-              <div style={{ fontSize: '11px', color: 'var(--slate-500)', fontWeight: '600' }}>
-                {isRtl ? 'عملاً موثقاً' : 'Verified Items'}
-              </div>
-            </div>
-
-            <div style={{ width: '1px', backgroundColor: 'var(--slate-200)' }} />
-
-            <div style={{ textAlign: 'center', padding: '0 8px' }}>
-              <div style={{ fontSize: '20px', fontWeight: '800', color: 'var(--qudra-yellow-dark)' }}>
-                100%
-              </div>
-              <div style={{ fontSize: '11px', color: 'var(--slate-500)', fontWeight: '600' }}>
-                {isRtl ? 'أمان الحساب' : 'Safe'}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* 2. Filter Tabs & Trust Tier Legend */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '14px' }}>
-        {/* Segmented Filter Pills */}
-        <div style={{
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
+      {/* 1. Header Bar (Clean, no bulky hero cards) */}
+      <div
+        className="card"
+        style={{
+          padding: '20px 24px',
+          backgroundColor: '#ffffff',
+          border: '1px solid var(--border-color)',
+          borderRadius: 'var(--radius-lg)',
+          boxShadow: 'var(--shadow-xs)',
           display: 'flex',
-          gap: '6px',
-          backgroundColor: '#f1f5f9',
-          padding: '4px',
-          borderRadius: 'var(--radius-md)',
-          border: '1px solid var(--slate-200)'
-        }}>
-          <button
-            onClick={() => setActiveFilter('all')}
-            style={{
-              padding: '6px 14px',
-              borderRadius: 'var(--radius-sm)',
-              border: 'none',
-              backgroundColor: activeFilter === 'all' ? '#ffffff' : 'transparent',
-              color: activeFilter === 'all' ? 'var(--qudra-obsidian)' : 'var(--slate-600)',
-              fontWeight: activeFilter === 'all' ? '700' : '500',
-              fontSize: '12.5px',
-              cursor: 'pointer',
-              boxShadow: activeFilter === 'all' ? 'var(--shadow-subtle)' : 'none',
-              transition: 'all var(--transition-smooth)'
-            }}
-          >
-            {isRtl ? `الكل (${connectors.length})` : `All (${connectors.length})`}
-          </button>
-
-          <button
-            onClick={() => setActiveFilter('official')}
-            style={{
-              padding: '6px 14px',
-              borderRadius: 'var(--radius-sm)',
-              border: 'none',
-              backgroundColor: activeFilter === 'official' ? '#ffffff' : 'transparent',
-              color: activeFilter === 'official' ? 'var(--qudra-teal-deep)' : 'var(--slate-600)',
-              fontWeight: activeFilter === 'official' ? '700' : '500',
-              fontSize: '12.5px',
-              cursor: 'pointer',
-              boxShadow: activeFilter === 'official' ? 'var(--shadow-subtle)' : 'none',
-              transition: 'all var(--transition-smooth)',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '5px'
-            }}
-          >
-            <CheckCircle2 size={13} color="var(--qudra-teal-deep)" />
-            <span>{isRtl ? `ربط مباشر (${officialCount})` : `Direct Sync (${officialCount})`}</span>
-          </button>
-
-          <button
-            onClick={() => setActiveFilter('user')}
-            style={{
-              padding: '6px 14px',
-              borderRadius: 'var(--radius-sm)',
-              border: 'none',
-              backgroundColor: activeFilter === 'user' ? '#ffffff' : 'transparent',
-              color: activeFilter === 'user' ? '#0369a1' : 'var(--slate-600)',
-              fontWeight: activeFilter === 'user' ? '700' : '500',
-              fontSize: '12.5px',
-              cursor: 'pointer',
-              boxShadow: activeFilter === 'user' ? 'var(--shadow-subtle)' : 'none',
-              transition: 'all var(--transition-smooth)',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '5px'
-            }}
-          >
-            <FolderGit2 size={13} color="#0369a1" />
-            <span>{isRtl ? `ملفات مرفوعة (${userCount})` : `Uploaded Files (${userCount})`}</span>
-          </button>
-
-          <button
-            onClick={() => setActiveFilter('fragile')}
-            style={{
-              padding: '6px 14px',
-              borderRadius: 'var(--radius-sm)',
-              border: 'none',
-              backgroundColor: activeFilter === 'fragile' ? '#ffffff' : 'transparent',
-              color: activeFilter === 'fragile' ? '#b45309' : 'var(--slate-600)',
-              fontWeight: activeFilter === 'fragile' ? '700' : '500',
-              fontSize: '12.5px',
-              cursor: 'pointer',
-              boxShadow: activeFilter === 'fragile' ? 'var(--shadow-subtle)' : 'none',
-              transition: 'all var(--transition-smooth)',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '5px'
-            }}
-          >
-            <Zap size={13} color="#b45309" />
-            <span>{isRtl ? `روابط خارجية (${fragileCount})` : `External Links (${fragileCount})`}</span>
-          </button>
-        </div>
-
-        {/* Security Scopes Assurance Pill */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: 'var(--slate-500)' }}>
-          <ShieldCheck size={15} color="var(--qudra-teal-dark)" />
-          <span>{isRtl ? 'صلاحية قراءة فقط لحماية حساباتك' : 'Read-only access for your security'}</span>
-        </div>
-      </div>
-
-      {/* 3. Grid of Connectors (Light-First Bento Cards) */}
-      <div className="grid-2">
-        {filteredConnectors.map((conn) => {
-          const IconComp = ICON_COMPONENTS[conn.icon] || Link2;
-          const isConnected = conn.status === 'connected';
-          const isSyncing = syncingId === conn.id;
-          const isJustSynced = justSyncedId === conn.id;
-
-          return (
-            <div
-              key={conn.id}
-              className="card"
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '16px'
+        }}
+      >
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <h1 style={{ fontSize: '20px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
+              {isRtl ? 'ربط الحسابات والمنصات المهنية' : 'Connected Platforms & Integrations'}
+            </h1>
+            <span
               style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                padding: '24px',
-                backgroundColor: '#ffffff',
-                border: isConnected ? '1px solid var(--qudra-teal-border)' : '1px solid var(--slate-200)',
-                borderRadius: 'var(--radius-lg)',
-                boxShadow: isConnected ? '0 2px 10px rgba(0, 184, 184, 0.06)' : 'var(--shadow-card)',
-                transition: 'all var(--transition-smooth)'
+                fontSize: '11px',
+                fontWeight: '700',
+                padding: '2px 8px',
+                borderRadius: 'var(--radius-full)',
+                backgroundColor: '#f0fdfa',
+                color: '#006666',
+                border: '1px solid #ccfbf1'
               }}
             >
-              <div>
-                {/* Header: Icon, Name, Trust Chip, Status */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '14px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                    <div style={{
-                      width: '46px',
-                      height: '46px',
-                      borderRadius: 'var(--radius-md)',
-                      backgroundColor: isConnected ? 'var(--qudra-teal-light)' : '#f8fafc',
-                      color: isConnected ? 'var(--qudra-teal-deep)' : 'var(--slate-700)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      border: `1px solid ${isConnected ? 'var(--qudra-teal-border)' : 'var(--slate-200)'}`,
-                      flexShrink: 0
-                    }}>
-                      <IconComp size={24} />
-                    </div>
+              {connectedList.length} / {connectors.length} {isRtl ? 'حسابات نشطة' : 'Active'}
+            </span>
+          </div>
+          <p style={{ fontSize: '13px', color: 'var(--slate-600)', margin: '4px 0 0' }}>
+            {isRtl
+              ? 'اربط حساباتك في GitHub وLinkedIn ومنصات الشهادات لتوثيق مهاراتك ومشاريعك تلقائياً وبصلاحية قراءة فقط آمنة.'
+              : 'Connect your GitHub, LinkedIn, and certification accounts with read-only scopes to verify skills automatically.'}
+          </p>
+        </div>
 
-                    <div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <h3 style={{ fontSize: '16px', fontWeight: '700', color: 'var(--qudra-obsidian)', margin: 0 }}>
-                          {conn.name}
-                        </h3>
-                        <TrustChip tier={conn.type} isRtl={isRtl} />
-                      </div>
-                      <span style={{ fontSize: '11.5px', color: 'var(--slate-400)', marginTop: '2px', display: 'block' }}>
-                        {conn.type === 'official' ? (isRtl ? 'ربط مباشر ومعتمد' : 'Direct OAuth Sync') : conn.type === 'user' ? (isRtl ? 'استيراد ملفات موثقة' : 'Verified File Import') : (isRtl ? 'ربط عبر رمز وصول' : 'Token Access')}
-                      </span>
-                    </div>
-                  </div>
+        {/* Security Scope Pill */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '6px 14px',
+            borderRadius: 'var(--radius-full)',
+            backgroundColor: '#f8fafc',
+            border: '1px solid var(--border-color)',
+            fontSize: '12px',
+            color: 'var(--slate-700)',
+            fontWeight: '600'
+          }}
+        >
+          <ShieldCheck size={14} color="var(--qudra-teal)" />
+          <span>{isRtl ? 'صلاحيات قراءة فقط مشفرة (OAuth 2.0 PKCE)' : 'Encrypted Read-Only Access'}</span>
+        </div>
+      </div>
 
-                  {/* Connected Status Pill */}
-                  <span style={{
-                    fontSize: '11.5px',
-                    fontWeight: '700',
-                    padding: '3px 10px',
-                    borderRadius: 'var(--radius-full)',
-                    backgroundColor: isSyncing
-                      ? '#eff6ff'
-                      : isJustSynced
-                      ? '#ecfdf5'
-                      : isConnected
-                      ? 'var(--qudra-teal-light)'
-                      : '#f1f5f9',
-                    color: isSyncing
-                      ? '#1d4ed8'
-                      : isJustSynced
-                      ? '#059669'
-                      : isConnected
-                      ? 'var(--qudra-teal-deep)'
-                      : 'var(--slate-500)',
-                    border: `1px solid ${
-                      isSyncing
-                        ? '#bfdbfe'
-                        : isJustSynced
-                        ? '#a7f3d0'
-                        : isConnected
-                        ? 'var(--qudra-teal-border)'
-                        : 'var(--slate-200)'
-                    }`,
+      {/* 2. Active Connected Accounts Tray */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h2 style={{ fontSize: '14px', fontWeight: '800', color: 'var(--slate-900)', margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#16a34a', display: 'inline-block' }} />
+            <span>{isRtl ? 'الحسابات النشطة المربوطة حالياً' : 'Active Connected Accounts'}</span>
+            <span style={{ fontSize: '12px', color: 'var(--slate-500)', fontWeight: '600' }}>({connectedList.length})</span>
+          </h2>
+        </div>
+
+        {connectedList.length === 0 ? (
+          <div
+            style={{
+              padding: '24px',
+              textAlign: 'center',
+              backgroundColor: '#f8fafc',
+              border: '1px dashed var(--border-color)',
+              borderRadius: 'var(--radius-md)',
+              color: 'var(--slate-500)',
+              fontSize: '13px'
+            }}
+          >
+            {isRtl ? 'لا توجد حسابات مربوطة حالياً. اختر منصة من الدليل أدناه للبدء.' : 'No accounts connected yet. Select a platform below to begin.'}
+          </div>
+        ) : (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(290px, 1fr))', gap: '12px' }}>
+            {connectedList.map((conn) => {
+              const IconComp = ICON_COMPONENTS[conn.icon] || Link2;
+              const isSyncing = syncingId === conn.id;
+              const isJustSynced = justSyncedId === conn.id;
+
+              return (
+                <div
+                  key={conn.id}
+                  className="card"
+                  style={{
+                    padding: '16px',
+                    backgroundColor: '#ffffff',
+                    borderRadius: 'var(--radius-lg)',
+                    border: '1px solid #ccfbf1',
+                    boxShadow: '0 1px 3px rgba(0, 184, 184, 0.08)',
                     display: 'flex',
-                    alignItems: 'center',
-                    gap: '5px',
-                    transition: 'all 0.25s ease'
-                  }}>
-                    {isSyncing ? (
-                      <>
-                        <RefreshCw size={12} className="animate-spin" color="#1d4ed8" />
-                        <span>{isRtl ? 'جارِ المزامنة...' : 'Syncing...'}</span>
-                      </>
-                    ) : isJustSynced ? (
-                      <>
-                        <Check size={13} color="#059669" />
-                        <span>{isRtl ? 'تم التحديث بنجاح' : 'Updated'}</span>
-                      </>
-                    ) : isConnected ? (
-                      <>
-                        <span
-                          style={{
-                            width: '7px',
-                            height: '7px',
-                            borderRadius: '50%',
-                            backgroundColor: '#00B8B8',
-                            boxShadow: '0 0 0 2px rgba(0, 184, 184, 0.25)'
-                          }}
-                        />
-                        <span>{isRtl ? 'متصل' : 'Connected'}</span>
-                      </>
-                    ) : (
-                      <span>{isRtl ? 'متاح للربط' : 'Available'}</span>
-                    )}
-                  </span>
-                </div>
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    gap: '12px'
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <div
+                        style={{
+                          width: '36px',
+                          height: '36px',
+                          borderRadius: '8px',
+                          backgroundColor: '#f0fdfa',
+                          color: '#008B8B',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          border: '1px solid #99f6e4'
+                        }}
+                      >
+                        <IconComp size={18} />
+                      </div>
+                      <div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span style={{ fontSize: '13.5px', fontWeight: '800', color: 'var(--slate-900)' }}>
+                            {conn.name}
+                          </span>
+                          <TrustChip tier={conn.type} isRtl={isRtl} />
+                        </div>
+                        <span style={{ fontSize: '11px', color: 'var(--slate-500)', display: 'block', marginTop: '1px' }}>
+                          {conn.lastSync || (isRtl ? 'متصل' : 'Connected')}
+                        </span>
+                      </div>
+                    </div>
 
-                {/* Description */}
-                <p style={{ fontSize: '13px', color: 'var(--slate-600)', lineHeight: 1.6, marginBottom: '14px' }}>
-                  {conn.description}
-                </p>
-
-                {/* Extracted Stats & Sync Health Box */}
-                <div style={{
-                  padding: '12px 16px',
-                  backgroundColor: '#f8fafc',
-                  borderRadius: 'var(--radius-md)',
-                  border: '1px solid var(--slate-200)',
-                  marginBottom: '12px',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  fontSize: '12px'
-                }}>
-                  <div>
-                    <span style={{ color: 'var(--slate-500)' }}>{isRtl ? 'البيانات الموثقة: ' : 'Verified Data: '}</span>
-                    <strong style={{ color: 'var(--qudra-obsidian)' }}>{conn.stats}</strong>
+                    {/* Status Pill */}
+                    <span
+                      style={{
+                        fontSize: '11px',
+                        fontWeight: '700',
+                        padding: '2px 7px',
+                        borderRadius: 'var(--radius-full)',
+                        backgroundColor: '#f0fdf4',
+                        color: '#166534',
+                        border: '1px solid #bbf7d0',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px'
+                      }}
+                    >
+                      <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#16a34a' }} />
+                      <span>{isRtl ? 'نشط' : 'Active'}</span>
+                    </span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--slate-400)', fontSize: '11.5px' }}>
-                    <RefreshCw size={11} className={isSyncing ? 'animate-spin' : ''} />
-                    <span>{conn.lastSync}</span>
-                  </div>
-                </div>
 
-                {/* Risk & Safety Guarantee Note */}
-                <div style={{
-                  fontSize: '11.5px',
-                  color: conn.type === 'fragile' ? '#92400e' : 'var(--slate-500)',
-                  backgroundColor: conn.type === 'fragile' ? '#fffbeb' : 'transparent',
-                  padding: conn.type === 'fragile' ? '6px 10px' : '0',
-                  borderRadius: 'var(--radius-sm)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  marginBottom: '16px'
-                }}>
-                  {conn.type === 'fragile' ? (
-                    <AlertTriangle size={13} color="#d97706" />
-                  ) : (
-                    <Lock size={13} color="var(--qudra-teal-dark)" />
-                  )}
-                  <span>{conn.riskNote}</span>
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div style={{ display: 'flex', gap: '8px', borderTop: '1px solid var(--slate-100)', paddingTop: '14px' }}>
-                {isConnected ? (
-                  <>
+                  <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <button
                       onClick={() => handleSync(conn.id, conn.name)}
                       disabled={isSyncing}
-                      className="btn btn-sm"
-                      style={{
-                        flex: 1,
-                        gap: '6px',
-                        fontSize: '12.5px',
-                        fontWeight: '700',
-                        backgroundColor: isJustSynced
-                          ? '#ecfdf5'
-                          : isSyncing
-                          ? '#eff6ff'
-                          : '#ffffff',
-                        borderColor: isJustSynced
-                          ? '#10b981'
-                          : isSyncing
-                          ? '#bfdbfe'
-                          : 'var(--slate-200)',
-                        color: isJustSynced
-                          ? '#059669'
-                          : isSyncing
-                          ? '#1d4ed8'
-                          : 'var(--slate-700)',
-                        boxShadow: isJustSynced
-                          ? '0 0 0 2px rgba(16, 185, 129, 0.15)'
-                          : 'none',
-                        transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}
-                    >
-                      {isSyncing ? (
-                        <>
-                          <RefreshCw size={13} className="animate-spin" />
-                          <span>{isRtl ? 'جارِ المزامنة...' : 'Syncing...'}</span>
-                        </>
-                      ) : isJustSynced ? (
-                        <>
-                          <Check size={14} color="#059669" />
-                          <span style={{ color: '#059669' }}>{isRtl ? 'تمت المزامنة بنجاح!' : 'Synced Successfully!'}</span>
-                        </>
-                      ) : (
-                        <>
-                          <RefreshCw size={13} />
-                          <span>{isRtl ? 'مزامنة الأدلة' : 'Sync Evidence'}</span>
-                        </>
-                      )}
-                    </button>
-
-                    <button
-                      onClick={() => setInspectConnector(conn)}
                       className="btn btn-secondary btn-sm"
-                      style={{ padding: '0 10px' }}
-                      title={isRtl ? 'فحص الصلاحيات والأدلة' : 'Inspect Scopes'}
+                      style={{ fontSize: '11.5px', padding: '4px 9px', gap: '5px' }}
+                      title={isRtl ? 'مزامنة البيانات الآن' : 'Sync now'}
                     >
-                      <Info size={14} color="var(--slate-600)" />
+                      <RefreshCw size={11} className={isSyncing ? 'animate-spin' : ''} />
+                      <span>{isSyncing ? (isRtl ? 'جارِ المزامنة...' : 'Syncing...') : isJustSynced ? (isRtl ? 'تم التحديث!' : 'Updated!') : (isRtl ? 'مزامنة الآن' : 'Sync')}</span>
                     </button>
 
                     <button
                       onClick={() => handleDisconnect(conn.id, conn.name)}
-                      className="btn btn-secondary btn-sm"
-                      style={{ color: 'var(--danger-color)', borderColor: 'var(--slate-200)', fontSize: '12px' }}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        color: 'var(--slate-400)',
+                        fontSize: '11px',
+                        cursor: 'pointer',
+                        padding: '4px 6px'
+                      }}
+                      title={isRtl ? 'إلغاء الربط' : 'Disconnect'}
                     >
-                      {isRtl ? 'فصل' : 'Disconnect'}
+                      {isRtl ? 'إلغاء الربط' : 'Disconnect'}
                     </button>
-                  </>
-                ) : (
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* 3. Available Directory Grid */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+          <h2 style={{ fontSize: '14px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
+            {isRtl ? 'دليل المنصات المتاحة للربط' : 'Available Integration Directory'}
+          </h2>
+
+          {/* Directory Category Tabs */}
+          <div
+            style={{
+              display: 'flex',
+              gap: '4px',
+              backgroundColor: '#f1f5f9',
+              padding: '3px',
+              borderRadius: 'var(--radius-md)',
+              border: '1px solid var(--border-color)'
+            }}
+          >
+            {[
+              { id: 'all', labelAr: 'كافة المنصات', labelEn: 'All' },
+              { id: 'official', labelAr: 'منصات رسمية (1.0x)', labelEn: 'Official' },
+              { id: 'user', labelAr: 'ملفات وتقييمات (0.6x)', labelEn: 'User/Files' },
+              { id: 'fragile', labelAr: 'روابط خارجية (0.3x)', labelEn: 'Links' }
+            ].map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setActiveDirectoryCategory(cat.id)}
+                style={{
+                  padding: '4px 10px',
+                  borderRadius: 'var(--radius-sm)',
+                  border: 'none',
+                  backgroundColor: activeDirectoryCategory === cat.id ? '#ffffff' : 'transparent',
+                  color: activeDirectoryCategory === cat.id ? 'var(--slate-900)' : 'var(--slate-600)',
+                  fontWeight: activeDirectoryCategory === cat.id ? '800' : '500',
+                  fontSize: '11.5px',
+                  cursor: 'pointer',
+                  boxShadow: activeDirectoryCategory === cat.id ? 'var(--shadow-xs)' : 'none'
+                }}
+              >
+                {isRtl ? cat.labelAr : cat.labelEn}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Available Connectors Cards */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(290px, 1fr))', gap: '12px' }}>
+          {filteredAvailable.map((conn) => {
+            const IconComp = ICON_COMPONENTS[conn.icon] || Link2;
+
+            return (
+              <div
+                key={conn.id}
+                className="card"
+                style={{
+                  padding: '16px',
+                  backgroundColor: '#ffffff',
+                  borderRadius: 'var(--radius-lg)',
+                  border: '1px solid var(--border-color)',
+                  boxShadow: 'var(--shadow-xs)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  gap: '12px'
+                }}
+              >
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <div
+                        style={{
+                          width: '36px',
+                          height: '36px',
+                          borderRadius: '8px',
+                          backgroundColor: '#f8fafc',
+                          color: 'var(--slate-700)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          border: '1px solid var(--border-color)'
+                        }}
+                      >
+                        <IconComp size={18} />
+                      </div>
+                      <div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span style={{ fontSize: '13.5px', fontWeight: '800', color: 'var(--slate-900)' }}>
+                            {conn.name}
+                          </span>
+                          <TrustChip tier={conn.type} isRtl={isRtl} />
+                        </div>
+                        <span style={{ fontSize: '11px', color: 'var(--slate-400)', display: 'block', marginTop: '1px' }}>
+                          {conn.type === 'official' ? (isRtl ? 'ربط OAuth مباشر' : 'Direct OAuth') : (isRtl ? 'استيراد وثائق معتمدة' : 'Verified Upload')}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p style={{ fontSize: '12px', color: 'var(--slate-600)', lineHeight: 1.45, margin: 0 }}>
+                    {conn.description || (isRtl ? 'اربط حسابك لاستيراد مهاراتك ومشاريعك السابقة وتوثيقها فورياً.' : 'Connect to import verified skills and project work.')}
+                  </p>
+                </div>
+
+                <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <button
+                    onClick={() => setInspectConnector(conn)}
+                    style={{ background: 'none', border: 'none', color: 'var(--slate-500)', fontSize: '11.5px', cursor: 'pointer', padding: 0 }}
+                  >
+                    {isRtl ? 'عرض الصلاحيات' : 'View Scopes'}
+                  </button>
+
                   <button
                     onClick={() => handleOpenConnect(conn)}
                     className="btn btn-primary btn-sm"
-                    style={{ width: '100%', gap: '6px', fontSize: '13px' }}
+                    style={{
+                      backgroundColor: 'var(--qudra-obsidian, #1A1A1A)',
+                      color: '#ffffff',
+                      fontSize: '11.5px',
+                      padding: '4px 12px',
+                      gap: '5px'
+                    }}
                   >
-                    <Plus size={14} />
-                    <span>{isRtl ? `ربط ${conn.name}` : `Connect ${conn.name}`}</span>
+                    <Plus size={12} color="var(--qudra-yellow)" />
+                    <span>{isRtl ? 'ربط الحساب' : 'Connect'}</span>
                   </button>
-                )}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
 
-      {/* 4. OAuth Security Consent Modal (Simulated Verification Dialog) */}
+      {/* 4. OAuth Connection Modal */}
       {modalConnector && (
-        <div style={{
-          position: 'fixed',
-          inset: 0,
-          backgroundColor: 'rgba(15, 23, 42, 0.45)',
-          backdropFilter: 'blur(4px)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 100,
-          padding: '20px'
-        }}>
-          <div style={{
-            backgroundColor: '#ffffff',
-            borderRadius: 'var(--radius-xl)',
-            width: '100%',
-            maxWidth: '520px',
-            border: '1px solid var(--slate-200)',
-            boxShadow: 'var(--shadow-modal)',
-            overflow: 'hidden',
-            animation: 'fadeIn 0.2s ease-out'
-          }}>
-            {/* Modal Header */}
-            <div style={{
-              padding: '20px 24px',
-              borderBottom: '1px solid var(--slate-100)',
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(15, 23, 42, 0.5)',
+            backdropFilter: 'blur(3px)',
+            zIndex: 1100,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '16px'
+          }}
+          onClick={() => setModalConnector(null)}
+        >
+          <div
+            style={{
+              width: '100%',
+              maxWidth: '440px',
+              backgroundColor: '#ffffff',
+              borderRadius: 'var(--radius-xl)',
+              padding: '24px',
+              boxShadow: 'var(--shadow-lg)',
               display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center'
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div style={{
-                  width: '36px',
-                  height: '36px',
-                  borderRadius: 'var(--radius-md)',
-                  backgroundColor: 'var(--qudra-obsidian)',
-                  color: 'var(--qudra-teal)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}>
-                  <ShieldCheck size={20} />
-                </div>
-                <div>
-                  <h3 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--qudra-obsidian)', margin: 0 }}>
-                    {isRtl ? `ربط ${modalConnector.name} ببروتوكول قُدرة` : `Authorize ${modalConnector.name}`}
-                  </h3>
-                  <span style={{ fontSize: '11.5px', color: 'var(--qudra-teal-deep)' }}>
-                    OAuth 2.0 Client: Qudra Evidence Protocol
-                  </span>
-                </div>
+              flexDirection: 'column',
+              gap: '16px'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Lock size={16} color="var(--qudra-teal)" />
+                <h3 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
+                  {isRtl ? `ربط حساب ${modalConnector.name}` : `Connect ${modalConnector.name}`}
+                </h3>
               </div>
               <button
                 onClick={() => setModalConnector(null)}
                 style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--slate-400)' }}
               >
-                <X size={18} />
+                <X size={16} />
               </button>
             </div>
 
-            {/* Modal Body: Scopes & Guarantees */}
-            <div style={{ padding: '24px' }}>
-              <div style={{
-                padding: '12px 16px',
-                backgroundColor: 'var(--qudra-yellow-light)',
-                border: '1px solid var(--qudra-yellow-border)',
-                borderRadius: 'var(--radius-md)',
-                marginBottom: '18px',
-                fontSize: '12.5px',
-                color: 'var(--qudra-obsidian)',
-                lineHeight: 1.6
-              }}>
-                <strong style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                  <ShieldCheck size={14} color="#008B8B" />
-                  <span>{isRtl ? 'ضمان أمان قُدرة الصارم:' : 'Qudra Zero-Write Guarantee:'}</span>
-                </strong>
-                <p style={{ margin: '4px 0 0', color: 'var(--slate-700)' }}>
-                  {isRtl
-                    ? 'يتم طلب صلاحيات قراءة فقط (Read-Only) لسحب المخرجات والمستودعات. لن نطلب أبداً صلاحية الكتابة، الحذف، أو النشر نيابة عنك.'
-                    : 'Only read-only scopes are requested to ingest deliverables. Zero write or publish access.'}
-                </p>
-              </div>
+            <p style={{ fontSize: '12.5px', color: 'var(--slate-600)', lineHeight: 1.5, margin: 0 }}>
+              {isRtl
+                ? `سيتم ربط منصة ${modalConnector.name} بحسابك في قُدرة عبر بروتوكول OAuth 2.0 الآمن. نطلب صلاحيات القراءة فقط ولا نعدل أي ملفات.`
+                : `Connect ${modalConnector.name} via secure OAuth 2.0. We only request read-only scopes to verify skills.`}
+            </p>
 
-              <h4 style={{ fontSize: '13px', fontWeight: '700', color: 'var(--slate-800)', marginBottom: '8px' }}>
-                {isRtl ? 'الصلاحيات المطلوبة (Permissions Requested):' : 'Requested Scopes:'}
-              </h4>
+            <div style={{ backgroundColor: '#f8fafc', padding: '12px 14px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
+              <span style={{ fontSize: '11px', fontWeight: '700', color: 'var(--slate-500)', display: 'block', marginBottom: '6px' }}>
+                {isRtl ? 'الصلاحيات المطلوبة (Permissions):' : 'Requested Scopes:'}
+              </span>
+              <ul style={{ margin: 0, paddingInlineStart: '18px', fontSize: '12px', color: 'var(--slate-700)', lineHeight: 1.6 }}>
+                <li>{isRtl ? 'قراءة الملف التعريفي والتحقق من الهوية' : 'Read profile and verify identity'}</li>
+                <li>{isRtl ? 'قراءة ملخصات المستودعات والشهادات' : 'Read repositories and credentials summary'}</li>
+                <li>{isRtl ? 'لا تشمل صلاحية النشر أو التعديل' : 'No write or commit permissions requested'}</li>
+              </ul>
+            </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '20px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12.5px', color: 'var(--slate-700)' }}>
-                  <Check size={16} color="var(--qudra-teal-dark)" />
-                  <span>{isRtl ? 'قراءة بيانات الحساب الأساسية والمصادقة' : 'Read public profile data'}</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12.5px', color: 'var(--slate-700)' }}>
-                  <Check size={16} color="var(--qudra-teal-dark)" />
-                  <span>{isRtl ? 'قراءة سجل المستودعات والمساهمات العامة' : 'Read public repositories & commits'}</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12.5px', color: 'var(--slate-700)' }}>
-                  <Check size={16} color="var(--qudra-teal-dark)" />
-                  <span>{isRtl ? 'استخراج التوقيع الرقمي وبصمة التحقق' : 'Extract commit verification signatures'}</span>
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <button
-                  onClick={() => setModalConnector(null)}
-                  className="btn btn-secondary"
-                  style={{ flex: 1 }}
-                >
-                  {isRtl ? 'إلغاء' : 'Cancel'}
-                </button>
-                <button
-                  onClick={handleConfirmConnect}
-                  className="btn btn-gold"
-                  style={{ flex: 2, gap: '6px' }}
-                >
-                  <ShieldCheck size={16} />
-                  <span>{isRtl ? 'تأكيد الربط واستخراج الأدلة' : 'Authorize & Ingest Evidence'}</span>
-                </button>
-              </div>
+            <div style={{ display: 'flex', gap: '10px', marginTop: '4px' }}>
+              <button
+                onClick={() => setModalConnector(null)}
+                className="btn btn-secondary"
+                style={{ flex: 1, fontSize: '13px' }}
+              >
+                {isRtl ? 'إلغاء' : 'Cancel'}
+              </button>
+              <button
+                onClick={handleConfirmConnect}
+                className="btn btn-primary"
+                style={{
+                  flex: 1,
+                  backgroundColor: 'var(--qudra-obsidian, #1A1A1A)',
+                  color: '#ffffff',
+                  fontWeight: '800',
+                  fontSize: '13px'
+                }}
+              >
+                {isRtl ? 'تأكيد الربط والبدء' : 'Authorize & Connect'}
+              </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* 5. Inspection Modal for Active Connector */}
+      {/* 5. Scopes Inspection Modal */}
       {inspectConnector && (
-        <div style={{
-          position: 'fixed',
-          inset: 0,
-          backgroundColor: 'rgba(15, 23, 42, 0.45)',
-          backdropFilter: 'blur(4px)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 100,
-          padding: '20px'
-        }}>
-          <div style={{
-            backgroundColor: '#ffffff',
-            borderRadius: 'var(--radius-xl)',
-            width: '100%',
-            maxWidth: '480px',
-            border: '1px solid var(--slate-200)',
-            boxShadow: 'var(--shadow-modal)',
-            padding: '24px'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-              <h3 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--qudra-obsidian)', margin: 0 }}>
-                {isRtl ? `فحص صلاحيات ${inspectConnector.name}` : `${inspectConnector.name} Audit Details`}
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(15, 23, 42, 0.45)',
+            backdropFilter: 'blur(3px)',
+            zIndex: 1100,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '16px'
+          }}
+          onClick={() => setInspectConnector(null)}
+        >
+          <div
+            style={{
+              width: '100%',
+              maxWidth: '420px',
+              backgroundColor: '#ffffff',
+              borderRadius: 'var(--radius-xl)',
+              padding: '24px',
+              boxShadow: 'var(--shadow-lg)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '14px'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h3 style={{ fontSize: '15px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
+                {isRtl ? `صلاحيات ومستوى موثوقية ${inspectConnector.name}` : `${inspectConnector.name} Scopes`}
               </h3>
               <button
                 onClick={() => setInspectConnector(null)}
                 style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--slate-400)' }}
               >
-                <X size={18} />
+                <X size={16} />
               </button>
             </div>
 
-            <div style={{ fontSize: '13px', color: 'var(--slate-600)', lineHeight: 1.6, marginBottom: '16px' }}>
-              <p><strong>{isRtl ? 'مستوى الثقة: ' : 'Trust Tier: '}</strong><TrustChip tier={inspectConnector.type} isRtl={isRtl} /></p>
-              <p style={{ marginTop: '8px' }}><strong>{isRtl ? 'تاريخ آخر مزامنة: ' : 'Last Sync: '}</strong>{inspectConnector.lastSync}</p>
-              <p style={{ marginTop: '8px' }}><strong>{isRtl ? 'حجم البيانات الموثقة: ' : 'Evidence Size: '}</strong>{inspectConnector.stats}</p>
-              <p style={{ marginTop: '8px' }}><strong>{isRtl ? 'تنبيه الأمان: ' : 'Risk Note: '}</strong>{inspectConnector.riskNote}</p>
-
-              {/* Webhook & Public Key Details with Copy */}
-              <div style={{ marginTop: '14px', padding: '12px', backgroundColor: '#f8fafc', borderRadius: 'var(--radius-md)', border: '1px solid var(--slate-200)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '11.5px', fontWeight: '700', color: 'var(--slate-700)' }}>
-                    {isRtl ? 'رابط Webhook المخصص:' : 'Webhook Endpoint:'}
-                  </span>
-                  <button
-                    onClick={() => handleCopyKey(`https://api.qudra.io/v1/webhooks/${inspectConnector.id}/events`, `inspect-wh-${inspectConnector.id}`)}
-                    style={{
-                      border: copiedKeyId === `inspect-wh-${inspectConnector.id}` ? '1px solid #10b981' : '1px solid var(--slate-300)',
-                      backgroundColor: copiedKeyId === `inspect-wh-${inspectConnector.id}` ? '#ecfdf5' : '#ffffff',
-                      color: copiedKeyId === `inspect-wh-${inspectConnector.id}` ? '#059669' : 'var(--slate-700)',
-                      padding: '3px 8px',
-                      borderRadius: 'var(--radius-sm)',
-                      fontSize: '11px',
-                      fontWeight: '700',
-                      cursor: 'pointer',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '4px',
-                      transition: 'all 0.2s ease'
-                    }}
-                  >
-                    {copiedKeyId === `inspect-wh-${inspectConnector.id}` ? (
-                      <>
-                        <Check size={12} color="#059669" />
-                        <span>{isRtl ? 'تم النسخ!' : 'Copied!'}</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy size={11} />
-                        <span>{isRtl ? 'نسخ الرابط' : 'Copy'}</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-                <code style={{ fontSize: '11px', color: 'var(--slate-600)', fontFamily: 'monospace', wordBreak: 'break-all' }}>
-                  https://api.qudra.io/v1/webhooks/{inspectConnector.id}/events
-                </code>
-
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '4px' }}>
-                  <span style={{ fontSize: '11.5px', fontWeight: '700', color: 'var(--slate-700)' }}>
-                    {isRtl ? 'مفتاح التحقق العام (ECDSA):' : 'Public Verification Key:'}
-                  </span>
-                  <button
-                    onClick={() => handleCopyKey(`pk_live_qudra_${inspectConnector.id.replace('conn-', '')}_0x8f2a901bcda901`, `inspect-pk-${inspectConnector.id}`)}
-                    style={{
-                      border: copiedKeyId === `inspect-pk-${inspectConnector.id}` ? '1px solid #10b981' : '1px solid var(--slate-300)',
-                      backgroundColor: copiedKeyId === `inspect-pk-${inspectConnector.id}` ? '#ecfdf5' : '#ffffff',
-                      color: copiedKeyId === `inspect-pk-${inspectConnector.id}` ? '#059669' : 'var(--slate-700)',
-                      padding: '3px 8px',
-                      borderRadius: 'var(--radius-sm)',
-                      fontSize: '11px',
-                      fontWeight: '700',
-                      cursor: 'pointer',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '4px',
-                      transition: 'all 0.2s ease'
-                    }}
-                  >
-                    {copiedKeyId === `inspect-pk-${inspectConnector.id}` ? (
-                      <>
-                        <Check size={12} color="#059669" />
-                        <span>{isRtl ? 'تم النسخ!' : 'Copied!'}</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy size={11} />
-                        <span>{isRtl ? 'نسخ المفتاح' : 'Copy'}</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-                <code style={{ fontSize: '11px', color: 'var(--slate-600)', fontFamily: 'monospace', wordBreak: 'break-all' }}>
-                  pk_live_qudra_{inspectConnector.id.replace('conn-', '')}_0x8f2a901bcda901
-                </code>
-              </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <TrustChip tier={inspectConnector.type} isRtl={isRtl} />
+              <span style={{ fontSize: '12px', color: 'var(--slate-500)' }}>
+                {inspectConnector.type === 'official' ? 'وزن 1.0x (أعلى موثوقية)' : inspectConnector.type === 'user' ? 'وزن 0.6x' : 'وزن 0.3x'}
+              </span>
             </div>
+
+            <p style={{ fontSize: '12.5px', color: 'var(--slate-600)', lineHeight: 1.5, margin: 0 }}>
+              {inspectConnector.description || (isRtl ? 'يتم سحب الأدلة وتوليد بصمات تشفيرية مستقلة تضمن عدم التلاعب بالبيانات.' : 'Evidence is hashed with immutable proofs to guarantee data integrity.')}
+            </p>
 
             <button
               onClick={() => setInspectConnector(null)}
-              className="btn btn-secondary"
-              style={{ width: '100%' }}
+              className="btn btn-secondary btn-sm"
+              style={{ width: '100%', marginTop: '4px' }}
             >
-              {isRtl ? 'إغلاق الفحص' : 'Close'}
+              {isRtl ? 'إغلاق' : 'Close'}
             </button>
           </div>
         </div>

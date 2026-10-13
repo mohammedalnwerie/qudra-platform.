@@ -15,6 +15,8 @@ import ProblemAnalyzer from './components/modules/ProblemAnalyzer';
 import TeamComposer from './components/modules/TeamComposer';
 import ProjectWorkspace from './components/modules/ProjectWorkspace';
 import PrivacyConsent from './components/modules/PrivacyConsent';
+import BrowseProjects from './components/modules/BrowseProjects';
+import PortfolioGallery from './components/modules/PortfolioGallery';
 import GenericStateView from './components/modules/GenericStateView';
 
 import {
@@ -179,10 +181,26 @@ export default function App() {
             />
           )}
 
+          {activeStateId === 1 && activeModuleId === 'M13' && (
+            <PortfolioGallery
+              onNavigate={handleNavigateModule}
+              isRtl={isRtl}
+            />
+          )}
+
           {activeStateId === 1 && (activeModuleId === 'M15' || activeModuleId === 'M16') && (
             <ProblemAnalyzer
+              activeModuleId={activeModuleId}
+              initialTab={activeModuleId === 'M16' ? 'match' : 'deconstruct'}
               onNavigate={handleNavigateModule}
               onOpenExplain={() => setIsExplainOpen(true)}
+              isRtl={isRtl}
+            />
+          )}
+
+          {activeStateId === 1 && activeModuleId === 'M17' && (
+            <BrowseProjects
+              onNavigate={handleNavigateModule}
               isRtl={isRtl}
             />
           )}
@@ -207,7 +225,7 @@ export default function App() {
           )}
 
           {/* Any other state, or any other module, renders through GenericStateView */}
-          {(activeStateId !== 1 || !['M02', 'M03', 'M05', 'M06', 'M07', 'M11', 'M15', 'M16', 'M20', 'M21', 'M25'].includes(activeModuleId)) && (
+          {(activeStateId !== 1 || !['M02', 'M03', 'M05', 'M06', 'M07', 'M11', 'M13', 'M15', 'M16', 'M17', 'M20', 'M21', 'M25'].includes(activeModuleId)) && (
             <GenericStateView
               moduleData={currentModule}
               stateData={currentState}

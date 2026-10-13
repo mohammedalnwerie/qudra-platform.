@@ -40,21 +40,45 @@ export default function GenericStateView({
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
       {/* State Header Bar — Clean Light Background */}
-      <div className="hero-card" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)' }}>
+      <div
+        className="card"
+        style={{
+          padding: '20px 24px',
+          backgroundColor: '#ffffff',
+          border: '1px solid var(--border-color)',
+          borderRadius: 'var(--radius-lg)',
+          boxShadow: 'var(--shadow-xs)',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '16px'
+        }}
+      >
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-            <span className="badge-pill" style={{ backgroundColor: 'var(--teal-50)', color: 'var(--teal-700)', border: '1px solid var(--teal-100)', fontSize: '12px', fontWeight: '700' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+            <span
+              style={{
+                fontSize: '11px',
+                fontWeight: '700',
+                padding: '2px 8px',
+                borderRadius: 'var(--radius-full)',
+                backgroundColor: '#f0fdfa',
+                color: '#006666',
+                border: '1px solid #ccfbf1'
+              }}
+            >
               {isRtl ? moduleData.nameAr : moduleData.nameEn}
             </span>
-            <span style={{ fontSize: '12.5px', color: 'var(--slate-500)', fontWeight: '600' }}>
+            <span style={{ fontSize: '12px', color: 'var(--slate-500)', fontWeight: '600' }}>
               {isRtl ? stateData.category : 'Section'}
             </span>
           </div>
 
-          <h2 style={{ fontSize: '22px', fontWeight: '800', color: 'var(--slate-900)' }}>
+          <h2 style={{ fontSize: '18px', fontWeight: '800', color: 'var(--slate-900)', margin: '0 0 2px' }}>
             {isRtl ? `${moduleData.nameAr} — ${stateData.nameAr}` : `${moduleData.nameEn} — ${stateData.nameEn}`}
           </h2>
-          <p style={{ fontSize: '13.5px', color: 'var(--slate-600)', marginTop: '4px' }}>
+          <p style={{ fontSize: '13px', color: 'var(--slate-600)', margin: 0 }}>
             {moduleData.competitor}
           </p>
         </div>
@@ -64,7 +88,7 @@ export default function GenericStateView({
           className="btn btn-secondary btn-sm"
           style={{ gap: '6px' }}
         >
-          <Sparkles size={14} color="var(--indigo-600)" />
+          <Sparkles size={13} color="var(--qudra-teal)" />
           <span>{isRtl ? 'كيف يعمل هذا القسم؟' : 'How it works'}</span>
         </button>
       </div>

@@ -103,212 +103,50 @@ export default function CapabilityPassport({ currentPersona, isRtl = true }) {
   }, [selectedSkillFilter]);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      {/* 1. Bento Hero Card (Light-First Triad: Yellow #FFC107, Teal #00B8B8, Obsidian #1A1A1A) */}
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      {/* 1. Unified Editorial Profile Banner (Contra / Read.cv Dossier Pattern) */}
       <div
-        className="card hero-bento"
+        className="card"
         style={{
-          background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-          border: '1px solid var(--border-color)',
-          borderTop: '4px solid var(--qudra-yellow, #FFC107)',
-          padding: '28px 32px',
-          borderRadius: 'var(--radius-xl)',
-          position: 'relative'
-        }}
-      >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>
-          <div style={{ maxWidth: '680px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '10px' }}>
-              <div className="brand-icon-box" style={{ width: '42px', height: '42px', borderRadius: '10px', backgroundColor: 'var(--qudra-obsidian, #1A1A1A)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Award size={22} color="var(--qudra-yellow, #FFC107)" />
-              </div>
-              <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <h1 style={{ fontSize: '22px', fontWeight: '800', color: 'var(--qudra-obsidian, #1A1A1A)', margin: 0 }}>
-                    {isRtl ? 'جواز المهارات الموثق' : 'Verified Skill Passport'}
-                  </h1>
-                  <span className="badge-teal" style={{ fontSize: '11px', padding: '2px 8px' }}>
-                    {isRtl ? 'جاهز للمشاركة' : 'Shareable'}
-                  </span>
-                </div>
-                <p style={{ fontSize: '13.5px', color: 'var(--slate-600)', margin: '4px 0 0' }}>
-                  {isRtl ? 'ملفك المهني الموحد الذي يجمع مهاراتك الموثقة وشهاداتك وأعمالك في رابط رسمي واحد.' : 'Your unified professional profile combining verified skills, certificates, and deliverables in one official link.'}
-                </p>
-              </div>
-            </div>
-
-            {/* Quick Share Buttons */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '14px', flexWrap: 'wrap' }}>
-              <button
-                onClick={handleCopyUrl}
-                className="btn btn-primary"
-                style={{
-                  backgroundColor: 'var(--qudra-obsidian, #1A1A1A)',
-                  color: '#ffffff',
-                  gap: '8px',
-                  padding: '9px 18px',
-                  fontWeight: '700',
-                  borderRadius: 'var(--radius-md)'
-                }}
-              >
-                {copiedUrl ? <Check size={16} color="var(--qudra-teal, #00B8B8)" /> : <Copy size={16} color="var(--qudra-yellow, #FFC107)" />}
-                <span>{copiedUrl ? (isRtl ? 'تم نسخ الرابط!' : 'URL Copied!') : (isRtl ? 'نسخ رابط الجواز العام' : 'Copy Passport URL')}</span>
-              </button>
-
-              <button
-                onClick={() => setShowShareModal(true)}
-                className="btn btn-secondary"
-                style={{ gap: '6px', padding: '9px 16px', fontSize: '13px' }}
-              >
-                <Share2 size={14} color="var(--qudra-teal, #00B8B8)" />
-                <span>{isRtl ? 'مشاركة وتضمين الشارة' : 'Share & Embed'}</span>
-              </button>
-
-              <button
-                onClick={() => setActiveTab('ai')}
-                className="btn btn-secondary"
-                style={{
-                  gap: '6px',
-                  padding: '9px 14px',
-                  fontSize: '13px',
-                  backgroundColor: activeTab === 'ai' ? '#f0fdfa' : 'transparent',
-                  borderColor: activeTab === 'ai' ? '#99f6e4' : 'var(--border-color)'
-                }}
-              >
-                <Bot size={14} color="var(--qudra-teal, #008B8B)" />
-                <span>{isRtl ? 'بيانات المطورين (JSON)' : 'Developer JSON'}</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Trust Seal Widget */}
-          <div
-            style={{
-              backgroundColor: '#ffffff',
-              border: '1px solid var(--border-color)',
-              borderRadius: 'var(--radius-lg)',
-              padding: '18px 24px',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              textAlign: 'center',
-              boxShadow: 'var(--shadow-xs)',
-              minWidth: '220px'
-            }}
-          >
-            <div
-              style={{
-                width: '64px',
-                height: '64px',
-                borderRadius: '50%',
-                backgroundColor: 'var(--qudra-obsidian, #1A1A1A)',
-                border: '2px solid var(--qudra-yellow, #FFC107)',
-                color: 'var(--qudra-teal, #00B8B8)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: '10px',
-                boxShadow: '0 4px 12px rgba(26,26,26,0.15)'
-              }}
-            >
-              <ShieldCheck size={32} />
-            </div>
-
-            <span style={{ fontSize: '11px', fontWeight: '900', color: '#b45309', letterSpacing: '0.08em', marginBottom: '2px' }}>
-              QUDRA VERIFIED
-            </span>
-
-            <div style={{ fontSize: '24px', fontWeight: '900', color: 'var(--qudra-teal, #008B8B)', fontFamily: 'monospace' }}>
-              %{currentPersona.trustScore}
-            </div>
-
-            <span style={{ fontSize: '11.5px', color: 'var(--slate-500)', marginTop: '2px' }}>
-              {isRtl ? 'معدل الموثوقية العام' : 'Overall Trust Score'}
-            </span>
-
-            <div style={{ marginTop: '10px', paddingTop: '10px', borderTop: '1px dashed var(--border-color)', width: '100%', fontSize: '11px', color: '#166534', fontWeight: '700', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
-              <CheckCircle2 size={13} color="#166534" />
-              <span>{isRtl ? 'موثق ومعتمد رسمياً' : 'Officially Verified'}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Shareable Link Strip */}
-        <div
-          style={{
-            marginTop: '18px',
-            padding: '10px 16px',
-            backgroundColor: '#ffffff',
-            borderRadius: 'var(--radius-md)',
-            border: '1px solid #ccfbf1',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-            gap: '10px',
-            fontSize: '12.5px'
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontWeight: '700', color: 'var(--slate-500)' }}>
-              {isRtl ? 'الرابط الدائم للملف:' : 'Public Passport URL:'}
-            </span>
-            <code style={{ color: 'var(--qudra-teal-deep, #006666)', fontWeight: '800', fontFamily: 'monospace' }}>
-              {passportUrl}
-            </code>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <span className="badge-teal" style={{ fontSize: '11px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <ShieldCheck size={12} />
-              <span>{isRtl ? 'مشفر وموقع بروتوكولياً' : 'Protocol Signed'}</span>
-            </span>
-            <a
-              href={passportUrl}
-              target="_blank"
-              rel="noreferrer"
-              style={{ color: 'var(--slate-500)', display: 'flex', alignItems: 'center', gap: '3px', textDecoration: 'none', fontSize: '12px', fontWeight: '600' }}
-            >
-              <span>{isRtl ? 'معاينة عامة' : 'Public Preview'}</span>
-              <ArrowUpRight size={13} />
-            </a>
-          </div>
-        </div>
-      </div>
-
-      {/* 2. Main Passport Document Presentation */}
-      <div
-        className="card passport-document"
-        style={{
+          padding: 0,
+          overflow: 'hidden',
           backgroundColor: '#ffffff',
           borderRadius: 'var(--radius-xl)',
           border: '1px solid var(--border-color)',
-          padding: '32px',
-          boxShadow: 'var(--shadow-sm)',
-          position: 'relative'
+          boxShadow: 'var(--shadow-xs)'
         }}
       >
-        {/* Passport Identity Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '24px', paddingBottom: '28px', borderBottom: '1px solid var(--border-color)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
+        {/* Decorative Top Accent Band */}
+        <div
+          style={{
+            height: '76px',
+            background: 'linear-gradient(135deg, #1A1A1A 0%, #004D40 50%, #00B8B8 100%)',
+            position: 'relative'
+          }}
+        />
+
+        {/* Profile Content Strip */}
+        <div style={{ padding: '0 28px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '20px', marginTop: '-38px', flexWrap: 'wrap' }}>
+            {/* Avatar with National ID Badge */}
             <div style={{ position: 'relative' }}>
               <img
                 src={currentPersona.avatar}
                 alt={currentPersona.name}
                 style={{
-                  width: '84px',
-                  height: '84px',
+                  width: '92px',
+                  height: '92px',
                   borderRadius: '50%',
                   objectFit: 'cover',
-                  border: '3px solid var(--qudra-teal, #00B8B8)',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
+                  border: '4px solid #ffffff',
+                  boxShadow: '0 4px 14px rgba(0,0,0,0.12)'
                 }}
               />
               <div
                 style={{
                   position: 'absolute',
-                  bottom: '-2px',
-                  insetInlineEnd: '-2px',
+                  bottom: '2px',
+                  insetInlineEnd: '2px',
                   backgroundColor: '#16a34a',
                   color: '#fff',
                   borderRadius: '50%',
@@ -325,67 +163,306 @@ export default function CapabilityPassport({ currentPersona, isRtl = true }) {
               </div>
             </div>
 
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: '6px' }}>
-                <h2 style={{ fontSize: '24px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
+            {/* Profile Titles */}
+            <div style={{ paddingTop: '42px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: '4px' }}>
+                <h1 style={{ fontSize: '24px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
                   {currentPersona.name}
-                </h2>
+                </h1>
                 <span
                   style={{
                     fontSize: '11px',
                     fontWeight: '800',
-                    padding: '2px 9px',
+                    padding: '3px 10px',
                     borderRadius: 'var(--radius-full)',
                     backgroundColor: '#f0fdf4',
                     color: '#166534',
                     border: '1px solid #bbf7d0',
-                    display: 'flex',
+                    display: 'inline-flex',
                     alignItems: 'center',
                     gap: '4px'
                   }}
                 >
                   <UserCheck size={13} color="#16a34a" />
-                  <span>{isRtl ? 'هوية وطنية موثقة • نفاذ (KSA Nafath)' : 'National ID Verified (KSA Nafath)'}</span>
+                  <span>{isRtl ? 'هوية موثقة • نفاذ' : 'Verified ID • Nafath'}</span>
+                </span>
+                <span className="badge-teal" style={{ fontSize: '11px', padding: '2px 8px' }}>
+                  {isRtl ? 'جواز مهارات معتمد' : 'Verified Passport'}
                 </span>
               </div>
 
-              <div style={{ fontSize: '15px', color: 'var(--slate-600)', fontWeight: '600' }}>
+              <div style={{ fontSize: '15px', color: 'var(--slate-700)', fontWeight: '600' }}>
                 {currentPersona.roleTitle}
               </div>
 
-              <div style={{ fontSize: '12.5px', color: 'var(--slate-400)', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+              <div style={{ fontSize: '12.5px', color: 'var(--slate-400)', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
                 <span>{currentPersona.location}</span>
                 <span>•</span>
                 <span style={{ color: 'var(--slate-600)', fontWeight: '600' }}>
-                  {isRtl ? 'مستقل موثق في قُدرة منذ سبتمبر 2026' : 'Verified Freelancer since Sept 2026'}
-                </span>
-                <span>•</span>
-                <span style={{ color: 'var(--qudra-teal-deep)', fontWeight: '700' }}>
-                  {isRtl ? '4 موصلات بيانات نشطة (GitHub, Credly, HTB, Escrow)' : '4 Active Connectors'}
+                  {isRtl ? 'عضو موثق منذ سبتمبر 2026' : 'Member since Sept 2026'}
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Quick Metrics Capsule */}
-          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-            <div style={{ backgroundColor: '#f8fafc', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '10px 16px', textAlign: 'center' }}>
-              <div style={{ fontSize: '18px', fontWeight: '900', color: 'var(--slate-900)' }}>18</div>
-              <div style={{ fontSize: '11px', color: 'var(--slate-500)', fontWeight: '600' }}>{isRtl ? 'دليلاً مسجلاً' : 'Total Proofs'}</div>
+          {/* Quick Actions & Share */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', paddingTop: '16px', flexWrap: 'wrap' }}>
+            <button
+              onClick={handleCopyUrl}
+              className="btn btn-primary"
+              style={{
+                backgroundColor: 'var(--qudra-obsidian, #1A1A1A)',
+                color: '#ffffff',
+                gap: '8px',
+                padding: '9px 18px',
+                fontWeight: '700',
+                borderRadius: 'var(--radius-md)'
+              }}
+            >
+              {copiedUrl ? <Check size={16} color="var(--qudra-teal, #00B8B8)" /> : <Copy size={16} color="var(--qudra-yellow, #FFC107)" />}
+              <span>{copiedUrl ? (isRtl ? 'تم نسخ الرابط!' : 'URL Copied!') : (isRtl ? 'نسخ رابط الجواز' : 'Copy Passport URL')}</span>
+            </button>
+
+            <button
+              onClick={() => setShowShareModal(true)}
+              className="btn btn-secondary"
+              style={{ gap: '6px', padding: '9px 16px', fontSize: '13px' }}
+            >
+              <Share2 size={14} color="var(--qudra-teal, #00B8B8)" />
+              <span>{isRtl ? 'مشاركة وتضمين' : 'Share & Embed'}</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('ai')}
+              className="btn btn-secondary"
+              style={{
+                gap: '6px',
+                padding: '9px 14px',
+                fontSize: '13px',
+                backgroundColor: activeTab === 'ai' ? '#f0fdfa' : 'transparent',
+                borderColor: activeTab === 'ai' ? '#99f6e4' : 'var(--border-color)'
+              }}
+            >
+              <Bot size={14} color="var(--qudra-teal, #008B8B)" />
+              <span>{isRtl ? 'بيانات المطورين (JSON)' : 'Developer JSON'}</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Public URL Bar */}
+        <div
+          style={{
+            padding: '10px 28px',
+            backgroundColor: '#f8fafc',
+            borderTop: '1px solid var(--border-color)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '10px',
+            fontSize: '12px'
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontWeight: '700', color: 'var(--slate-500)' }}>
+              {isRtl ? 'الرابط الموثق للملف:' : 'Public Verified URL:'}
+            </span>
+            <code style={{ color: 'var(--qudra-teal-deep, #006666)', fontWeight: '800', fontFamily: 'monospace' }}>
+              {passportUrl}
+            </code>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span className="badge-teal" style={{ fontSize: '11px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <ShieldCheck size={12} />
+              <span>{isRtl ? 'موثق تشفيرياً' : 'Protocol Verified'}</span>
+            </span>
+            <a
+              href={passportUrl}
+              target="_blank"
+              rel="noreferrer"
+              style={{ color: 'var(--slate-500)', display: 'flex', alignItems: 'center', gap: '3px', textDecoration: 'none', fontSize: '12px', fontWeight: '600' }}
+            >
+              <span>{isRtl ? 'معاينة عامة' : 'Public Preview'}</span>
+              <ArrowUpRight size={13} />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* 2. Asymmetric 2-Column Dossier Layout (Sidebar Rail + Main Workspace) */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(280px, 320px) 1fr', gap: '20px', alignItems: 'start' }}>
+        
+        {/* Left/Right Sidebar Rail: Trust Verification Dossier */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          
+          {/* Trust Gauge Card */}
+          <div
+            className="card"
+            style={{
+              padding: '24px',
+              backgroundColor: '#ffffff',
+              borderRadius: 'var(--radius-xl)',
+              border: '1px solid var(--border-color)',
+              textAlign: 'center',
+              boxShadow: 'var(--shadow-xs)'
+            }}
+          >
+            <div
+              style={{
+                width: '68px',
+                height: '68px',
+                borderRadius: '50%',
+                backgroundColor: 'var(--qudra-obsidian, #1A1A1A)',
+                border: '3px solid var(--qudra-yellow, #FFC107)',
+                color: 'var(--qudra-teal, #00B8B8)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 12px',
+                boxShadow: '0 4px 14px rgba(26,26,26,0.15)'
+              }}
+            >
+              <ShieldCheck size={36} />
             </div>
-            <div style={{ backgroundColor: '#f8fafc', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '10px 16px', textAlign: 'center' }}>
-              <div style={{ fontSize: '18px', fontWeight: '900', color: 'var(--qudra-teal, #008B8B)' }}>100%</div>
-              <div style={{ fontSize: '11px', color: 'var(--slate-500)', fontWeight: '600' }}>{isRtl ? 'نجاح التسليم' : 'Success Rate'}</div>
+
+            <span style={{ fontSize: '11px', fontWeight: '900', color: '#b45309', letterSpacing: '0.08em' }}>
+              QUDRA TRUST SCORE
+            </span>
+
+            <div style={{ fontSize: '32px', fontWeight: '900', color: 'var(--qudra-teal, #008B8B)', fontFamily: 'monospace', lineHeight: 1.1, margin: '4px 0' }}>
+              %{currentPersona.trustScore}
             </div>
-            <div style={{ backgroundColor: '#f8fafc', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '10px 16px', textAlign: 'center' }}>
-              <div style={{ fontSize: '18px', fontWeight: '900', color: '#16a34a' }}>0</div>
-              <div style={{ fontSize: '11px', color: 'var(--slate-500)', fontWeight: '600' }}>{isRtl ? 'نزاعات أو شكاوى' : 'Disputes'}</div>
+
+            <div style={{ fontSize: '12px', color: 'var(--slate-500)', marginBottom: '16px' }}>
+              {isRtl ? 'معدل الموثوقية العام' : 'Overall Trust Score'}
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', paddingTop: '14px', borderTop: '1px solid var(--border-color)', fontSize: '12.5px', textAlign: isRtl ? 'right' : 'left' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ color: 'var(--slate-500)' }}>{isRtl ? 'الأدلة الموثقة:' : 'Verified Proofs:'}</span>
+                <strong style={{ color: 'var(--slate-900)' }}>18 {isRtl ? 'عملاً' : 'items'}</strong>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ color: 'var(--slate-500)' }}>{isRtl ? 'نسبة نجاح التسليم:' : 'Success Rate:'}</span>
+                <strong style={{ color: '#166534' }}>100%</strong>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ color: 'var(--slate-500)' }}>{isRtl ? 'النزاعات والشكاوى:' : 'Disputes:'}</span>
+                <strong style={{ color: '#166534' }}>0</strong>
+              </div>
+            </div>
+          </div>
+
+          {/* Connected Platforms Strip */}
+          <div
+            className="card"
+            style={{
+              padding: '20px',
+              backgroundColor: '#ffffff',
+              borderRadius: 'var(--radius-xl)',
+              border: '1px solid var(--border-color)',
+              boxShadow: 'var(--shadow-xs)'
+            }}
+          >
+            <h4 style={{ fontSize: '13px', fontWeight: '800', color: 'var(--slate-900)', marginBottom: '12px' }}>
+              {isRtl ? 'المصادر المربوطة المعتمدة' : 'Connected Platforms'}
+            </h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '12px' }}>
+              {[
+                { name: 'GitHub Cloud', count: '14 مساهمة موثقة' },
+                { name: 'Credly Badges', count: '4 شهادات معتمدة' },
+                { name: 'Hack The Box', count: '2 إثبات أمان' },
+                { name: 'عقود الضمان المالي', count: '3 مشاريع منجزة' }
+              ].map((src, i) => (
+                <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 0', borderBottom: i < 3 ? '1px dashed var(--slate-100)' : 'none' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <CheckCircle2 size={13} color="#16a34a" />
+                    <span style={{ fontWeight: '600', color: 'var(--slate-800)' }}>{src.name}</span>
+                  </div>
+                  <span style={{ color: 'var(--slate-500)', fontSize: '11px' }}>{src.count}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
 
-        {/* View Switcher Tabs (Capabilities Matrix vs Proof Registry vs AI JSON-LD) */}
-        <div style={{ display: 'flex', gap: '8px', borderBottom: '1px solid var(--border-color)', margin: '24px 0 20px', paddingBottom: '2px' }}>
+        {/* Main Column: Tabbed Content (Skills Matrix, Proofs, AI View) */}
+        <div
+          className="card"
+          style={{
+            backgroundColor: '#ffffff',
+            borderRadius: 'var(--radius-xl)',
+            border: '1px solid var(--border-color)',
+            padding: '24px 28px',
+            boxShadow: 'var(--shadow-xs)',
+            minHeight: '600px'
+          }}
+        >
+          {/* View Switcher Tabs */}
+          <div style={{ display: 'flex', gap: '8px', borderBottom: '1px solid var(--border-color)', marginBottom: '20px', paddingBottom: '2px' }}>
+            <button
+              onClick={() => { setActiveTab('matrix'); setSelectedSkillFilter(null); }}
+              style={{
+                padding: '10px 18px',
+                border: 'none',
+                background: 'none',
+                borderBottom: activeTab === 'matrix' ? '3px solid var(--qudra-teal, #00B8B8)' : '3px solid transparent',
+                fontWeight: activeTab === 'matrix' ? '800' : '600',
+                color: activeTab === 'matrix' ? 'var(--qudra-obsidian, #1A1A1A)' : 'var(--slate-500)',
+                fontSize: '13.5px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px'
+              }}
+            >
+              <Layers size={16} color={activeTab === 'matrix' ? 'var(--qudra-teal)' : 'var(--slate-400)'} />
+              <span>{isRtl ? 'المهارات والخبرات المعتمدة' : 'Verified Skills'}</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('proofs')}
+              style={{
+                padding: '10px 18px',
+                border: 'none',
+                background: 'none',
+                borderBottom: activeTab === 'proofs' ? '3px solid var(--qudra-teal, #00B8B8)' : '3px solid transparent',
+                fontWeight: activeTab === 'proofs' ? '800' : '600',
+                color: activeTab === 'proofs' ? 'var(--qudra-obsidian, #1A1A1A)' : 'var(--slate-500)',
+                fontSize: '13.5px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px'
+              }}
+            >
+              <FileCode size={16} color={activeTab === 'proofs' ? 'var(--qudra-teal)' : 'var(--slate-400)'} />
+              <span>{isRtl ? 'سجل الشهادات والأعمال الموثقة' : 'Verified Proofs'}</span>
+              <span style={{ backgroundColor: 'var(--slate-100)', color: 'var(--slate-700)', padding: '1px 6px', borderRadius: '10px', fontSize: '11px', fontWeight: '800' }}>
+                {visibleProofs.length}
+              </span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('ai')}
+              style={{
+                padding: '10px 18px',
+                border: 'none',
+                background: 'none',
+                borderBottom: activeTab === 'ai' ? '3px solid var(--qudra-teal, #00B8B8)' : '3px solid transparent',
+                fontWeight: activeTab === 'ai' ? '800' : '600',
+                color: activeTab === 'ai' ? 'var(--qudra-obsidian, #1A1A1A)' : 'var(--slate-500)',
+                fontSize: '13.5px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px'
+              }}
+            >
+              <Bot size={16} color={activeTab === 'ai' ? 'var(--qudra-teal)' : 'var(--slate-400)'} />
+              <span>{isRtl ? 'بيانات الربط البرمجي (JSON)' : 'Machine-Readable JSON'}</span>
+            </button>
+          </div>
           <button
             onClick={() => { setActiveTab('matrix'); setSelectedSkillFilter(null); }}
             style={{
