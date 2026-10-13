@@ -152,14 +152,32 @@ export default function Navbar({
           <span style={{ fontWeight: '600' }}>{isRtl ? 'EN' : 'عربي'}</span>
         </button>
 
-        {/* Eye-Comfort Dark Mode Toggle */}
+        {/* Eye-Comfort Theme Toggle */}
         <button
           onClick={onToggleTheme}
-          className="btn btn-ghost btn-sm"
-          style={{ padding: '6px', color: 'var(--slate-600)' }}
-          title={theme === 'dark' ? (isRtl ? 'الوضع النهاري' : 'Light Mode') : (isRtl ? 'وضع الراحة البصرية الليلي' : 'Eye-Comfort Dark Mode')}
+          className="btn btn-secondary btn-sm"
+          style={{
+            gap: '6px',
+            backgroundColor: theme === 'dark' ? '#1e293b' : '#f8fafc',
+            borderColor: 'var(--border-color)',
+            color: 'var(--slate-700)',
+            fontSize: '12px',
+            padding: '5px 10px',
+            fontWeight: '600'
+          }}
+          title={theme === 'dark' ? (isRtl ? 'التبديل للوضع النهاري' : 'Switch to Light Mode') : (isRtl ? 'تفعيل وضع الراحة البصرية' : 'Switch to Eye-Comfort Mode')}
         >
-          {theme === 'dark' ? <Sun size={15} color="#fbbf24" /> : <Moon size={15} />}
+          {theme === 'dark' ? (
+            <>
+              <Sun size={14} color="#f59e0b" />
+              <span className="hide-on-mobile">{isRtl ? 'نهاري' : 'Light'}</span>
+            </>
+          ) : (
+            <>
+              <Moon size={14} color="var(--qudra-teal)" />
+              <span className="hide-on-mobile">{isRtl ? 'راحة بصرية' : 'Comfort'}</span>
+            </>
+          )}
         </button>
 
         {/* LUXURY ROLE & IDENTITY POPOVER (Replaces the native select dropdown) */}

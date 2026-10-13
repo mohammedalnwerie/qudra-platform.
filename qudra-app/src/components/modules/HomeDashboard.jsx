@@ -26,7 +26,8 @@ import {
   CheckCircle2,
   Copy,
   Building2,
-  FolderGit2
+  FolderGit2,
+  Coins
 } from 'lucide-react';
 import EvidenceBadge from '../common/EvidenceBadge';
 import TrustChip from '../common/TrustChip';
@@ -219,16 +220,16 @@ export default function HomeDashboard({
           </div>
 
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
-            <span style={{ fontSize: '26px', fontWeight: '900', color: 'var(--slate-900)', fontFamily: 'monospace' }}>
+            <span style={{ fontSize: '28px', fontWeight: '800', color: 'var(--slate-900)', fontVariantNumeric: 'tabular-nums' }}>
               {provenCount}
             </span>
-            <span style={{ fontSize: '12px', color: 'var(--slate-400)', fontWeight: '600' }}>
+            <span style={{ fontSize: '13px', color: 'var(--slate-500)', fontWeight: '600' }}>
               / 16 {isRtl ? 'مهارة مثبتة' : 'skills'}
             </span>
           </div>
 
-          <div style={{ fontSize: '11.5px', color: '#16a34a', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: '700' }}>
-            <Check size={12} color="#16a34a" />
+          <div style={{ fontSize: '12px', color: '#16a34a', display: 'flex', alignItems: 'center', gap: '5px', fontWeight: '700' }}>
+            <Check size={13} color="#16a34a" />
             <span>{isRtl ? 'جميعها مدققة بمشاريع وأكواد' : 'Backed by real code & repos'}</span>
           </div>
         </div>
@@ -238,7 +239,7 @@ export default function HomeDashboard({
           className="card"
           onClick={() => onNavigate && onNavigate('M16')}
           style={{
-            padding: '18px 20px',
+            padding: '20px 22px',
             cursor: 'pointer',
             backgroundColor: '#ffffff',
             borderRadius: 'var(--radius-lg)',
@@ -247,19 +248,19 @@ export default function HomeDashboard({
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
-            gap: '10px'
+            gap: '12px'
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '12.5px', fontWeight: '700', color: 'var(--slate-500)' }}>
+            <span style={{ fontSize: '13px', fontWeight: '700', color: 'var(--slate-600)' }}>
               {isRtl ? 'أعلى فرصة مطابقة' : 'Top Match Score'}
             </span>
             <span
               style={{
                 fontSize: '11px',
                 fontWeight: '800',
-                padding: '1px 6px',
-                borderRadius: '4px',
+                padding: '2px 8px',
+                borderRadius: 'var(--radius-full)',
                 backgroundColor: '#f0fdfa',
                 color: '#006666',
                 border: '1px solid #ccfbf1'
@@ -270,16 +271,16 @@ export default function HomeDashboard({
           </div>
 
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
-            <span style={{ fontSize: '26px', fontWeight: '900', color: 'var(--qudra-teal-deep)', fontFamily: 'monospace' }}>
+            <span style={{ fontSize: '28px', fontWeight: '800', color: 'var(--qudra-teal-deep)', fontVariantNumeric: 'tabular-nums' }}>
               94%
             </span>
-            <span style={{ fontSize: '12px', color: 'var(--slate-600)', fontWeight: '700' }}>
+            <span style={{ fontSize: '13px', color: 'var(--slate-700)', fontWeight: '700' }}>
               {isRtl ? 'مشروع مسار فنتك' : 'Masar FinTech'}
             </span>
           </div>
 
-          <div style={{ fontSize: '11.5px', color: 'var(--slate-600)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <Coins size={12} color="var(--qudra-teal)" />
+          <div style={{ fontSize: '12px', color: 'var(--slate-600)', display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <Coins size={13} color="var(--qudra-teal)" />
             <span>{isRtl ? 'قيمة العقد: 60,000 ر.س' : '60,000 SAR Contract'}</span>
           </div>
         </div>
@@ -289,7 +290,7 @@ export default function HomeDashboard({
           className="card"
           onClick={() => onNavigate && onNavigate('M11')}
           style={{
-            padding: '18px 20px',
+            padding: '20px 22px',
             cursor: 'pointer',
             backgroundColor: '#ffffff',
             borderRadius: 'var(--radius-lg)',
@@ -298,19 +299,19 @@ export default function HomeDashboard({
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
-            gap: '10px'
+            gap: '12px'
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '12.5px', fontWeight: '700', color: 'var(--slate-500)' }}>
+            <span style={{ fontSize: '13px', fontWeight: '700', color: 'var(--slate-600)' }}>
               {isRtl ? 'تحديات تعزيز الموثوقية' : 'Skill Targets'}
             </span>
             <span
               style={{
                 fontSize: '11px',
                 fontWeight: '800',
-                padding: '1px 6px',
-                borderRadius: '4px',
+                padding: '2px 8px',
+                borderRadius: 'var(--radius-full)',
                 backgroundColor: '#fffbeb',
                 color: '#b45309',
                 border: '1px solid #fde68a'
@@ -321,16 +322,16 @@ export default function HomeDashboard({
           </div>
 
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
-            <span style={{ fontSize: '26px', fontWeight: '900', color: 'var(--slate-900)', fontFamily: 'monospace' }}>
+            <span style={{ fontSize: '28px', fontWeight: '800', color: 'var(--slate-900)', fontVariantNumeric: 'tabular-nums' }}>
               {gapCount}
             </span>
-            <span style={{ fontSize: '12px', color: 'var(--slate-500)', fontWeight: '600' }}>
+            <span style={{ fontSize: '13px', color: 'var(--slate-500)', fontWeight: '600' }}>
               {isRtl ? 'مهارات مطلوبة في السوق' : 'target skills'}
             </span>
           </div>
 
-          <div style={{ fontSize: '11.5px', color: '#b45309', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: '700' }}>
-            <Terminal size={12} color="#b45309" />
+          <div style={{ fontSize: '12px', color: '#b45309', display: 'flex', alignItems: 'center', gap: '5px', fontWeight: '700' }}>
+            <Terminal size={13} color="#b45309" />
             <span>{isRtl ? 'تحدي حماية السحابة متاح الآن' : 'Cloud Hardening ready'}</span>
           </div>
         </div>
@@ -340,7 +341,7 @@ export default function HomeDashboard({
           className="card"
           onClick={() => onNavigate && onNavigate('M07')}
           style={{
-            padding: '18px 20px',
+            padding: '20px 22px',
             cursor: 'pointer',
             backgroundColor: '#ffffff',
             borderRadius: 'var(--radius-lg)',
@@ -349,27 +350,27 @@ export default function HomeDashboard({
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
-            gap: '10px'
+            gap: '12px'
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '12.5px', fontWeight: '700', color: 'var(--slate-500)' }}>
+            <span style={{ fontSize: '13px', fontWeight: '700', color: 'var(--slate-600)' }}>
               {isRtl ? 'معدل موثوقية الجواز' : 'Passport Trust Rating'}
             </span>
-            <Award size={15} color="var(--qudra-teal)" />
+            <Award size={16} color="var(--qudra-teal)" />
           </div>
 
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
-            <span style={{ fontSize: '26px', fontWeight: '900', color: 'var(--slate-900)', fontFamily: 'monospace' }}>
+            <span style={{ fontSize: '28px', fontWeight: '800', color: 'var(--slate-900)', fontVariantNumeric: 'tabular-nums' }}>
               {trustScore}%
             </span>
-            <span style={{ fontSize: '12px', color: 'var(--slate-500)', fontWeight: '600' }}>
+            <span style={{ fontSize: '13px', color: 'var(--slate-500)', fontWeight: '600' }}>
               {isRtl ? 'تصنيف ممتاز' : 'Elite Rating'}
             </span>
           </div>
 
-          <div style={{ fontSize: '11.5px', color: 'var(--qudra-teal-deep)', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: '700' }}>
-            <CheckCircle2 size={12} color="var(--qudra-teal)" />
+          <div style={{ fontSize: '12px', color: 'var(--qudra-teal-deep)', display: 'flex', alignItems: 'center', gap: '5px', fontWeight: '700' }}>
+            <CheckCircle2 size={13} color="var(--qudra-teal)" />
             <span>{isRtl ? 'موثق رقمياً بدون تلاعب' : 'Cryptographically signed'}</span>
           </div>
         </div>
