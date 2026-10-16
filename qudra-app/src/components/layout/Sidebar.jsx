@@ -64,29 +64,37 @@ const ICON_MAP = {
 export const CATEGORIES = [
   {
     id: 'cat-core',
-    nameAr: 'الملف المهني والمهارات',
-    nameEn: 'Profile & Skills',
-    moduleIds: ['M02', 'M07', 'M05', 'M03', 'M06', 'M04', 'M13', 'M14', 'M01']
+    nameAr: 'الهوية وجواز القدرات',
+    nameEn: 'Identity & Passport',
+    moduleIds: ['M02', 'M07', 'M05', 'M03', 'M13']
   },
   {
     id: 'cat-matching',
-    nameAr: 'المشاريع وفرق العمل',
-    nameEn: 'Projects & Squads',
-    moduleIds: ['M15', 'M16', 'M20', 'M21', 'M17', 'M18', 'M19']
+    nameAr: 'المشاريع والفرص والفرق',
+    nameEn: 'Projects & Matching',
+    moduleIds: ['M17', 'M15', 'M20', 'M21', 'M18']
   },
   {
     id: 'cat-growth',
-    nameAr: 'التحديات والتدريب',
-    nameEn: 'Challenges & Learning',
-    moduleIds: ['M11', 'M08', 'M09', 'M10', 'M12']
+    nameAr: 'التحديات والنمو المهني',
+    nameEn: 'Challenges & Growth',
+    moduleIds: ['M11', 'M08', 'M10', 'M14']
   },
   {
     id: 'cat-trust',
-    nameAr: 'الأمان والخصوصية',
-    nameEn: 'Security & Privacy',
-    moduleIds: ['M25', 'M22', 'M24', 'M26', 'M23']
+    nameAr: 'الأمان والحوكمة والمالية',
+    nameEn: 'Security & Governance',
+    moduleIds: ['M25', 'M22', 'M26']
   },
 ];
+
+const MODULE_PILLS = {
+  M07: { textAr: 'موثق', textEn: 'Verified', bg: '#f0fdf4', color: '#166534' },
+  M15: { textAr: 'AI', textEn: 'AI', bg: '#fef3c7', color: '#92400e' },
+  M11: { textAr: 'تحدٍّ', textEn: 'Sandbox', bg: '#f0fdfa', color: '#006666' },
+  M21: { textAr: 'ضمان', textEn: 'Escrow', bg: '#f0fdf4', color: '#166534' },
+  M26: { textAr: '0%', textEn: '0%', bg: '#fff7ed', color: '#c2410c' }
+};
 
 export default function Sidebar({ activeModuleId, onSelectModule, isRtl = true, isOpen = false, onClose }) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -217,6 +225,7 @@ export default function Sidebar({ activeModuleId, onSelectModule, isRtl = true, 
                   {cat.modules.map((mod) => {
                     const IconComp = ICON_MAP[mod.code] || Layers;
                     const isActive = activeModuleId === mod.id;
+                    const pill = MODULE_PILLS[mod.id];
 
                     return (
                       <div
@@ -227,25 +236,44 @@ export default function Sidebar({ activeModuleId, onSelectModule, isRtl = true, 
                           if (onClose) onClose();
                         }}
                         title={isRtl ? mod.nameAr : mod.nameEn}
+                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}
                       >
-                        <IconComp
-                          size={16}
-                          style={{
-                            flexShrink: 0,
-                            color: isActive ? '#008B8B' : '#64748B'
-                          }}
-                        />
-                        <span
-                          style={{
-                            whiteSpace: 'nowrap',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            fontSize: '13px',
-                            fontWeight: isActive ? '700' : '500'
-                          }}
-                        >
-                          {isRtl ? mod.nameAr : mod.nameEn}
-                        </span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', overflow: 'hidden' }}>
+                          <IconComp
+                            size={16}
+                            style={{
+                              flexShrink: 0,
+                              color: isActive ? '#008B8B' : '#64748B'
+                            }}
+                          />
+                          <span
+                            style={{
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              fontSize: '13px',
+                              fontWeight: isActive ? '700' : '500'
+                            }}
+                          >
+                            {isRtl ? mod.nameAr : mod.nameEn}
+                          </span>
+                        </div>
+
+                        {pill && (
+                          <span
+                            style={{
+                              fontSize: '10px',
+                              fontWeight: '800',
+                              padding: '1px 6px',
+                              borderRadius: '4px',
+                              backgroundColor: pill.bg,
+                              color: pill.color,
+                              flexShrink: 0
+                            }}
+                          >
+                            {isRtl ? pill.textAr : pill.textEn}
+                          </span>
+                        )}
                       </div>
                     );
                   })}
