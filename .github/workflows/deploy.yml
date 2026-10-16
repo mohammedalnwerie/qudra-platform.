@@ -37,12 +37,13 @@ jobs:
       - name: Install Dependencies
         run: |
           cd qudra-app
-          npm ci
+          npm install
 
       - name: Build Application
         run: |
           cd qudra-app
           npm run build
+          cp dist/index.html dist/404.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
