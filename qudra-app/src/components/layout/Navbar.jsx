@@ -15,7 +15,8 @@ import {
   Award,
   ExternalLink,
   Lock,
-  Play
+  Play,
+  HelpCircle
 } from 'lucide-react';
 import { USER_PERSONAS } from '../../data/mockData';
 
@@ -30,7 +31,8 @@ export default function Navbar({
   onOpenScreenExplorer,
   onOpenSidebar,
   currentPersona,
-  onReplayIntro
+  onReplayIntro,
+  onOpenGuide
 }) {
   const [isPersonaOpen, setIsPersonaOpen] = useState(false);
   const popoverRef = useRef(null);
@@ -138,6 +140,23 @@ export default function Navbar({
         >
           <Play size={13} color="var(--qudra-teal)" />
           <span>{isRtl ? 'المقدمة' : 'Intro'}</span>
+        </button>
+
+        {/* Simple Platform Guide Trigger */}
+        <button
+          onClick={onOpenGuide}
+          className="btn btn-secondary btn-sm"
+          style={{
+            color: 'var(--qudra-teal-deep, #006666)',
+            backgroundColor: '#F0FDFA',
+            borderColor: '#99F6E4',
+            gap: '6px',
+            fontWeight: '700'
+          }}
+          title={isRtl ? 'دليل استخدام منصة قُدرة الميسّر في 3 خطوات' : 'Simple Platform Guide'}
+        >
+          <HelpCircle size={14} color="var(--qudra-teal)" />
+          <span>{isRtl ? 'دليل الاستخدام' : 'User Guide'}</span>
         </button>
 
         {/* Explain AI Drawer Trigger */}

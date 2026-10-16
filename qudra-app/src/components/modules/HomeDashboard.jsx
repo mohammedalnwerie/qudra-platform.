@@ -27,7 +27,8 @@ import {
   Copy,
   Building2,
   FolderGit2,
-  Coins
+  Coins,
+  HelpCircle
 } from 'lucide-react';
 import EvidenceBadge from '../common/EvidenceBadge';
 import TrustChip from '../common/TrustChip';
@@ -39,6 +40,7 @@ export default function HomeDashboard({
   currentPersona,
   onNavigate,
   onOpenExplain,
+  onOpenGuide,
   isRtl = true
 }) {
   const { showToast } = useToast();
@@ -141,8 +143,8 @@ export default function HomeDashboard({
 
           <p style={{ fontSize: '13.5px', color: 'var(--slate-600)', lineHeight: 1.6, margin: 0 }}>
             {isRtl
-              ? 'ملفك المهني موثق تشفيرياً بنسبة موثوقية 94%. لديك فرصة تعاقد مؤسسية بقيمة 60,000 ر.س جاهزة للتنفيذ بضمان مالي مرحلي بدون أي عمولات خفية.'
-              : 'Your verified profile is live at 94% Trust Score. 1 enterprise contract (60,000 SAR) matched deterministically under 0% fee escrow.'}
+              ? 'ملفك المهني موثق بنسبة كفاءة 94% عبر أعمال سابقة حقيقية. لديك فرصة تعاقد مؤسسية بقيمة 60,000 ر.س جاهزة للتنفيذ بضمان مالي مرحلي بدون أي عمولات خفية (0% عمولة).'
+              : 'Your verified profile is live at 94% Trust Score. 1 enterprise contract (60,000 SAR) matched under 0% fee escrow.'}
           </p>
 
           {/* Quick Pillars Trust Strip */}
@@ -154,12 +156,12 @@ export default function HomeDashboard({
             <span>•</span>
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
               <CheckCircle2 size={13} color="#008B8B" />
-              <span>{isRtl ? 'سجل أدلة مشفر بمعايير W3C' : 'W3C Verifiable Credentials'}</span>
+              <span>{isRtl ? 'مهارات معتمدة من مشاريع سابقة' : 'Verified Capabilities from Real Work'}</span>
             </span>
             <span>•</span>
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
               <CheckCircle2 size={13} color="#008B8B" />
-              <span>{isRtl ? 'ضمان بنكي محمي لكل دفعة' : 'Protected Milestone Escrow'}</span>
+              <span>{isRtl ? 'ضمان بنكي محمي لكل دفعة' : 'Bank-Secured Milestone Escrow'}</span>
             </span>
           </div>
         </div>
@@ -196,7 +198,185 @@ export default function HomeDashboard({
         </div>
       </div>
 
-      {/* 2. Precision Metrics Board (Clean Tabular Numbers, Zero Cliché Colors) */}
+      {/* 2. Simplified 3-Step Quick Start Banner (Radical Clarity for Users) */}
+      <div
+        className="card"
+        style={{
+          padding: '24px',
+          backgroundColor: '#ffffff',
+          borderRadius: 'var(--radius-xl)',
+          border: '1px solid #ccfbf1',
+          background: 'linear-gradient(135deg, #f0fdfa 0%, #ffffff 100%)',
+          boxShadow: 'var(--shadow-card)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '18px'
+        }}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+              <div
+                style={{
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: '6px',
+                  backgroundColor: 'var(--qudra-teal)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#ffffff'
+                }}
+              >
+                <Zap size={16} />
+              </div>
+              <h2 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
+                {isRtl ? 'كيف تعمل منصة قُدرة في 3 خطوات بسيطة؟' : 'How QUDRA Works in 3 Simple Steps'}
+              </h2>
+            </div>
+            <p style={{ fontSize: '12.5px', color: 'var(--slate-600)', margin: 0 }}>
+              {isRtl
+                ? 'منصة تعاقد مستقل مبنية على إثبات المهارة الفعلي بدون سير ذاتية وهمية، وبدون عمولات مستقطعة (0%)، ومع حماية بنكية لكل دفعة.'
+                : 'A verified talent marketplace: real skill proofs, zero commissions (0%), and bank escrow protection.'}
+            </p>
+          </div>
+
+          {onOpenGuide && (
+            <button
+              onClick={onOpenGuide}
+              className="btn btn-secondary btn-sm"
+              style={{
+                gap: '6px',
+                backgroundColor: '#ffffff',
+                borderColor: '#99f6e4',
+                color: 'var(--qudra-teal-deep)',
+                fontWeight: '700',
+                fontSize: '12px',
+                boxShadow: 'var(--shadow-xs)'
+              }}
+            >
+              <HelpCircle size={14} color="var(--qudra-teal)" />
+              <span>{isRtl ? 'فتح دليل الاستخدام المفصل' : 'Open Full Guide'}</span>
+            </button>
+          )}
+        </div>
+
+        {/* 3 Interactive Cards */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '14px' }}>
+          {/* Step 1 */}
+          <div
+            className="card card-interactive"
+            onClick={() => onNavigate && onNavigate('M03')}
+            style={{
+              padding: '16px 18px',
+              backgroundColor: '#ffffff',
+              borderRadius: 'var(--radius-lg)',
+              border: '1px solid #e2e8f0',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              gap: '12px'
+            }}
+          >
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                <span style={{ fontSize: '11px', fontWeight: '800', color: '#006666', backgroundColor: '#e6fffa', padding: '2px 8px', borderRadius: '4px' }}>
+                  {isRtl ? 'الخطوة 1' : 'Step 1'}
+                </span>
+                <ShieldCheck size={18} color="var(--qudra-teal)" />
+              </div>
+              <h3 style={{ fontSize: '13.5px', fontWeight: '800', color: 'var(--slate-900)', margin: '0 0 6px 0' }}>
+                {isRtl ? 'وثّق كفاءتك الحقيقية' : 'Prove Real Capabilities'}
+              </h3>
+              <p style={{ fontSize: '12px', color: 'var(--slate-600)', lineHeight: 1.5, margin: 0 }}>
+                {isRtl
+                  ? 'اربط حساب GitHub أو أجرِ اختباراً عملياً لإصدار بطاقة مهارات معتمدة ومثبتة برمجياً.'
+                  : 'Connect GitHub or pass a practical sandbox challenge to mint verified skill proofs.'}
+              </p>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', color: 'var(--qudra-teal-deep)', fontSize: '11.5px', fontWeight: '700', paddingTop: '8px', borderTop: '1px solid #f1f5f9' }}>
+              <span>{isRtl ? 'ربط الحسابات وتوثيق المهارات' : 'Connect accounts & sync'}</span>
+              <ArrowIcon size={12} />
+            </div>
+          </div>
+
+          {/* Step 2 */}
+          <div
+            className="card card-interactive"
+            onClick={() => onNavigate && onNavigate('M17')}
+            style={{
+              padding: '16px 18px',
+              backgroundColor: '#ffffff',
+              borderRadius: 'var(--radius-lg)',
+              border: '1px solid #e2e8f0',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              gap: '12px'
+            }}
+          >
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                <span style={{ fontSize: '11px', fontWeight: '800', color: '#92400e', backgroundColor: '#fef3c7', padding: '2px 8px', borderRadius: '4px' }}>
+                  {isRtl ? 'الخطوة 2' : 'Step 2'}
+                </span>
+                <Briefcase size={18} color="#b45309" />
+              </div>
+              <h3 style={{ fontSize: '13.5px', fontWeight: '800', color: 'var(--slate-900)', margin: '0 0 6px 0' }}>
+                {isRtl ? 'استكشف المشاريع المتوافقة' : 'Explore Matched Projects'}
+              </h3>
+              <p style={{ fontSize: '12px', color: 'var(--slate-600)', lineHeight: 1.5, margin: 0 }}>
+                {isRtl
+                  ? 'بدون منافسة أسعار عشوائية؛ النظام يرشح لك المشاريع التي تتطابق مع خبرتك الفعلية بدقة.'
+                  : 'No price wars or random bidding; deterministic matching connects you directly to relevant tasks.'}
+              </p>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#92400e', fontSize: '11.5px', fontWeight: '700', paddingTop: '8px', borderTop: '1px solid #f1f5f9' }}>
+              <span>{isRtl ? 'تصفح المشاريع الموصى بها' : 'Browse matched projects'}</span>
+              <ArrowIcon size={12} />
+            </div>
+          </div>
+
+          {/* Step 3 */}
+          <div
+            className="card card-interactive"
+            onClick={() => onNavigate && onNavigate('M21')}
+            style={{
+              padding: '16px 18px',
+              backgroundColor: '#ffffff',
+              borderRadius: 'var(--radius-lg)',
+              border: '1px solid #e2e8f0',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              gap: '12px'
+            }}
+          >
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                <span style={{ fontSize: '11px', fontWeight: '800', color: '#166534', backgroundColor: '#f0fdf4', padding: '2px 8px', borderRadius: '4px' }}>
+                  {isRtl ? 'الخطوة 3' : 'Step 3'}
+                </span>
+                <Coins size={18} color="#16a34a" />
+              </div>
+              <h3 style={{ fontSize: '13.5px', fontWeight: '800', color: 'var(--slate-900)', margin: '0 0 6px 0' }}>
+                {isRtl ? 'استلم أرباحك كاملة (0% عمولة)' : '0% Fee Escrow Payouts'}
+              </h3>
+              <p style={{ fontSize: '12px', color: 'var(--slate-600)', lineHeight: 1.5, margin: 0 }}>
+                {isRtl
+                  ? 'يتم إيداع الدفعة في حساب بنكي مسبقاً، وتستلم 100% من أتعابك بدون اقتطاع أي عمولة.'
+                  : 'Client funds milestone in bank escrow before work starts. You keep 100% of your earnings.'}
+              </p>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#166534', fontSize: '11.5px', fontWeight: '700', paddingTop: '8px', borderTop: '1px solid #f1f5f9' }}>
+              <span>{isRtl ? 'إدارة العقود والضمان المالي' : 'Workspace & Escrow'}</span>
+              <ArrowIcon size={12} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 3. Precision Metrics Board (Clean Tabular Numbers, Zero Cliché Colors) */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: '14px' }}>
         {/* Metric 1: Verified Skills */}
         <div
@@ -594,10 +774,10 @@ export default function HomeDashboard({
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
           <div>
             <h3 style={{ fontSize: '14.5px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
-              {isRtl ? 'آخر سجلات التوثيق والنشاط التشفيري' : 'Recent Verifiable Audit Feed'}
+              {isRtl ? 'سجل الأنشطة والاعتمادات المنجزة' : 'Recent Verifiable Activity'}
             </h3>
             <span style={{ fontSize: '11.5px', color: 'var(--slate-500)' }}>
-              {isRtl ? 'كل عملية مدعومة ببصمة رقمية غير قابلة للتعديل' : 'Every entry is backed by an immutable cryptographic hash'}
+              {isRtl ? 'سجل رقمي موثق يضمن شفافية جميع الإنجازات والمدفوعات بدون نزاعات' : 'Verifiable audit ledger ensuring absolute transparency'}
             </span>
           </div>
 
@@ -617,7 +797,7 @@ export default function HomeDashboard({
           {[
             {
               id: 'act-1',
-              title: isRtl ? 'توثيق كود سد ثغرة SSRF وحماية AWS Metadata' : 'Verified SSRF patch & metadata guard',
+              title: isRtl ? 'اعتماد توثيق سد ثغرة حماية السحابة في منصة التحديات' : 'Verified Cloud Security & SSRF Challenge',
               source: 'Practice Sandbox (Node.js)',
               hash: '0x1c4d98a2e01b33f99017281bcda90192e20177bb3a01',
               time: isRtl ? 'اليوم، 10:45 ص' : 'Today, 10:45 AM',
@@ -625,15 +805,15 @@ export default function HomeDashboard({
             },
             {
               id: 'act-2',
-              title: isRtl ? 'مزامنة مستودع البنية التحتية من GitHub وتحديث متجهات المهارات' : 'Synced GitHub IaC repository & vectors updated',
-              source: 'GitHub Enterprise OAuth',
+              title: isRtl ? 'مزامنة مستودع البنية التحتية من GitHub وتحديث المهارات' : 'Synced GitHub IaC repository & updated skills',
+              source: 'GitHub Verified OAuth',
               hash: '0x8f2a49b817c09e3a74d28e51c4e9761fa0218872',
               time: isRtl ? 'أمس، 04:20 م' : 'Yesterday, 04:20 PM',
               type: 'sync'
             },
             {
               id: 'act-3',
-              title: isRtl ? 'توقيع الضمان المالي لمرحلة معمارية السحابة (18,000 ر.س)' : 'Milestone 1 Escrow Released (18,000 SAR)',
+              title: isRtl ? 'إيداع الضمان المالي لمرحلة معمارية السحابة (18,000 ر.س)' : 'Milestone 1 Escrow Released (18,000 SAR)',
               source: 'Masar Digital Contract #ESC-904',
               hash: '0x7a8e29bc4412f901ab887200912d78a94bca1123',
               time: isRtl ? 'قبل 3 أيام' : '3 days ago',

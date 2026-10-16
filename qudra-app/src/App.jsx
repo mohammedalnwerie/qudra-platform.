@@ -19,6 +19,7 @@ import BrowseProjects from './components/modules/BrowseProjects';
 import PortfolioGallery from './components/modules/PortfolioGallery';
 import GenericStateView from './components/modules/GenericStateView';
 import CinematicIntro from './components/common/CinematicIntro';
+import PlatformGuideModal from './components/common/PlatformGuideModal';
 
 import {
   MODULES_METADATA,
@@ -29,6 +30,7 @@ import { Layers, Sparkles, SlidersHorizontal, ChevronUp, ChevronDown } from 'luc
 
 export default function App() {
   const [isRtl, setIsRtl] = useState(true);
+  const [isGuideOpen, setIsGuideOpen] = useState(false);
   const [currentRole, setCurrentRole] = useState('freelancer');
   const [activeModuleId, setActiveModuleId] = useState(() => {
     try {
@@ -150,6 +152,7 @@ export default function App() {
           onOpenSidebar={() => setIsMobileSidebarOpen(true)}
           currentPersona={currentPersona}
           onReplayIntro={() => setShowIntro(true)}
+          onOpenGuide={() => setIsGuideOpen(true)}
         />
 
         {/* Content View */}
@@ -160,6 +163,7 @@ export default function App() {
               currentPersona={currentPersona}
               onNavigate={handleNavigateModule}
               onOpenExplain={() => setIsExplainOpen(true)}
+              onOpenGuide={() => setIsGuideOpen(true)}
               isRtl={isRtl}
             />
           )}
@@ -326,6 +330,14 @@ export default function App() {
         activeModuleId={activeModuleId}
         activeStateId={activeStateId}
         onSelectScreen={handleSelectScreen}
+        isRtl={isRtl}
+      />
+
+      {/* Platform Guide / Onboarding Modal */}
+      <PlatformGuideModal
+        isOpen={isGuideOpen}
+        onClose={() => setIsGuideOpen(false)}
+        onNavigate={handleNavigateModule}
         isRtl={isRtl}
       />
 
