@@ -129,19 +129,8 @@ export default function Navbar({
         </div>
       </div>
 
-      {/* Right Controls: Role, Language, Explain, Profile */}
+      {/* Right Controls: Guide, Explain, Theme, Language, Profile */}
       <div className="nav-actions">
-        {/* Cinematic Intro Button */}
-        <button
-          onClick={onReplayIntro}
-          className="btn btn-ghost btn-sm hide-on-mobile"
-          style={{ gap: '5px', color: 'var(--qudra-teal-deep)', fontSize: '12px', fontWeight: '600' }}
-          title={isRtl ? 'مشاهدة المقدمة السينمائية للشعار' : 'Watch Cinematic Intro'}
-        >
-          <Play size={13} color="var(--qudra-teal)" />
-          <span>{isRtl ? 'المقدمة' : 'Intro'}</span>
-        </button>
-
         {/* Simple Platform Guide Trigger */}
         <button
           onClick={onOpenGuide}
@@ -151,7 +140,9 @@ export default function Navbar({
             backgroundColor: '#F0FDFA',
             borderColor: '#99F6E4',
             gap: '6px',
-            fontWeight: '700'
+            fontWeight: '700',
+            fontSize: '12px',
+            padding: '6px 12px'
           }}
           title={isRtl ? 'دليل استخدام منصة قُدرة الميسّر في 3 خطوات' : 'Simple Platform Guide'}
         >
@@ -162,67 +153,48 @@ export default function Navbar({
         {/* Explain AI Drawer Trigger */}
         <button
           onClick={onOpenExplain}
-          className="btn btn-secondary btn-sm nav-explain-btn"
+          className="btn btn-secondary btn-sm nav-explain-btn hide-on-mobile"
           style={{
             color: 'var(--qudra-obsidian)',
             backgroundColor: 'var(--qudra-yellow-light)',
             borderColor: 'var(--qudra-yellow-border)',
             gap: '6px',
-            fontWeight: '700'
+            fontWeight: '700',
+            fontSize: '12px',
+            padding: '6px 12px'
           }}
           title={isRtl ? 'عرض لوحة تفسير قرارات التقييم والتوصيات' : 'Open Explainable AI Drawer'}
         >
           <Sparkles size={14} color="#b45309" />
-          <span className="hide-on-mobile">{isRtl ? 'تفسير التقييم' : 'Explain Logic'}</span>
-        </button>
-
-        {/* Screen Explorer Shortcut */}
-        <button
-          onClick={onOpenScreenExplorer}
-          className="btn btn-ghost btn-sm hide-on-mobile"
-          style={{ gap: '6px', color: 'var(--slate-600)' }}
-          title={isRtl ? 'استعراض فهرس شاشات المنصة' : 'Explore Screen Catalog'}
-        >
-          <Layers size={15} />
-          <span>{isRtl ? 'دليل الشاشات' : 'Screen Catalog'}</span>
+          <span>{isRtl ? 'تفسير التقييم' : 'Explain Logic'}</span>
         </button>
 
         {/* Language / RTL Switcher */}
         <button
           onClick={onToggleRtl}
           className="btn btn-ghost btn-sm"
-          style={{ gap: '6px', color: 'var(--slate-600)' }}
+          style={{ gap: '5px', color: 'var(--slate-600)', padding: '6px 10px', fontSize: '12px' }}
           title={isRtl ? 'Switch to English' : 'التحويل للعربية'}
         >
           <Globe size={14} />
-          <span style={{ fontWeight: '600' }}>{isRtl ? 'EN' : 'عربي'}</span>
+          <span style={{ fontWeight: '700' }}>{isRtl ? 'EN' : 'عربي'}</span>
         </button>
 
         {/* Eye-Comfort Theme Toggle */}
         <button
           onClick={onToggleTheme}
-          className="btn btn-secondary btn-sm"
+          className="btn btn-ghost btn-sm"
           style={{
-            gap: '6px',
-            backgroundColor: theme === 'dark' ? '#1e293b' : '#f8fafc',
-            borderColor: 'var(--border-color)',
-            color: 'var(--slate-700)',
-            fontSize: '12px',
-            padding: '5px 10px',
-            fontWeight: '600'
+            color: 'var(--slate-600)',
+            padding: '6px 10px'
           }}
           title={theme === 'dark' ? (isRtl ? 'التبديل للوضع النهاري' : 'Switch to Light Mode') : (isRtl ? 'تفعيل وضع الراحة البصرية' : 'Switch to Eye-Comfort Mode')}
+          aria-label={theme === 'dark' ? 'Light Mode' : 'Eye-Comfort Mode'}
         >
           {theme === 'dark' ? (
-            <>
-              <Sun size={14} color="#f59e0b" />
-              <span className="hide-on-mobile">{isRtl ? 'نهاري' : 'Light'}</span>
-            </>
+            <Sun size={15} color="#f59e0b" />
           ) : (
-            <>
-              <Moon size={14} color="var(--qudra-teal)" />
-              <span className="hide-on-mobile">{isRtl ? 'راحة بصرية' : 'Comfort'}</span>
-            </>
+            <Moon size={15} color="var(--qudra-teal)" />
           )}
         </button>
 

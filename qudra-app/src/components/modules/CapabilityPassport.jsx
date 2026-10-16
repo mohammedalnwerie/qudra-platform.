@@ -28,7 +28,7 @@ import TrustChip from '../common/TrustChip';
 import { MOCK_CAPABILITIES_GRAPH, MOCK_EVIDENCE_ITEMS } from '../../data/mockData';
 import { useToast } from '../common/ToastContext';
 
-export default function CapabilityPassport({ currentPersona, isRtl = true }) {
+export default function CapabilityPassport({ currentPersona, onNavigate, isRtl = true }) {
   const { showToast } = useToast();
   const [activeTab, setActiveTab] = useState('matrix'); // 'matrix' | 'proofs' | 'ai'
   const [copiedUrl, setCopiedUrl] = useState(false);
@@ -207,6 +207,29 @@ export default function CapabilityPassport({ currentPersona, isRtl = true }) {
 
           {/* Quick Actions & Share */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', paddingTop: '16px', flexWrap: 'wrap' }}>
+            {onNavigate && (
+              <button
+                onClick={() => onNavigate('M15')}
+                className="btn"
+                style={{
+                  backgroundColor: 'var(--qudra-teal, #00B8B8)',
+                  color: '#ffffff',
+                  gap: '8px',
+                  padding: '9px 18px',
+                  fontWeight: '800',
+                  borderRadius: 'var(--radius-md)',
+                  boxShadow: '0 2px 8px rgba(0, 184, 184, 0.25)',
+                  border: 'none',
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center'
+                }}
+              >
+                <ShieldCheck size={16} color="#ffffff" />
+                <span>{isRtl ? 'توظيف المستقل بضمان بنكي (0% عمولة)' : 'Hire via Escrow (0% Fee)'}</span>
+              </button>
+            )}
+
             <button
               onClick={handleCopyUrl}
               className="btn btn-primary"
@@ -244,7 +267,7 @@ export default function CapabilityPassport({ currentPersona, isRtl = true }) {
               }}
             >
               <Bot size={14} color="var(--qudra-teal, #008B8B)" />
-              <span>{isRtl ? 'بيانات المطورين (JSON)' : 'Developer JSON'}</span>
+              <span>{isRtl ? 'بيانات المطورين والـ API' : 'Developer & API Data'}</span>
             </button>
           </div>
         </div>
@@ -460,7 +483,7 @@ export default function CapabilityPassport({ currentPersona, isRtl = true }) {
               }}
             >
               <Bot size={16} color={activeTab === 'ai' ? 'var(--qudra-teal)' : 'var(--slate-400)'} />
-              <span>{isRtl ? 'بيانات الربط البرمجي (JSON)' : 'Machine-Readable JSON'}</span>
+              <span>{isRtl ? 'بيانات المطورين والـ API (JSON-LD)' : 'Developer & API Data (JSON-LD)'}</span>
             </button>
           </div>
 

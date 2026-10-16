@@ -30,7 +30,8 @@ import {
   Zap,
   Layers,
   ChevronRight,
-  ChevronLeft
+  ChevronLeft,
+  Star
 } from 'lucide-react';
 import EvidenceBadge from '../common/EvidenceBadge';
 import TrustChip from '../common/TrustChip';
@@ -611,8 +612,9 @@ export default function GenericStateView({
                   </div>
                 </div>
 
-                <span style={{ fontSize: '12px', fontWeight: '800', color: '#b45309', backgroundColor: '#fef3c7', padding: '2px 8px', borderRadius: '4px' }}>
-                  ★ {ent.rating}
+                <span style={{ fontSize: '12px', fontWeight: '800', color: '#b45309', backgroundColor: '#fef3c7', padding: '2px 8px', borderRadius: '4px', display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+                  <Star size={12} fill="#b45309" color="#b45309" />
+                  <span>{ent.rating}</span>
                 </span>
               </div>
 

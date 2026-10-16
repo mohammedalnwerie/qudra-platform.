@@ -155,7 +155,7 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <h1 style={{ fontSize: '20px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
-              {isRtl ? 'سجل الأدلة والمهارات الموثقة' : 'Cryptographic Evidence Ledger'}
+              {isRtl ? 'سجل المهارات والأدلة المعتمدة' : 'Verified Capabilities & Evidence Ledger'}
             </h1>
             <span
               style={{
@@ -168,13 +168,13 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
                 border: '1px solid #ccfbf1'
               }}
             >
-              {isRtl ? 'سجل تشفيري مدقق' : 'Audited Ledger'}
+              {isRtl ? 'اعتمادات رسمية ومشاريع' : 'Verified Credentials'}
             </span>
           </div>
           <p style={{ fontSize: '13px', color: 'var(--slate-600)', margin: '4px 0 0' }}>
             {isRtl
-              ? 'سجل غير قابل للتعديل يوثق كافة مهاراتك ومشاريعك عبر بصمات تشفيرية معتمدة وفق معايير W3C.'
-              : 'Tamper-evident ledger verifying skills & project outcomes using W3C Verifiable Credentials.'}
+              ? 'سجل غير قابل للتلاعب يوثق كافة مهاراتك ومشاريعك السابقة، لتمكين الشركات من توظيفك بثقة مطلقة وبدون سير ذاتية وهمية.'
+              : 'Tamper-evident record of your proven skills and verified outcomes for enterprise trust.'}
           </p>
         </div>
 
@@ -408,7 +408,7 @@ export default function EvidenceEngine({ onOpenExplain, onNavigate, isRtl = true
                   <th style={{ padding: '12px 16px' }}>{isRtl ? 'المهارة / العمل الموثق' : 'Evidence / Skill'}</th>
                   <th style={{ padding: '12px 16px' }}>{isRtl ? 'المصدر المعتمد' : 'Connector Source'}</th>
                   <th style={{ padding: '12px 16px' }}>{isRtl ? 'وزن الموثوقية' : 'Trust Weight'}</th>
-                  <th style={{ padding: '12px 16px' }}>{isRtl ? 'البصمة التشفيرية' : 'Proof Hash'}</th>
+                  <th style={{ padding: '12px 16px' }}>{isRtl ? 'كود التحقق' : 'Verification ID'}</th>
                   <th style={{ padding: '12px 16px' }}>{isRtl ? 'تاريخ التدقيق' : 'Verified At'}</th>
                   <th style={{ padding: '12px 16px', textAlign: 'center' }}>{isRtl ? 'فحص الدليل' : 'Inspect'}</th>
                 </tr>

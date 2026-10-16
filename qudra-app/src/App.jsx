@@ -161,6 +161,7 @@ export default function App() {
           {activeStateId === 1 && activeModuleId === 'M02' && (
             <HomeDashboard
               currentPersona={currentPersona}
+              currentRole={currentRole}
               onNavigate={handleNavigateModule}
               onOpenExplain={() => setIsExplainOpen(true)}
               onOpenGuide={() => setIsGuideOpen(true)}
@@ -183,6 +184,7 @@ export default function App() {
           {activeStateId === 1 && (activeModuleId === 'M06' || activeModuleId === 'M07') && (
             <CapabilityPassport
               currentPersona={currentPersona}
+              onNavigate={handleNavigateModule}
               isRtl={isRtl}
             />
           )}

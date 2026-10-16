@@ -16,7 +16,9 @@ import {
   ChevronDown,
   Check,
   Zap,
-  Info
+  Info,
+  X,
+  Lock
 } from 'lucide-react';
 import { useToast } from '../common/ToastContext';
 
@@ -25,6 +27,8 @@ export default function BrowseProjects({ onNavigate, isRtl = true }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [appliedProjectIds, setAppliedProjectIds] = useState([]);
+  const [applyingModalProject, setApplyingModalProject] = useState(null);
+  const [proposalNote, setProposalNote] = useState('');
 
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
@@ -100,11 +104,18 @@ export default function BrowseProjects({ onNavigate, isRtl = true }) {
     return true;
   });
 
-  const handleApply = (proj) => {
-    setAppliedProjectIds((prev) => [...prev, proj.id]);
+  const handleOpenApplyModal = (proj) => {
+    setApplyingModalProject(proj);
+    setProposalNote('');
+  };
+
+  const handleConfirmApply = () => {
+    if (!applyingModalProject) return;
+    setAppliedProjectIds((prev) => [...prev, applyingModalProject.id]);
     showToast(isRtl
-      ? `تم تقديم ملفك المهني الموثق بنجاح لمشروع «${proj.title}» بتطابق ${proj.matchScore}%!`
-      : `Applied to ${proj.title} with verified passport match of ${proj.matchScore}%!`);
+      ? `تم تقديم ملفك المهني الموثق بنجاح لمشروع «${applyingModalProject.title}» بتطابق ${applyingModalProject.matchScore}%!`
+      : `Applied to ${applyingModalProject.title} with verified passport match of ${applyingModalProject.matchScore}%!`);
+    setApplyingModalProject(null);
   };
 
   return (
@@ -331,13 +342,44 @@ export default function BrowseProjects({ onNavigate, isRtl = true }) {
 
               {/* Right: Budget & Apply Action */}
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: isRtl ? 'flex-start' : 'flex-end', gap: '12px' }}>
-                <div style={{ textAlign: isRtl ? 'left' : 'right' }}>
-                  <div style={{ fontSize: '18px', fontWeight: '900', color: 'var(--slate-900)', fontFamily: 'monospace' }}>
+                <div style={{ textAlign: isRtl ? 'left' : 'right', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <div style={{ fontSize: '20px', fontWeight: '900', color: 'var(--slate-900)', fontFamily: 'monospace' }}>
                     {proj.budget}
                   </div>
-                  <div style={{ fontSize: '11px', color: '#16a34a', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '3px' }}>
-                    <ShieldCheck size={11} color="#16a34a" />
-                    <span>{isRtl ? 'ضمان مالي بنكي 100%' : '100% Escrow Protected'}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap', justifyContent: isRtl ? 'flex-start' : 'flex-end' }}>
+                    <span
+                      style={{
+                        fontSize: '11px',
+                        color: '#166534',
+                        fontWeight: '700',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '3px',
+                        backgroundColor: '#f0fdf4',
+                        padding: '2px 6px',
+                        borderRadius: 'var(--radius-sm)',
+                        border: '1px solid #bbf7d0'
+                      }}
+                    >
+                      <ShieldCheck size={11} color="#16a34a" />
+                      <span>{isRtl ? 'ضمان بنكي 100%' : '100% Escrow'}</span>
+                    </span>
+                    <span
+                      style={{
+                        fontSize: '11px',
+                        color: 'var(--qudra-teal-deep, #006666)',
+                        fontWeight: '700',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '3px',
+                        backgroundColor: '#f0fdfa',
+                        padding: '2px 6px',
+                        borderRadius: 'var(--radius-sm)',
+                        border: '1px solid #ccfbf1'
+                      }}
+                    >
+                      <span>{isRtl ? '0% عمولة' : '0% Fee'}</span>
+                    </span>
                   </div>
                 </div>
 
@@ -357,11 +399,11 @@ export default function BrowseProjects({ onNavigate, isRtl = true }) {
                     }}
                   >
                     <CheckCircle2 size={13} color="#16a34a" />
-                    <span>{isRtl ? 'تم تقديم الملف' : 'Submitted'}</span>
+                    <span>{isRtl ? 'تم تقديم الملف الموثق' : 'Submitted'}</span>
                   </span>
                 ) : (
                   <button
-                    onClick={() => handleApply(proj)}
+                    onClick={() => handleOpenApplyModal(proj)}
                     className="btn btn-primary btn-sm"
                     style={{
                       backgroundColor: 'var(--qudra-obsidian, #1A1A1A)',
@@ -369,7 +411,8 @@ export default function BrowseProjects({ onNavigate, isRtl = true }) {
                       fontWeight: '800',
                       gap: '6px',
                       padding: '8px 16px',
-                      fontSize: '12px'
+                      fontSize: '12px',
+                      borderRadius: 'var(--radius-md)'
                     }}
                   >
                     <ShieldCheck size={13} color="var(--qudra-yellow, #FFC107)" />
@@ -381,6 +424,225 @@ export default function BrowseProjects({ onNavigate, isRtl = true }) {
           );
         })}
       </div>
+
+      {/* 4. Capability-Backed Proposal Modal */}
+      {applyingModalProject && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 9999,
+            backgroundColor: 'rgba(15, 23, 42, 0.65)',
+            backdropFilter: 'blur(4px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px'
+          }}
+          onClick={() => setApplyingModalProject(null)}
+        >
+          <div
+            className="card"
+            style={{
+              width: '100%',
+              maxWidth: '620px',
+              backgroundColor: '#ffffff',
+              borderRadius: 'var(--radius-xl)',
+              border: '1px solid var(--border-color)',
+              padding: '28px',
+              boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
+              position: 'relative',
+              maxHeight: '90vh',
+              overflowY: 'auto'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '18px' }}>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                  <ShieldCheck size={20} color="var(--qudra-teal, #008B8B)" />
+                  <h2 style={{ fontSize: '18px', fontWeight: '800', color: 'var(--slate-900)', margin: 0 }}>
+                    {isRtl ? 'تقديم عرض مدعوم بالأدلة الرقمية' : 'Submit Capability-Backed Proposal'}
+                  </h2>
+                </div>
+                <p style={{ fontSize: '13px', color: 'var(--slate-500)', margin: 0 }}>
+                  {isRtl
+                    ? 'يتم إرسال جواز مهاراتك المعتمد وبصمات الكود مباشرة للعميل مع العرض.'
+                    : 'Your verified capability passport and cryptographic proofs will be linked directly to this proposal.'}
+                </p>
+              </div>
+              <button
+                onClick={() => setApplyingModalProject(null)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--slate-400)',
+                  cursor: 'pointer',
+                  padding: '4px'
+                }}
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Project Summary Box */}
+            <div
+              style={{
+                backgroundColor: '#f8fafc',
+                border: '1px solid var(--slate-200)',
+                borderRadius: 'var(--radius-lg)',
+                padding: '16px',
+                marginBottom: '18px'
+              }}
+            >
+              <h3 style={{ fontSize: '15px', fontWeight: '800', color: 'var(--slate-900)', marginBottom: '6px' }}>
+                {applyingModalProject.title}
+              </h3>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '12px', color: 'var(--slate-500)', marginBottom: '10px' }}>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                  <Building2 size={12} color="var(--slate-400)" />
+                  <span>{applyingModalProject.client}</span>
+                </span>
+                <span>•</span>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                  <Clock size={12} color="var(--slate-400)" />
+                  <span>{applyingModalProject.duration}</span>
+                </span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '10px', borderTop: '1px solid var(--slate-200)' }}>
+                <span style={{ fontSize: '12.5px', color: 'var(--slate-600)', fontWeight: '600' }}>
+                  {isRtl ? 'قيمة العقد المودعة بالضمان:' : 'Secured Escrow Value:'}
+                </span>
+                <span style={{ fontSize: '16px', fontWeight: '900', color: 'var(--qudra-teal-deep, #006666)', fontFamily: 'monospace' }}>
+                  {applyingModalProject.budget}
+                </span>
+              </div>
+            </div>
+
+            {/* Attached Verified Capabilities Strip */}
+            <div style={{ marginBottom: '18px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                <label style={{ fontSize: '12.5px', fontWeight: '700', color: 'var(--slate-700)' }}>
+                  {isRtl ? 'المهارات المعتمدة المرفقة تلقائياً من جوازك:' : 'Attached Skills from Passport:'}
+                </label>
+                <span
+                  style={{
+                    fontSize: '11px',
+                    fontWeight: '800',
+                    color: '#166534',
+                    backgroundColor: '#f0fdf4',
+                    padding: '2px 8px',
+                    borderRadius: 'var(--radius-full)',
+                    border: '1px solid #bbf7d0'
+                  }}
+                >
+                  %{applyingModalProject.matchScore} {isRtl ? 'تطابق معتمد' : 'Verified Match'}
+                </span>
+              </div>
+              <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                {applyingModalProject.skills.map((skill, idx) => (
+                  <span
+                    key={idx}
+                    style={{
+                      padding: '4px 10px',
+                      borderRadius: 'var(--radius-sm)',
+                      backgroundColor: '#f0fdfa',
+                      color: 'var(--qudra-teal-deep, #006666)',
+                      fontSize: '11.5px',
+                      fontWeight: '700',
+                      border: '1px solid #ccfbf1',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px'
+                    }}
+                  >
+                    <Check size={12} color="#008B8B" />
+                    <span>{skill}</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Escrow Guarantee Callout */}
+            <div
+              style={{
+                backgroundColor: '#f0fdf4',
+                border: '1px solid #bbf7d0',
+                borderRadius: 'var(--radius-md)',
+                padding: '12px 14px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                marginBottom: '18px',
+                fontSize: '12px',
+                color: '#166534',
+                lineHeight: 1.6
+              }}
+            >
+              <Lock size={16} color="#16a34a" style={{ flexShrink: 0 }} />
+              <div>
+                <strong>{isRtl ? 'ضمان قُدرة المالي 0% عمولة: ' : 'QUDRA 0% Commission Guarantee: '}</strong>
+                {isRtl
+                  ? `أرباحك محفوظة بالكامل بنسبة 100% (${applyingModalProject.budget}) بدون أي خصم خفي أو رسوم منصة.`
+                  : `You receive 100% of the milestone funds with zero hidden deductions.`}
+              </div>
+            </div>
+
+            {/* Custom Proposal Note */}
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{ display: 'block', fontSize: '12.5px', fontWeight: '700', color: 'var(--slate-700)', marginBottom: '6px' }}>
+                {isRtl ? 'خطة التنفيذ أو ملاحظات العرض (اختياري):' : 'Execution Plan or Notes (Optional):'}
+              </label>
+              <textarea
+                rows={3}
+                value={proposalNote}
+                onChange={(e) => setProposalNote(e.target.value)}
+                placeholder={isRtl
+                  ? 'صف باختصار كيف ستوظف مهاراتك المعتمدة لإنجاز مراحل هذا المشروع بالتسليمات المحددة...'
+                  : 'Briefly describe your milestone delivery plan...'}
+                style={{
+                  width: '100%',
+                  padding: '10px 12px',
+                  borderRadius: 'var(--radius-md)',
+                  border: '1px solid var(--border-color)',
+                  fontSize: '12.5px',
+                  fontFamily: 'inherit',
+                  resize: 'vertical',
+                  boxSizing: 'border-box'
+                }}
+              />
+            </div>
+
+            {/* Modal Actions */}
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', alignItems: 'center' }}>
+              <button
+                onClick={() => setApplyingModalProject(null)}
+                className="btn btn-secondary btn-sm"
+                style={{ padding: '8px 18px', fontSize: '12.5px' }}
+              >
+                {isRtl ? 'إلغاء' : 'Cancel'}
+              </button>
+              <button
+                onClick={handleConfirmApply}
+                className="btn btn-primary btn-sm"
+                style={{
+                  backgroundColor: 'var(--qudra-obsidian, #1A1A1A)',
+                  color: '#ffffff',
+                  padding: '8px 20px',
+                  fontWeight: '800',
+                  gap: '6px',
+                  borderRadius: 'var(--radius-md)',
+                  fontSize: '12.5px'
+                }}
+              >
+                <ShieldCheck size={14} color="var(--qudra-yellow, #FFC107)" />
+                <span>{isRtl ? 'تأكيد إرسال العرض الموثق' : 'Confirm & Submit Proposal'}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

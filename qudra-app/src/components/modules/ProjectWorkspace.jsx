@@ -19,7 +19,8 @@ import {
   Building2,
   AlertCircle,
   Eye,
-  FileCheck2
+  FileCheck2,
+  RotateCcw
 } from 'lucide-react';
 import { useToast } from '../common/ToastContext';
 import { triggerCelebration } from '../../utils/motion';
@@ -28,6 +29,8 @@ export default function ProjectWorkspace({ onNavigate, isRtl = true }) {
   const { showToast } = useToast();
   const [activeTab, setActiveTab] = useState('milestones'); // 'milestones' | 'outcomes'
   const [selectedMilestoneForRelease, setSelectedMilestoneForRelease] = useState(null);
+  const [isRevisionMode, setIsRevisionMode] = useState(false);
+  const [revisionFeedback, setRevisionFeedback] = useState('');
 
   const [milestones, setMilestones] = useState([
     {
@@ -85,6 +88,22 @@ export default function ProjectWorkspace({ onNavigate, isRtl = true }) {
     showToast(isRtl
       ? 'تم اعتماد التسليم والإفراج عن 24,000 ر.س من الضمان المالي! تم توليد دليل مخرجات تشفيري وإضافته لجواز قدرات الفريق.'
       : 'Milestone approved! 24,000 SAR released and outcome evidence minted to capability passports.');
+  };
+
+  const handleRequestRevision = (id) => {
+    setMilestones((prev) =>
+      prev.map((m) =>
+        m.id === id
+          ? { ...m, status: 'revision_requested', revisionNote: revisionFeedback || (isRtl ? 'مطلوب مراجعة بعض تفاصيل واجهات API وتحديث التوثيق.' : 'Revision requested on API interfaces and documentation.') }
+          : m
+      )
+    );
+    setSelectedMilestoneForRelease(null);
+    setIsRevisionMode(false);
+    setRevisionFeedback('');
+    showToast(isRtl
+      ? 'تم إرسال طلب التعديل لفريق العمل بنجاح مع استمرار حماية وتجميد الضمان المالي لحين إعادة التسليم.'
+      : 'Revision requested! Milestone returned to team and escrow stays securely protected.');
   };
 
   return (
@@ -186,7 +205,62 @@ export default function ProjectWorkspace({ onNavigate, isRtl = true }) {
         </div>
       </div>
 
-      {/* 2. Escrow Financial Progress Summary Bar */}
+      {/* 2. 4-Step Commercial Escrow Lifecycle Banner */}
+      <div
+        className="card"
+        style={{
+          padding: '14px 20px',
+          backgroundColor: '#ffffff',
+          borderRadius: 'var(--radius-lg)',
+          border: '1px solid var(--border-color)',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gap: '12px',
+          fontSize: '12px'
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#f0fdf4', color: '#166534', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800', fontSize: '11px', border: '1px solid #bbf7d0' }}>
+            1
+          </div>
+          <div>
+            <div style={{ fontWeight: '800', color: 'var(--slate-800)' }}>{isRtl ? 'إيداع الضمان البنكي' : 'Escrow Deposit'}</div>
+            <div style={{ fontSize: '11px', color: 'var(--slate-500)' }}>{isRtl ? 'مبلغ العقد محجوز 100%' : '100% Funds Locked'}</div>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#f0fdfa', color: 'var(--qudra-teal-deep)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800', fontSize: '11px', border: '1px solid #99f6e4' }}>
+            2
+          </div>
+          <div>
+            <div style={{ fontWeight: '800', color: 'var(--slate-800)' }}>{isRtl ? 'تسليم المرحلة الهندسية' : 'Milestone Delivery'}</div>
+            <div style={{ fontSize: '11px', color: 'var(--slate-500)' }}>{isRtl ? 'كود وفحوصات معتمدة' : 'Code & Test Specs'}</div>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#fef3c7', color: '#92400e', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800', fontSize: '11px', border: '1px solid #fde68a' }}>
+            3
+          </div>
+          <div>
+            <div style={{ fontWeight: '800', color: 'var(--slate-800)' }}>{isRtl ? 'فحص واعتماد العميل' : 'Client Review'}</div>
+            <div style={{ fontSize: '11px', color: 'var(--slate-500)' }}>{isRtl ? 'موافقة أو طلب تعديل' : 'Approve or Revise'}</div>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#f0fdf4', color: '#166534', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800', fontSize: '11px', border: '1px solid #bbf7d0' }}>
+            4
+          </div>
+          <div>
+            <div style={{ fontWeight: '800', color: '#166534' }}>{isRtl ? 'تحويل الأرباح (0% عمولة)' : 'Payout (0% Fee)'}</div>
+            <div style={{ fontSize: '11px', color: 'var(--slate-500)' }}>{isRtl ? 'تحويل فوري وإثبات' : 'Instant 100% Release'}</div>
+          </div>
+        </div>
+      </div>
+
+      {/* 3. Escrow Financial Progress Summary Bar */}
       <div
         className="card"
         style={{
@@ -234,6 +308,7 @@ export default function ProjectWorkspace({ onNavigate, isRtl = true }) {
           {milestones.map((m, idx) => {
             const isCompleted = m.status === 'completed';
             const isReadyReview = m.status === 'ready_review';
+            const isRevision = m.status === 'revision_requested';
             const isLocked = m.status === 'locked';
 
             return (
@@ -244,7 +319,11 @@ export default function ProjectWorkspace({ onNavigate, isRtl = true }) {
                   padding: '18px 22px',
                   backgroundColor: '#ffffff',
                   borderRadius: 'var(--radius-lg)',
-                  border: isReadyReview ? '1.5px solid var(--qudra-teal, #00B8B8)' : '1px solid var(--border-color)',
+                  border: isReadyReview
+                    ? '1.5px solid var(--qudra-teal, #00B8B8)'
+                    : isRevision
+                    ? '1.5px solid #f59e0b'
+                    : '1px solid var(--border-color)',
                   boxShadow: isReadyReview ? '0 2px 8px rgba(0, 184, 184, 0.08)' : 'var(--shadow-xs)',
                   display: 'flex',
                   justifyContent: 'space-between',
@@ -260,15 +339,15 @@ export default function ProjectWorkspace({ onNavigate, isRtl = true }) {
                       width: '38px',
                       height: '38px',
                       borderRadius: '8px',
-                      backgroundColor: isCompleted ? '#f0fdf4' : isReadyReview ? '#f0fdfa' : '#f8fafc',
-                      color: isCompleted ? '#16a34a' : isReadyReview ? 'var(--qudra-teal)' : 'var(--slate-400)',
+                      backgroundColor: isCompleted ? '#f0fdf4' : isReadyReview ? '#f0fdfa' : isRevision ? '#fffbeb' : '#f8fafc',
+                      color: isCompleted ? '#16a34a' : isReadyReview ? 'var(--qudra-teal)' : isRevision ? '#b45309' : 'var(--slate-400)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      border: `1px solid ${isCompleted ? '#bbf7d0' : isReadyReview ? '#99f6e4' : 'var(--border-color)'}`
+                      border: `1px solid ${isCompleted ? '#bbf7d0' : isReadyReview ? '#99f6e4' : isRevision ? '#fde68a' : 'var(--border-color)'}`
                     }}
                   >
-                    {isCompleted ? <CheckCircle2 size={18} /> : isReadyReview ? <Clock size={18} /> : <Lock size={16} />}
+                    {isCompleted ? <CheckCircle2 size={18} /> : isReadyReview ? <Clock size={18} /> : isRevision ? <RotateCcw size={18} /> : <Lock size={16} />}
                   </div>
 
                   <div>
@@ -286,6 +365,11 @@ export default function ProjectWorkspace({ onNavigate, isRtl = true }) {
                           {isRtl ? 'جاهز للاعتماد' : 'Ready for Review'}
                         </span>
                       )}
+                      {isRevision && (
+                        <span style={{ fontSize: '10.5px', fontWeight: '800', padding: '1px 7px', borderRadius: '4px', backgroundColor: '#fffbeb', color: '#b45309', border: '1px solid #fde68a' }}>
+                          {isRtl ? 'مطلوب تعديلات مرحلية' : 'Revision Requested'}
+                        </span>
+                      )}
                       {isLocked && (
                         <span style={{ fontSize: '10.5px', fontWeight: '600', padding: '1px 7px', borderRadius: '4px', backgroundColor: '#f8fafc', color: 'var(--slate-500)', border: '1px solid var(--border-color)' }}>
                           {isRtl ? 'محجوز بالضمان' : 'Locked'}
@@ -296,6 +380,12 @@ export default function ProjectWorkspace({ onNavigate, isRtl = true }) {
                     <div style={{ fontSize: '12px', color: 'var(--slate-600)', marginTop: '4px' }}>
                       <strong>{isRtl ? 'المخرج الهندسي: ' : 'Deliverable: '}</strong>{m.deliverable}
                     </div>
+
+                    {isRevision && m.revisionNote && (
+                      <div style={{ fontSize: '11.5px', color: '#b45309', marginTop: '4px', backgroundColor: '#fffbeb', padding: '4px 8px', borderRadius: '4px', border: '1px solid #fde68a' }}>
+                        <strong>{isRtl ? 'ملاحظة التعديل: ' : 'Revision Note: '}</strong>{m.revisionNote}
+                      </div>
+                    )}
 
                     <div style={{ fontSize: '11px', color: 'var(--slate-400)', marginTop: '2px' }}>
                       {isRtl ? 'الاستحقاق: ' : 'Due: '}{m.due} • {isRtl ? 'المسؤول: ' : 'Contributor: '}<strong>{m.assignedTo}</strong>
@@ -321,7 +411,10 @@ export default function ProjectWorkspace({ onNavigate, isRtl = true }) {
                     </div>
                   ) : isReadyReview ? (
                     <button
-                      onClick={() => setSelectedMilestoneForRelease(m)}
+                      onClick={() => {
+                        setSelectedMilestoneForRelease(m);
+                        setIsRevisionMode(false);
+                      }}
                       className="btn btn-primary btn-sm"
                       style={{
                         backgroundColor: 'var(--qudra-teal, #00B8B8)',
@@ -334,6 +427,26 @@ export default function ProjectWorkspace({ onNavigate, isRtl = true }) {
                     >
                       <Coins size={13} />
                       <span>{isRtl ? 'اعتماد وصرف الدفعة' : 'Review & Release'}</span>
+                    </button>
+                  ) : isRevision ? (
+                    <button
+                      onClick={() => {
+                        setSelectedMilestoneForRelease(m);
+                        setIsRevisionMode(true);
+                      }}
+                      className="btn btn-secondary btn-sm"
+                      style={{
+                        borderColor: '#f59e0b',
+                        color: '#b45309',
+                        fontWeight: '800',
+                        gap: '6px',
+                        padding: '7px 14px',
+                        fontSize: '12px',
+                        backgroundColor: '#fffbeb'
+                      }}
+                    >
+                      <RotateCcw size={13} color="#b45309" />
+                      <span>{isRtl ? 'مراجعة الملاحظات' : 'Review Notes'}</span>
                     </button>
                   ) : (
                     <span style={{ fontSize: '11.5px', color: 'var(--slate-400)' }}>
@@ -441,9 +554,11 @@ export default function ProjectWorkspace({ onNavigate, isRtl = true }) {
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Coins size={18} color="var(--qudra-teal)" />
+                <Coins size={18} color={isRevisionMode ? '#b45309' : 'var(--qudra-teal)'} />
                 <h3 style={{ fontSize: '16px', fontWeight: '800', margin: 0, color: 'var(--slate-900)' }}>
-                  {isRtl ? 'اعتماد التسليم والإفراج عن الدفعة المالية' : 'Approve Deliverable & Release Escrow'}
+                  {isRevisionMode
+                    ? (isRtl ? 'طلب تعديل مرحلي على التسليم' : 'Request Milestone Revision')
+                    : (isRtl ? 'اعتماد التسليم والإفراج عن الدفعة المالية' : 'Approve Deliverable & Release Escrow')}
                 </h3>
               </div>
               <button onClick={() => setSelectedMilestoneForRelease(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--slate-400)' }}>
@@ -451,36 +566,116 @@ export default function ProjectWorkspace({ onNavigate, isRtl = true }) {
               </button>
             </div>
 
-            <p style={{ fontSize: '12.5px', color: 'var(--slate-600)', lineHeight: 1.5, margin: 0 }}>
-              {isRtl
-                ? `أنت على وشك اعتماد مخرجات ${selectedMilestoneForRelease.title} وصرف مبلغ ${selectedMilestoneForRelease.amount} من حساب الضمان البنكي لحسابات الفريق المستحقة.`
-                : `You are approving ${selectedMilestoneForRelease.title} and releasing ${selectedMilestoneForRelease.amount} to the team.`}
-            </p>
+            {!isRevisionMode ? (
+              <>
+                <p style={{ fontSize: '12.5px', color: 'var(--slate-600)', lineHeight: 1.5, margin: 0 }}>
+                  {isRtl
+                    ? `أنت على وشك اعتماد مخرجات ${selectedMilestoneForRelease.title} وصرف مبلغ ${selectedMilestoneForRelease.amount} من حساب الضمان البنكي لحسابات الفريق المستحقة.`
+                    : `You are approving ${selectedMilestoneForRelease.title} and releasing ${selectedMilestoneForRelease.amount} to the team.`}
+                </p>
 
-            <div style={{ backgroundColor: '#f8fafc', padding: '12px 14px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', fontSize: '12px', color: 'var(--slate-700)', lineHeight: 1.5 }}>
-              <div>• <strong>{isRtl ? 'المخرجات المسلمة:' : 'Deliverable:'}</strong> {selectedMilestoneForRelease.deliverable}</div>
-              <div>• <strong>{isRtl ? 'فحص الأمان:' : 'Security Audit:'}</strong> تم اجتياز 14 اختبار وحدة وفحص كود آلي بنجاح 100%.</div>
-              <div>• <strong>{isRtl ? 'المستحقون:' : 'Payees:'}</strong> {selectedMilestoneForRelease.assignedTo}</div>
-            </div>
+                <div style={{ backgroundColor: '#f8fafc', padding: '12px 14px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', fontSize: '12px', color: 'var(--slate-700)', lineHeight: 1.5 }}>
+                  <div>• <strong>{isRtl ? 'المخرجات المسلمة:' : 'Deliverable:'}</strong> {selectedMilestoneForRelease.deliverable}</div>
+                  <div>• <strong>{isRtl ? 'فحص الأمان:' : 'Security Audit:'}</strong> تم اجتياز 14 اختبار وحدة وفحص كود آلي بنجاح 100%.</div>
+                  <div>• <strong>{isRtl ? 'المستحقون:' : 'Payees:'}</strong> {selectedMilestoneForRelease.assignedTo}</div>
+                  <div>• <strong>{isRtl ? 'العمولة المستقطعة:' : 'Platform Fee:'}</strong> 0% (يصل المبلغ كاملاً 100% للمنفذين)</div>
+                </div>
 
-            <div style={{ display: 'flex', gap: '10px', marginTop: '4px' }}>
-              <button onClick={() => setSelectedMilestoneForRelease(null)} className="btn btn-secondary" style={{ flex: 1, fontSize: '12.5px' }}>
-                {isRtl ? 'إلغاء' : 'Cancel'}
-              </button>
-              <button
-                onClick={() => handleConfirmRelease(selectedMilestoneForRelease.id)}
-                className="btn btn-primary"
-                style={{
-                  flex: 1,
-                  backgroundColor: '#059669',
-                  color: '#ffffff',
-                  fontWeight: '800',
-                  fontSize: '12.5px'
-                }}
-              >
-                {isRtl ? 'تأكيد الإفراج وتوليد الإثبات' : 'Confirm Release & Mint Proof'}
-              </button>
-            </div>
+                <div style={{ display: 'flex', gap: '10px', marginTop: '6px', flexWrap: 'wrap' }}>
+                  <button
+                    onClick={() => setIsRevisionMode(true)}
+                    className="btn btn-secondary"
+                    style={{
+                      flex: 1,
+                      fontSize: '12.5px',
+                      color: '#b45309',
+                      borderColor: '#fde68a',
+                      backgroundColor: '#fffbeb',
+                      gap: '5px'
+                    }}
+                  >
+                    <RotateCcw size={13} color="#b45309" />
+                    <span>{isRtl ? 'طلب تعديل مرحلي' : 'Request Revision'}</span>
+                  </button>
+                  <button
+                    onClick={() => handleConfirmRelease(selectedMilestoneForRelease.id)}
+                    className="btn btn-primary"
+                    style={{
+                      flex: 1.3,
+                      backgroundColor: '#059669',
+                      color: '#ffffff',
+                      fontWeight: '800',
+                      fontSize: '12.5px',
+                      gap: '5px'
+                    }}
+                  >
+                    <CheckCircle2 size={14} color="#ffffff" />
+                    <span>{isRtl ? 'اعتماد وصرف الدفعة (100%)' : 'Release 100% Escrow'}</span>
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div style={{ backgroundColor: '#fffbeb', border: '1px solid #fde68a', borderRadius: 'var(--radius-md)', padding: '12px 14px', fontSize: '12px', color: '#92400e', lineHeight: 1.6 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: '800', marginBottom: '4px' }}>
+                    <AlertCircle size={14} color="#b45309" />
+                    <span>{isRtl ? 'تجميد الضمان المالي أثناء التعديل' : 'Escrow Protection Active'}</span>
+                  </div>
+                  {isRtl
+                    ? 'عند طلب التعديل، تظل أموال الضمان المالي محجوزة بأمان ولا يتم تحويل أي مبالغ حتى يعيد الفريق تسليم الملاحظات واعتمادك النهائي.'
+                    : 'Funds remain securely locked until revisions are resubmitted and approved.'}
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '12.5px', fontWeight: '700', color: 'var(--slate-700)', marginBottom: '6px' }}>
+                    {isRtl ? 'ملاحظات التعديل المطلوبة من الفريق:' : 'Revision Feedback for Team:'}
+                  </label>
+                  <textarea
+                    rows={3}
+                    value={revisionFeedback}
+                    onChange={(e) => setRevisionFeedback(e.target.value)}
+                    placeholder={isRtl
+                      ? 'حدد بدقة الجوانب البرمجية أو التوثيقية المطلوب تعديلها قبل الإفراج عن الدفعة...'
+                      : 'Specify the changes required before milestone approval...'}
+                    style={{
+                      width: '100%',
+                      padding: '10px 12px',
+                      borderRadius: 'var(--radius-md)',
+                      border: '1px solid var(--border-color)',
+                      fontSize: '12.5px',
+                      fontFamily: 'inherit',
+                      resize: 'vertical',
+                      boxSizing: 'border-box'
+                    }}
+                  />
+                </div>
+
+                <div style={{ display: 'flex', gap: '10px', marginTop: '6px' }}>
+                  <button
+                    onClick={() => setIsRevisionMode(false)}
+                    className="btn btn-secondary"
+                    style={{ flex: 1, fontSize: '12.5px' }}
+                  >
+                    {isRtl ? 'رجوع' : 'Back'}
+                  </button>
+                  <button
+                    onClick={() => handleRequestRevision(selectedMilestoneForRelease.id)}
+                    className="btn btn-primary"
+                    style={{
+                      flex: 1.5,
+                      backgroundColor: '#b45309',
+                      color: '#ffffff',
+                      fontWeight: '800',
+                      fontSize: '12.5px',
+                      gap: '5px'
+                    }}
+                  >
+                    <RotateCcw size={13} color="#ffffff" />
+                    <span>{isRtl ? 'إرسال طلب التعديل وتجميد الضمان' : 'Submit Revision & Hold Escrow'}</span>
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}
