@@ -1,24 +1,82 @@
-/* Capability Passport Styles — QUDRA */
+/* ═════════ CapabilityPassportPage.module.css ═════════
+   Elite Evidence-Based Professional Capability Passport
+*/
 
 .container {
-  max-width: 64rem;
+  max-width: 68rem;
   margin: 0 auto;
-  padding: 1.5rem 1.25rem 5rem;
+  padding: 1.75rem clamp(1rem, 3vw, 2rem) 5rem;
   direction: rtl;
 }
 
-.passportCard {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-  margin-bottom: 2rem;
-  position: relative;
+/* ── Top Bar Controls ── */
+.topControls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
+.topActionsRight {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+/* ── AI Context Banner ── */
+.aiContextBanner {
+  background: linear-gradient(135deg, rgba(0, 184, 184, 0.08) 0%, rgba(255, 193, 7, 0.08) 100%);
+  border: 1px solid rgba(0, 184, 184, 0.3);
+  border-radius: 16px;
+  padding: 1.35rem 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.aiContextText h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ink, #1A1A1A);
+  margin: 0 0 0.35rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.aiContextText p {
+  font-size: 0.86rem;
+  color: var(--ink-2, #4B5563);
+  margin: 0;
+  max-width: 42rem;
+  line-height: 1.6;
+}
+
+.aiContextButtons {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* ── The Digital Passport Card ── */
+.passportCard {
+  background: #FFFFFF;
+  border: 1px solid var(--line, #E5E7EB);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 32px rgba(15, 23, 42, 0.06), 0 2px 6px rgba(15, 23, 42, 0.03);
+  margin-bottom: 2.5rem;
+}
+
+/* Passport Official Header */
 .passportHeader {
-  background: linear-gradient(135deg, #051A1B 0%, #0C3435 50%, #051A1B 100%);
+  background: linear-gradient(135deg, #041E1F 0%, #083335 50%, #041E1F 100%);
   padding: 1.75rem 2rem;
   color: #FFFFFF;
   display: flex;
@@ -26,158 +84,463 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 1.25rem;
-  border-bottom: 2px solid rgba(0, 184, 184, 0.3);
+  border-bottom: 3px solid #00B8B8;
+  position: relative;
 }
 
-.passportTitleArea {
+.passportBrandArea {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-.passportLogo {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  background: rgba(0, 184, 184, 0.15);
-  border: 1px solid rgba(0, 184, 184, 0.4);
-  display: grid;
-  place-items: center;
-  color: #00B8B8;
-}
-
-.passportMainTitle {
+.passportTitleText h1 {
   font-family: var(--fh, 'Readex Pro', sans-serif);
   font-size: 1.4rem;
-  font-weight: 700;
+  font-weight: 800;
   margin: 0;
   color: #FFFFFF;
+  letter-spacing: -0.01em;
 }
 
-.passportSubTitle {
-  font-size: 0.82rem;
-  color: rgba(255, 255, 255, 0.7);
-  margin: 0.2rem 0 0;
+.passportTitleText p {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0.25rem 0 0;
 }
 
-.passportBody {
-  padding: 2rem;
+.passportMetaBlock {
+  text-align: left;
+  font-family: var(--fm, 'IBM Plex Mono', monospace);
 }
 
-.gridTwo {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.75rem;
-  margin-bottom: 2rem;
+.metaSerialLabel {
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.6);
+  display: block;
 }
 
-.dnaSection {
-  background: var(--surface-2);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 1.5rem;
-}
-
-.dnaTitle {
-  font-size: 1.05rem;
+.metaSerialVal {
+  color: #00B8B8;
+  font-size: 0.95rem;
   font-weight: 700;
-  color: var(--ink);
-  margin-bottom: 1rem;
+  letter-spacing: 0.06em;
+}
+
+/* Passport Body */
+.passportBody {
+  padding: 2.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+}
+
+/* Identity Row */
+.identityRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--line, #E5E7EB);
+}
+
+.profileBioGroup {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.avatar {
+  width: 76px;
+  height: 76px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #00B8B8 0%, #008787 100%);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  font-weight: 800;
+  border: 3px solid #00B8B8;
+  box-shadow: 0 4px 14px rgba(0, 184, 184, 0.25);
+  flex-shrink: 0;
+}
+
+.profileText h2 {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--ink, #1A1A1A);
+  margin: 0 0 0.25rem;
   display: flex;
   align-items: center;
   gap: 0.45rem;
 }
 
-.dnaScoreBar {
+.profileHeadline {
+  font-size: 0.94rem;
+  color: var(--ink-2, #4B5563);
+  margin: 0 0 0.4rem;
+}
+
+.metaLinksRow {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.8rem;
-  font-size: 0.88rem;
+  gap: 1rem;
+  font-size: 0.8rem;
+  color: var(--ink-3, #6B7280);
+}
+
+.trustScoreCard {
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  border-radius: 14px;
+  padding: 0.75rem 1.25rem;
+  text-align: center;
+  min-width: 140px;
+}
+
+.trustScoreCard strong {
+  font-family: var(--fm, 'IBM Plex Mono', monospace);
+  font-size: 2rem;
+  font-weight: 800;
+  color: #15803D;
+  line-height: 1;
+  display: block;
+}
+
+.trustScoreCard span {
+  font-size: 0.74rem;
+  color: #166534;
+  font-weight: 600;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+/* ── DNA Score Breakdown & Connected Sources ── */
+.twoColGrid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 1.75rem;
+}
+
+@media (max-width: 860px) {
+  .twoColGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panelBox {
+  background: #F9FAFB;
+  border: 1px solid var(--line, #E5E7EB);
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+.panelTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink, #1A1A1A);
+  margin: 0 0 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .dnaItem {
-  margin-bottom: 0.9rem;
+  margin-bottom: 1rem;
 }
 
 .dnaItem:last-child {
   margin-bottom: 0;
 }
 
-.dnaItemLabel {
+.dnaItemHeader {
   display: flex;
   justify-content: space-between;
-  font-size: 0.82rem;
-  color: var(--ink-2);
-  margin-bottom: 0.3rem;
+  font-size: 0.84rem;
+  color: var(--ink-2, #4B5563);
+  margin-bottom: 0.35rem;
+  font-weight: 600;
 }
 
-.actionPanel {
-  background: rgba(0, 184, 184, 0.05);
-  border: 1px solid rgba(0, 184, 184, 0.25);
-  border-radius: 16px;
-  padding: 1.5rem;
+.dnaScoreVal {
+  font-family: var(--fm, 'IBM Plex Mono', monospace);
+  font-weight: 700;
+  color: #008787;
+}
+
+.progressBarTrack {
+  width: 100%;
+  height: 8px;
+  background: #E5E7EB;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progressBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, #00B8B8 0%, #008787 100%);
+  border-radius: 4px;
+}
+
+.sourcesList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sourceItem {
+  background: #FFFFFF;
+  border: 1px solid var(--line, #E5E7EB);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.84rem;
+}
+
+.sourceLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: var(--ink, #1A1A1A);
+}
+
+.sourceVerifiedBadge {
+  color: #008787;
+  font-weight: 700;
+  font-size: 0.76rem;
+  background: rgba(0, 184, 184, 0.1);
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+}
+
+/* ── TRI-STATE CAPABILITY MATRIX ── */
+.sectionBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sectionBlockTitle {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--ink, #1A1A1A);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Proven Capabilities Cards */
+.provenCardsList {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .provenCardsList {
+    grid-template-columns: 1fr;
+  }
+}
+
+.provenCard {
+  background: #FFFFFF;
+  border: 1px solid #BAE6FD;
+  border-right: 4px solid #00B8B8;
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.provenCardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.skillTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink, #1A1A1A);
+}
+
+.proofLevelPill {
+  background: rgba(0, 184, 184, 0.12);
+  color: #008787;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+}
+
+.artifactProofDesc {
+  font-size: 0.8rem;
+  color: var(--ink-2, #6B7280);
+  line-height: 1.5;
+}
+
+.artifactRepoBox {
+  background: #F8FAFC;
+  border: 1px solid var(--line, #E5E7EB);
+  border-radius: 8px;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.76rem;
+  font-family: var(--fm, 'IBM Plex Mono', monospace);
+  color: #008787;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+/* Claimed Capabilities Cards */
+.claimedCardsList {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .claimedCardsList {
+    grid-template-columns: 1fr;
+  }
+}
+
+.claimedCard {
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  border-right: 4px solid #F59E0B;
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.claimedCardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.claimedStatusPill {
+  background: rgba(245, 158, 11, 0.15);
+  color: #B45309;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+}
+
+/* Constructive Gap & Next Action Box */
+.gapActionBox {
+  background: #FDF2F8;
+  border: 1px solid #FBCFE8;
+  border-right: 4px solid #EC4899;
+  border-radius: 14px;
+  padding: 1.35rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  gap: 1.25rem;
 }
 
-.actionPanelContent h3 {
-  font-size: 1.15rem;
+.gapActionText h4 {
+  font-size: 1rem;
   font-weight: 700;
-  color: var(--ink);
-  margin: 0 0 0.3rem;
+  color: #9D174D;
+  margin: 0 0 0.35rem;
   display: flex;
   align-items: center;
   gap: 0.4rem;
 }
 
-.actionPanelContent p {
-  font-size: 0.86rem;
-  color: var(--ink-2);
+.gapActionText p {
+  font-size: 0.84rem;
+  color: #831843;
   margin: 0;
-  max-width: 36rem;
+  line-height: 1.5;
 }
 
-.tagList {
+/* ── Verified Projects Showcase ── */
+.projectsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.projectCard {
+  background: #FFFFFF;
+  border: 1px solid var(--line, #E5E7EB);
+  border-radius: 14px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.85rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  transition: all 0.2s ease;
+}
+
+.projectCard:hover {
+  border-color: #00B8B8;
+  box-shadow: 0 6px 18px rgba(0, 184, 184, 0.08);
+}
+
+.projectCardTitle {
+  font-family: var(--fm, 'IBM Plex Mono', monospace);
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: var(--ink, #1A1A1A);
+  margin: 0 0 0.35rem;
+}
+
+.projectCardDesc {
+  font-size: 0.82rem;
+  color: var(--ink-2, #6B7280);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.projectTechTags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.6rem;
-}
-
-.provenTag {
-  background: rgba(0, 184, 184, 0.1);
-  border: 1px solid rgba(0, 184, 184, 0.3);
-  color: #00B8B8;
-  font-size: 0.82rem;
-  font-weight: 600;
-  padding: 0.3rem 0.75rem;
-  border-radius: 8px;
-  display: inline-flex;
-  align-items: center;
   gap: 0.35rem;
 }
 
-.claimedTag {
-  background: rgba(255, 193, 7, 0.1);
-  border: 1px solid rgba(255, 193, 7, 0.3);
-  color: #FFC107;
-  font-size: 0.82rem;
+.techTag {
+  background: #F3F4F6;
+  border-radius: 4px;
+  padding: 0.15rem 0.45rem;
+  font-size: 0.72rem;
+  color: var(--ink-2, #4B5563);
   font-weight: 600;
-  padding: 0.3rem 0.75rem;
-  border-radius: 8px;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
 }
 
+.projectMetaRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #008787;
+  font-weight: 600;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--line, #E5E7EB);
+}
+
+/* Passport Footer */
 .passportFooter {
-  background: var(--surface-2);
-  border-top: 1px solid var(--line);
+  background: #F8FAFC;
+  border-top: 1px solid var(--line, #E5E7EB);
   padding: 1.25rem 2rem;
   display: flex;
   align-items: center;
@@ -185,11 +548,20 @@
   flex-wrap: wrap;
   gap: 1rem;
   font-size: 0.82rem;
-  color: var(--ink-3);
+  color: var(--ink-2, #6B7280);
 }
 
-@media (max-width: 768px) {
-  .gridTwo {
-    grid-template-columns: 1fr;
+/* ── Print Media Query for Clean Vector PDF Export ── */
+@media print {
+  body {
+    background: #FFFFFF !important;
+  }
+  .topControls, .aiContextBanner, .passportFooter {
+    display: none !important;
+  }
+  .passportCard {
+    box-shadow: none !important;
+    border: 1px solid #000000 !important;
+    margin: 0 !important;
   }
 }
