@@ -1,21 +1,28 @@
+/* ═════════ ChallengeSandboxPage.module.css ═════════
+   Elite Interactive Code Challenge Sandbox (LeetCode/Codespaces Style)
+*/
+
 .container {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 64px);
-  background: var(--bg, #071415);
-  color: var(--ink, #F1F5F9);
+  height: calc(100vh - 70px);
+  background: var(--ground, #FAFAFB);
+  color: var(--ink, #1A1A1A);
   overflow: hidden;
+  direction: rtl;
 }
 
+/* ── Top Bar ── */
 .topBar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem 1.5rem;
-  background: rgba(11, 15, 23, 0.85);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: #FFFFFF;
+  border-bottom: 1px solid var(--line, #E5E7EB);
   flex-shrink: 0;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .titleArea {
@@ -25,29 +32,29 @@
 }
 
 .backBtn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: var(--ink-2, #94A3B8);
-  padding: 0.4rem 0.8rem;
+  background: #F3F4F6;
+  border: 1px solid var(--line, #E5E7EB);
+  color: var(--ink-2, #4B5563);
+  padding: 0.35rem 0.75rem;
   border-radius: 8px;
   cursor: pointer;
   font-size: 0.82rem;
-  transition: all 0.2s ease;
+  font-weight: 600;
+  transition: all 0.15s ease;
 }
 
 .backBtn:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--ink, #fff);
-  border-color: rgba(255, 255, 255, 0.25);
+  background: #E5E7EB;
+  color: var(--ink, #1A1A1A);
 }
 
 .challengeTitle {
   font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--ink, #fff);
+  font-weight: 800;
+  color: var(--ink, #1A1A1A);
   margin: 0;
 }
 
@@ -58,21 +65,21 @@
 }
 
 .badge {
-  font-size: 0.75rem;
+  font-size: 0.74rem;
   padding: 0.2rem 0.6rem;
-  border-radius: 20px;
-  font-weight: 600;
+  border-radius: 6px;
+  font-weight: 700;
 }
 
 .badgeDiff {
   background: rgba(245, 158, 11, 0.15);
-  color: #F59E0B;
+  color: #B45309;
   border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 .badgeWeight {
-  background: rgba(0, 184, 184, 0.15);
-  color: #00B8B8;
+  background: rgba(0, 184, 184, 0.12);
+  color: #008787;
   border: 1px solid rgba(0, 184, 184, 0.3);
 }
 
@@ -83,12 +90,13 @@
 }
 
 .langSelect {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: var(--ink, #fff);
+  background: #F9FAFB;
+  border: 1px solid var(--line, #E5E7EB);
+  color: var(--ink, #1A1A1A);
   padding: 0.4rem 0.8rem;
   border-radius: 8px;
   font-size: 0.84rem;
+  font-weight: 600;
   cursor: pointer;
   outline: none;
 }
@@ -97,10 +105,10 @@
   border-color: #00B8B8;
 }
 
-/* Workspace Split */
+/* ── Workspace Split: Right details (RTL) vs Left Editor (LTR) ── */
 .workspace {
   display: grid;
-  grid-template-columns: 450px 1fr;
+  grid-template-columns: 460px 1fr;
   flex: 1;
   overflow: hidden;
 }
@@ -112,32 +120,35 @@
   }
 }
 
-/* Right Pane: Details */
+/* ── Right Pane: Challenge Specifications (Arabic RTL) ── */
 .detailsPane {
-  border-left: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(11, 15, 23, 0.5);
+  border-left: 1px solid var(--line, #E5E7EB);
+  background: #FFFFFF;
   overflow-y: auto;
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  text-align: right;
+  direction: rtl;
 }
 
 .sectionBlock h3 {
   font-size: 0.95rem;
   font-weight: 700;
-  color: #00B8B8;
-  margin: 0 0 0.6rem 0;
+  color: #008787;
+  margin: 0 0 0.65rem;
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.45rem;
 }
 
 .descText {
-  font-size: 0.9rem;
-  line-height: 1.6;
-  color: var(--ink-2, #CBD5E1);
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: var(--ink-2, #4B5563);
   margin: 0;
+  unicode-bidi: isolate;
 }
 
 .instructionList, .constraintsList {
@@ -145,33 +156,50 @@
   padding-right: 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  font-size: 0.86rem;
-  color: var(--ink-2, #CBD5E1);
-  line-height: 1.5;
+  gap: 0.55rem;
+  font-size: 0.85rem;
+  color: var(--ink-2, #4B5563);
+  line-height: 1.6;
+}
+
+.instructionList li, .constraintsList li {
+  unicode-bidi: isolate;
 }
 
 .constraintsList li {
-  color: #F59E0B;
+  color: #B45309;
 }
 
-/* Left Pane: Code & Terminal */
+.impactCallout {
+  background: rgba(0, 184, 184, 0.08);
+  border: 1px solid rgba(0, 184, 184, 0.25);
+  border-radius: 12px;
+  padding: 0.95rem 1.15rem;
+  font-size: 0.84rem;
+  color: var(--ink, #1A1A1A);
+  line-height: 1.55;
+}
+
+/* ── Left Pane: Code & Terminal (STRICTLY LTR FOR CODE INTEGRITY) ── */
 .editorPane {
   display: flex;
   flex-direction: column;
   background: #0B0F17;
   overflow: hidden;
+  direction: ltr; /* CRITICAL: Must be LTR so line numbers are on the LEFT of code */
+  text-align: left;
 }
 
 .editorHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 1rem;
-  background: rgba(255, 255, 255, 0.02);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 0.6rem 1rem;
+  background: #111827;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   font-size: 0.8rem;
-  color: var(--ink-2, #94A3B8);
+  color: #94A3B8;
+  font-family: var(--fm, 'IBM Plex Mono', monospace);
 }
 
 .codeAreaWrapper {
@@ -179,19 +207,22 @@
   position: relative;
   display: flex;
   overflow: hidden;
-  background: #080C14;
+  background: #0B0F17;
+  direction: ltr; /* LTR: Line numbers on LEFT, Textarea on RIGHT */
 }
 
 .lineNumbers {
-  width: 44px;
+  width: 48px;
   padding: 1rem 0;
   text-align: center;
   color: rgba(255, 255, 255, 0.25);
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: var(--fm, 'IBM Plex Mono', monospace);
   font-size: 0.86rem;
   line-height: 1.6;
   user-select: none;
-  border-left: 1px solid rgba(255, 255, 255, 0.05);
+  border-right: 1px solid rgba(255, 255, 255, 0.08); /* Border on RIGHT of line numbers */
+  background: #080C14;
+  flex-shrink: 0;
 }
 
 .codeTextarea {
@@ -200,7 +231,7 @@
   border: none;
   outline: none;
   color: #E2E8F0;
-  font-family: 'IBM Plex Mono', 'Fira Code', monospace;
+  font-family: var(--fm, 'IBM Plex Mono', 'Fira Code', monospace);
   font-size: 0.88rem;
   line-height: 1.6;
   padding: 1rem 1.25rem;
@@ -212,14 +243,16 @@
   text-align: left;
 }
 
-/* Terminal / Test Results Bottom Pane */
+/* ── Terminal / Test Results Bottom Pane ── */
 .terminalPane {
-  height: 240px;
-  background: #05080E;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  height: 220px;
+  background: #080C14;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  direction: rtl; /* Terminal feedback in Arabic */
+  text-align: right;
 }
 
 .terminalHeader {
@@ -227,31 +260,30 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem 1rem;
-  background: rgba(255, 255, 255, 0.03);
+  background: #111827;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--ink, #fff);
+  font-size: 0.8rem;
+  color: #94A3B8;
 }
 
 .testResultsGrid {
   flex: 1;
   overflow-y: auto;
-  padding: 0.75rem 1rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.65rem;
 }
 
 .testCaseCard {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
-  padding: 0.6rem 0.8rem;
+  padding: 0.75rem 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.84rem;
+  font-size: 0.82rem;
 }
 
 .testCaseCard.passed {
@@ -268,24 +300,25 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: var(--ink, #fff);
+  color: #F1F5F9;
+  font-weight: 600;
 }
 
 .testCaseMeta {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
-  font-family: 'IBM Plex Mono', monospace;
+  gap: 1rem;
+  font-family: var(--fm, 'IBM Plex Mono', monospace);
   font-size: 0.78rem;
-  color: var(--ink-2, #94A3B8);
+  color: #94A3B8;
 }
 
-/* Success Celebration Modal */
+/* ── Celebration Modal ── */
 .modalOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -294,73 +327,69 @@
 }
 
 .celebrationCard {
-  background: #0B0F17;
-  border: 1px solid rgba(0, 184, 184, 0.4);
+  background: #FFFFFF;
+  border: 1px solid var(--line, #E5E7EB);
   border-radius: 20px;
+  padding: 2.25rem;
+  max-width: 32rem;
   width: 100%;
-  max-width: 520px;
-  padding: 2.2rem;
   text-align: center;
-  box-shadow: 0 25px 50px -12px rgba(0, 184, 184, 0.25);
-  animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes scaleUp {
-  from { transform: scale(0.92); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.2);
+  direction: rtl;
 }
 
 .celebrationIcon {
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: rgba(0, 184, 184, 0.15);
-  color: #00B8B8;
+  background: rgba(0, 184, 184, 0.12);
+  color: #008787;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 1.25rem;
-  border: 2px solid rgba(0, 184, 184, 0.4);
 }
 
 .celebrationTitle {
-  font-size: 1.4rem;
+  font-size: 1.35rem;
   font-weight: 800;
-  color: #fff;
-  margin: 0 0 0.5rem 0;
+  color: var(--ink, #1A1A1A);
+  margin: 0 0 0.5rem;
 }
 
 .celebrationDesc {
-  font-size: 0.92rem;
-  color: var(--ink-2, #94A3B8);
-  margin: 0 0 1.5rem 0;
+  font-size: 0.9rem;
+  color: var(--ink-2, #4B5563);
   line-height: 1.6;
+  margin: 0 0 1.5rem;
 }
 
 .scoreImpactBox {
-  background: rgba(0, 184, 184, 0.06);
-  border: 1px dashed rgba(0, 184, 184, 0.3);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  background: #F8FAFC;
+  border: 1px solid var(--line, #E5E7EB);
   border-radius: 12px;
   padding: 1rem;
-  margin-bottom: 1.75rem;
-  display: flex;
-  justify-content: space-around;
-  text-align: center;
+  margin-bottom: 1.25rem;
 }
 
 .impactMetric {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  align-items: center;
 }
 
 .impactVal {
-  font-size: 1.25rem;
+  font-family: var(--fm, 'IBM Plex Mono', monospace);
+  font-size: 1.2rem;
   font-weight: 800;
-  color: #00B8B8;
+  color: #008787;
 }
 
 .impactLabel {
-  font-size: 0.75rem;
-  color: var(--ink-2, #94A3B8);
+  font-size: 0.7rem;
+  color: var(--ink-3, #9CA3AF);
+  margin-top: 0.2rem;
 }

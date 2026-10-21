@@ -146,7 +146,7 @@ export const ChallengeSandboxPage: React.FC = () => {
             <h3>
               <FileCode size={16} /> وصف المسألة وسياق العمل
             </h3>
-            <p className={styles.descText}>{challenge.description}</p>
+            <p className={styles.descText}><bdi>{challenge.description}</bdi></p>
           </div>
 
           <div className={styles.sectionBlock}>
@@ -155,7 +155,7 @@ export const ChallengeSandboxPage: React.FC = () => {
             </h3>
             <ul className={styles.instructionList}>
               {challenge.instructions.map((inst, idx) => (
-                <li key={idx}>{inst}</li>
+                <li key={idx}><bdi>{inst}</bdi></li>
               ))}
             </ul>
           </div>
@@ -166,7 +166,7 @@ export const ChallengeSandboxPage: React.FC = () => {
             </h3>
             <ul className={styles.constraintsList}>
               {challenge.constraints.map((c, idx) => (
-                <li key={idx}>{c}</li>
+                <li key={idx}><bdi>{c}</bdi></li>
               ))}
             </ul>
           </div>
@@ -175,15 +175,8 @@ export const ChallengeSandboxPage: React.FC = () => {
             <h3>
               <ShieldCheck size={16} /> الأثر المباشر على جواز القدرات
             </h3>
-            <div style={{
-              background: 'rgba(0, 184, 184, 0.08)',
-              border: '1px solid rgba(0, 184, 184, 0.25)',
-              borderRadius: '10px',
-              padding: '0.85rem',
-              fontSize: '0.84rem',
-              color: 'var(--ink-2)'
-            }}>
-              حل هذا التحدي يحول مهارة <strong>{challenge.capabilityName}</strong> من ادعاء ذاتي إلى قدرة مثبتة رسمياً (Proven ✓) مع إضافة توقيع مشفر في جواز القدرات.
+            <div className={styles.impactCallout}>
+              حل هذا التحدي يرفع موثوقية كفاءة <strong>{challenge.capabilityName}</strong> ويحولها فوراً إلى قدرة مبرهنة بالأدلة (Proven ✓) مع إضافة بصمة توثيقية لجوازك.
             </div>
           </div>
         </div>

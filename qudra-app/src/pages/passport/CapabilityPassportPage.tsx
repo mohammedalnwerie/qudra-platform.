@@ -12,7 +12,9 @@ import {
   ArrowRight,
   GitBranch,
   Printer,
-  Target
+  Target,
+  MapPin,
+  ExternalLink
 } from 'lucide-react';
 import { ROUTES } from '../../constants/routes';
 import { ProfileEditorService } from '../../services/profile-editor.service';
@@ -25,9 +27,27 @@ export const CapabilityPassportPage: React.FC = () => {
   const profile = ProfileEditorService.getProfile();
   const [copiedContext, setCopiedContext] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
+  const [copiedSerial, setCopiedSerial] = useState(false);
 
   const passportSerial = `QDR-2026-${(profile.fullName || 'SA').length * 109}-8894`;
   const shareUrl = `${window.location.origin}/passport`;
+
+  const cleanLocation = profile.location
+    ? profile.location.replace(/\(.*?\)/g, '').trim()
+    : 'عمان، الأردن';
+  const hasRemote = profile.location
+    ? profile.location.includes('عن بعد') || profile.openToWork
+    : true;
+
+  const handleCopySerial = async () => {
+    try {
+      await navigator.clipboard.writeText(passportSerial);
+      setCopiedSerial(true);
+      setTimeout(() => setCopiedSerial(false), 2000);
+    } catch {
+      // ignore
+    }
+  };
 
   const handleCopyAIContext = async () => {
     const contextPrompt = `
@@ -156,7 +176,19 @@ ${profile.bio || 'متخصصة في بناء وتطوير الأنظمة عال�
 
           <div className={styles.passportMetaBlock}>
             <span className={styles.metaSerialLabel}>الرقم التسلسلي المعتمد</span>
-            <span className={styles.metaSerialVal}>{passportSerial}</span>
+            <div className={styles.metaSerialRow}>
+              <span className={styles.metaSerialVal}>{passportSerial}</span>
+              <button
+                type="button"
+                className={styles.copySerialBtn}
+                onClick={handleCopySerial}
+                title="نسخ الرقم التسلسلي"
+                aria-label="نسخ الرقم التسلسلي"
+              >
+                {copiedSerial ? <Check size={12} /> : <Copy size={12} />}
+                <span>{copiedSerial ? 'تم النسخ!' : 'نسخ'}</span>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -166,26 +198,38 @@ ${profile.bio || 'متخصصة في بناء وتطوير الأنظمة عال�
           <div className={styles.identityRow}>
             <div className={styles.profileBioGroup}>
               <div className={styles.avatar}>
-                {(profile.fullName || 'سارة').charAt(0)}
+                {(profile.fullName || 'حسين').charAt(0)}
               </div>
               <div className={styles.profileText}>
                 <h2>
-                  {profile.fullName || 'سارة المنصوري'}
+                  {profile.fullName || 'حسين ناصر'}
                   <CheckCircle2 size={18} style={{ color: '#00B8B8' }} />
                 </h2>
                 <p className={styles.profileHeadline}>
-                  {profile.headline || 'مهندسة حلول ذكاء اصطناعي ونظم موزعة متقدمة'}
+                  {profile.headline || 'Senior Full-Stack & AI Engineer | React, TypeScript & FastAPI Specialist'}
                 </p>
-                <div className={styles.metaLinksRow}>
-                  <span>📍 {profile.location || 'الرياض، السعودية'}</span>
-                  <span>·</span>
+                <div className={styles.metaBadgesContainer}>
+                  <div className={styles.metaBadgeItem}>
+                    <MapPin size={13} className={styles.metaBadgeIcon} />
+                    <span>{cleanLocation}</span>
+                  </div>
+
+                  {hasRemote && (
+                    <div className={styles.metaBadgeRemote}>
+                      <span className={styles.livePulseDot} />
+                      <span>متاح للعمل عن بُعد</span>
+                    </div>
+                  )}
+
                   <a
-                    href="https://github.com"
+                    href={`https://github.com/${profile.githubUsername || '7usseinNaser'}`}
                     target="_blank"
                     rel="noreferrer"
-                    style={{ color: '#008787', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 3 }}
+                    className={styles.metaBadgeLink}
                   >
-                    <GitBranch size={13} /> github.com/{profile.githubUsername || 'sara_dev'}
+                    <GitBranch size={13} />
+                    <bdi>github.com/{profile.githubUsername || '7usseinNaser'}</bdi>
+                    <ExternalLink size={11} />
                   </a>
                 </div>
               </div>

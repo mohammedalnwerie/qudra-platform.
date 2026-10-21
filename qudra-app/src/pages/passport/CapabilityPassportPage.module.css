@@ -118,13 +118,46 @@
   font-size: 0.68rem;
   color: rgba(255, 255, 255, 0.6);
   display: block;
+  margin-bottom: 0.25rem;
+}
+
+.metaSerialRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0.25rem 0.6rem;
+  border-radius: 8px;
 }
 
 .metaSerialVal {
   color: #00B8B8;
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
+  direction: ltr;
+  display: inline-block;
+}
+
+.copySerialBtn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.copySerialBtn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
 }
 
 /* Passport Body */
@@ -184,12 +217,72 @@
   margin: 0 0 0.4rem;
 }
 
-.metaLinksRow {
+.metaBadgesContainer {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  font-size: 0.8rem;
-  color: var(--ink-3, #6B7280);
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+}
+
+.metaBadgeItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: #F3F4F6;
+  border: 1px solid #E5E7EB;
+  color: var(--ink-2, #374151);
+  padding: 0.22rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.metaBadgeIcon {
+  color: #6B7280;
+}
+
+.metaBadgeRemote {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #ECFDF5;
+  border: 1px solid #A7F3D0;
+  color: #065F46;
+  padding: 0.22rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.livePulseDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3);
+  display: inline-block;
+}
+
+.metaBadgeLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: #F0FDFA;
+  border: 1px solid #99F6E4;
+  color: #0F766E;
+  padding: 0.22rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+  direction: ltr;
+}
+
+.metaBadgeLink:hover {
+  background: #CCFBF1;
+  color: #115E59;
 }
 
 .trustScoreCard {

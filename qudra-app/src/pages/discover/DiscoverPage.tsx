@@ -86,7 +86,7 @@ const TALENT_DIRECTORY: CandidateProfile[] = [
     ],
     featuredProject: {
       name: 'majid/fastapi-task-worker',
-      description: 'نظام معالجة 50 ألف طلب متزامن بدون توقف مبني بـ Python و Redis Streams.',
+      description: 'نظام معالجة 50 ألف طلب متزامن بدون توقف مبني بـ Python و Redis Streams بكفاءة عالية',
       stars: 120,
       testsCoverage: '96% اختبارات'
     },
@@ -531,7 +531,7 @@ export const DiscoverPage: React.FC = () => {
                   <GitBranch size={16} className={styles.projectIcon} />
                   <div className={styles.projectContent}>
                     <div className={styles.projectName}>{cand.featuredProject.name}</div>
-                    <div className={styles.projectDesc}>{cand.featuredProject.description}</div>
+                    <div className={styles.projectDesc}><bdi>{cand.featuredProject.description}</bdi></div>
                     <div style={{ display: 'flex', gap: '0.6rem', marginTop: '0.25rem', fontSize: '0.72rem', color: '#008787', fontWeight: 600 }}>
                       {cand.featuredProject.stars && <span>⭐ {cand.featuredProject.stars} نجوم</span>}
                       {cand.featuredProject.testsCoverage && <span>✓ {cand.featuredProject.testsCoverage}</span>}
@@ -541,7 +541,7 @@ export const DiscoverPage: React.FC = () => {
 
                 {/* Match Engine Summary */}
                 <p className={styles.summaryText}>
-                  {cand.explanationSummary}
+                  <bdi>{cand.explanationSummary}</bdi>
                 </p>
 
                 {/* Card Actions Footer */}

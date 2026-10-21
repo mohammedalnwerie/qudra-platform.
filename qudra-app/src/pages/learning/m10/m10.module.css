@@ -84,8 +84,8 @@
 
 .headerRow {
   display: flex;
-  justifyContent: space-between;
-  alignItems: flex-start;
+  justify-content: space-between;
+  align-items: flex-start;
   gap: 1rem;
   flex-wrap: wrap;
   margin-bottom: 1.5rem;

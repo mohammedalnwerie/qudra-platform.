@@ -572,6 +572,9 @@
 .projectDesc {
   color: var(--ink-2, #6B7280);
   font-size: 0.76rem;
+  unicode-bidi: isolate;
+  direction: rtl;
+  line-height: 1.5;
 }
 
 /* Match Engine Summary */
@@ -581,6 +584,8 @@
   line-height: 1.55;
   margin: 0;
   flex-grow: 1;
+  unicode-bidi: isolate;
+  direction: rtl;
 }
 
 /* Card Footer Actions */
@@ -591,6 +596,7 @@
   padding-top: 1rem;
   border-top: 1px solid var(--line, #E5E7EB);
   gap: 0.5rem;
+  margin-top: auto;
 }
 
 .bookmarkBtn {
