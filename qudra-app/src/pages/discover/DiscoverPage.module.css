@@ -1,0 +1,241 @@
+/* ═════════ DiscoverPage.module.css ═════════
+   Modern Talent Discovery Directory for QUDRA
+*/
+
+.container {
+  max-width: var(--maxw, 76rem);
+  margin: 0 auto;
+  padding: 1.75rem clamp(1rem, 3vw, 2rem) 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.title {
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+  line-height: 1.25;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: var(--ink-2);
+  margin: 0;
+  line-height: 1.6;
+  max-width: 65ch;
+}
+
+.controlsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 1.15rem 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  box-shadow: var(--shadow-sm);
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: 0.5rem 0.85rem;
+  flex: 1 1 18rem;
+  transition: all 0.15s ease;
+}
+
+.searchBox:focus-within {
+  border-color: var(--proof);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px var(--proof-tint);
+}
+
+.searchIcon {
+  color: var(--ink-3);
+  flex-shrink: 0;
+}
+
+.searchBox input {
+  border: none;
+  background: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--ink);
+  width: 100%;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filterBtn {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-full);
+  padding: 0.35rem 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--ink-2);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.filterBtn:hover {
+  border-color: var(--proof-line);
+  color: var(--ink);
+}
+
+.filterBtnActive {
+  background: var(--proof-tint);
+  color: var(--proof-text);
+  border-color: var(--proof);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.25rem;
+}
+
+/* Talent Card */
+.talentCard {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.talentCard:hover {
+  border-color: var(--proof-line);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.avatarWrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 2px solid var(--proof);
+  display: grid;
+  place-items: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ink);
+  flex-shrink: 0;
+}
+
+.talentName {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.talentTitle {
+  font-size: 0.78rem;
+  color: var(--ink-3);
+  display: block;
+  margin-top: 0.15rem;
+}
+
+.scorePill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--proof-tint);
+  border: 1px solid var(--proof-line);
+  border-radius: var(--r-sm);
+  padding: 0.25rem 0.55rem;
+  flex-shrink: 0;
+}
+
+.scoreNumber {
+  font-family: var(--f-mono);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--proof-text);
+  line-height: 1;
+}
+
+.scoreSub {
+  font-size: 0.6rem;
+  color: var(--ink-2);
+}
+
+.skillsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.skillsLabel {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--ink-3);
+}
+
+.tagsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.summaryText {
+  font-size: 0.86rem;
+  color: var(--ink-2);
+  line-height: 1.6;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--line-soft);
+  margin-top: auto;
+}

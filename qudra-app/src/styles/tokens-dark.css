@@ -1,0 +1,67 @@
+:root[data-theme="dark"] {
+  /* ─── QUDRA Dark Tokens (Refined Obsidian Palette) ─── */
+  --ground: #0B0F12;
+  --surface: #141A1F;
+  --surface-2: #1B2329;
+  --line: #25323A;
+  --line-soft: #1E282F;
+  --ink: #F1F5F9;
+  --ink-2: #CBD5E1;
+  --ink-3: #94A3B8;
+
+  --proof: #00D2D2;
+  --proof-text: #38E1E1;
+  --proof-tint: #0A2B2D;
+  --proof-line: #145658;
+
+  --gap: #FFC107;
+  --gap-text: #FBBF24;
+  --gap-tint: #2E2208;
+  --gap-line: #785912;
+
+  --danger: #F87171;
+  --danger-tint: #3B1B1D;
+  --danger-text: #FCA5A5;
+  --success: #34D399;
+  --success-tint: #0F3325;
+  --success-text: #6EE7B7;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 8px 24px -6px rgba(0, 0, 0, 0.6);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.45), 0 18px 30px -8px rgba(0, 0, 0, 0.7);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 25px 35px -5px rgba(0, 0, 0, 0.8);
+
+  /* ─── Legacy & Interoperability Aliases ─── */
+  --page: var(--ground);
+  --card: var(--surface);
+  --soft: var(--surface-2);
+  --line-2: #2B3A42;
+  --field: var(--surface-2);
+  --on-ink: #0B0F12;
+  --accent: var(--proof-text);
+  --accent-fill: var(--proof);
+  --accent-soft: var(--proof-tint);
+  --accent-line: var(--proof-line);
+  --gapc: var(--gap-text);
+  --gapc-fill: var(--gap);
+  --gapc-soft: var(--gap-tint);
+  --gapc-line: var(--gap-line);
+
+  --sh-1: var(--shadow-sm);
+  --sh-2: var(--shadow-md);
+  --sh-btn: 0 4px 14px -3px rgba(0, 210, 210, 0.35);
+  --sh-card: var(--shadow);
+
+  --glowA: rgba(0, 210, 210, 0.05);
+  --glowB: rgba(255, 193, 7, 0.035);
+  --glowC: rgba(255, 255, 255, 0.02);
+  --barTop: rgba(14, 19, 23, 0.88);
+  --barSub: rgba(14, 19, 23, 0.82);
+  --barNav: rgba(14, 19, 23, 0.94);
+  --barFoot: rgba(14, 19, 23, 0.85);
+  --tex-op: 0.03;
+}
+
+:root[data-theme="dark"] body {
+  background: var(--ground);
+}

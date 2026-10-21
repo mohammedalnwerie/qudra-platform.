@@ -1,0 +1,333 @@
+/* ═════════ CandidatesPage.module.css ═════════
+   Modern Talent Results Layout for QUDRA
+*/
+
+.candsPage {
+  padding: 1.75rem clamp(1rem, 3vw, 2rem) 5rem;
+  max-width: var(--maxw, 76rem);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.crumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--ink-3);
+  margin-bottom: 1.25rem;
+}
+
+.back {
+  background: none;
+  border: none;
+  color: var(--proof-text);
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.back:hover {
+  text-decoration: underline;
+}
+
+.crumbDivider {
+  color: var(--line);
+}
+
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.scrt {
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 0.4rem;
+  line-height: 1.3;
+}
+
+.scrp {
+  color: var(--ink-2);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 65ch;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* Filter Tabs */
+.filterTabs {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.filterTab {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-full);
+  padding: 0.35rem 0.85rem;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink-2);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.filterTab:hover {
+  border-color: var(--proof-line);
+  color: var(--ink);
+}
+
+.tabActive {
+  background: var(--proof-tint);
+  border-color: var(--proof);
+  color: var(--proof-text);
+}
+
+/* Candidates List */
+.candsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.candCard {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.18s ease;
+  position: relative;
+}
+
+.candCard:hover {
+  border-color: var(--proof-line);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.leadCard {
+  border-color: var(--proof);
+  background: linear-gradient(135deg, var(--surface) 0%, var(--proof-tint) 140%);
+}
+
+.rankCol {
+  flex-shrink: 0;
+}
+
+.rankNum {
+  font-family: var(--f-mono);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink-3);
+  background: var(--surface-2);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--r-sm);
+}
+
+.candIdentity {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  min-width: 240px;
+}
+
+.avatarCircle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 2px solid var(--proof);
+  display: grid;
+  place-items: center;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--ink);
+  flex-shrink: 0;
+}
+
+.candNameRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.candName {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+}
+
+.topBadge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--proof-text);
+  background: var(--proof-tint);
+  border: 1px solid var(--proof-line);
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--r-full);
+}
+
+.candMeta {
+  font-size: 0.82rem;
+  color: var(--ink-3);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.15rem;
+}
+
+.dot {
+  color: var(--line);
+}
+
+.cityBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.chipsCol {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.chipsTitle {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--ink-3);
+}
+
+.tagsGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.scoreCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 110px;
+  flex-shrink: 0;
+}
+
+.scorePill {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--proof-tint);
+  border: 1px solid var(--proof-line);
+  border-radius: var(--r-full);
+  padding: 0.25rem 0.65rem;
+}
+
+.scoreVal {
+  font-family: var(--f-mono);
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--proof-text);
+}
+
+.scoreLbl {
+  font-size: 0.68rem;
+  color: var(--ink-2);
+}
+
+.pillReady {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--success-text);
+  background: var(--success-tint);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--r-full);
+}
+
+.pillNear {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--gap-text);
+  background: var(--gap-tint);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--r-full);
+}
+
+.pillFar {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--ink-3);
+  background: var(--surface-2);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--r-full);
+}
+
+.actionsCol {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+@media (max-width: 1024px) {
+  .candCard {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .chipsCol {
+    width: 100%;
+    order: 3;
+  }
+
+  .actionsCol {
+    margin-inline-start: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .candCard {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actionsCol {
+    flex-direction: column;
+    margin-inline-start: 0;
+  }
+
+  .scoreCol {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+}

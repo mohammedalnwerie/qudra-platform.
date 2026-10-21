@@ -1,0 +1,82 @@
+:root {
+  /* ─── QUDRA Design Tokens (Refined Commercial Palette) ─── */
+  --ground: #F8FAFC;
+  --surface: #FFFFFF;
+  --surface-2: #F1F5F9;
+  --line: #E2E8F0;
+  --line-soft: #EDF2F7;
+  --ink: #0F172A;
+  --ink-2: #334155;
+  --ink-3: #64748B;
+
+  /* المسار المُثبت (Verified / Proof) */
+  --proof: #00B8B8;
+  --proof-text: #007A7A;
+  --proof-tint: #E6F8F8;
+  --proof-line: #80D8D8;
+
+  /* المسار الناقص (Gap / Missing) */
+  --gap: #FFC107;
+  --gap-text: #B45309;
+  --gap-tint: #FEF3C7;
+  --gap-line: #FCD34D;
+
+  /* حالات النظام (Feedback) */
+  --danger: #EF4444;
+  --danger-tint: #FEE2E2;
+  --danger-text: #B91C1C;
+  --success: #10B981;
+  --success-tint: #D1FAE5;
+  --success-text: #047857;
+
+  /* الظلال المريحة الاحترافية */
+  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+  --shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.05), 0 8px 20px -4px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.06), 0 16px 28px -6px rgba(15, 23, 42, 0.07);
+  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.07), 0 25px 35px -5px rgba(15, 23, 42, 0.08);
+
+  /* الخطوط المعيارية عالية المقروئية */
+  --f-display: "IBM Plex Sans Arabic", "Readex Pro", system-ui, -apple-system, sans-serif;
+  --f-body: "IBM Plex Sans Arabic", "Readex Pro", system-ui, -apple-system, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "Courier New", monospace;
+
+  --maxw: 76rem;
+  --prose: 65ch;
+  --r-sm: 8px;
+  --r: 12px;
+  --r-lg: 16px;
+  --r-full: 9999px;
+
+  /* ─── Legacy & Interoperability Aliases ─── */
+  --page: var(--ground);
+  --card: var(--surface);
+  --soft: var(--surface-2);
+  --line-2: var(--line);
+  --accent: var(--proof-text);
+  --accent-fill: var(--proof);
+  --accent-soft: var(--proof-tint);
+  --accent-line: var(--proof-line);
+  --gapc: var(--gap-text);
+  --gapc-fill: var(--gap);
+  --gapc-soft: var(--gap-tint);
+  --gapc-line: var(--gap-line);
+  --f: var(--f-body);
+  --fm: var(--f-mono);
+  --fd: var(--f-display);
+  --on-ink: #FFFFFF;
+  --field: var(--surface-2);
+
+  --sh-1: var(--shadow-sm);
+  --sh-2: var(--shadow-md);
+  --sh-btn: 0 4px 14px -3px rgba(0, 184, 184, 0.4);
+  --sh-card: var(--shadow);
+
+  --glowA: rgba(0, 184, 184, 0.06);
+  --glowB: rgba(255, 193, 7, 0.04);
+  --glowC: rgba(255, 255, 255, 0.6);
+  --barTop: rgba(255, 255, 255, 0.85);
+  --barSub: rgba(255, 255, 255, 0.78);
+  --barNav: rgba(255, 255, 255, 0.92);
+  --barFoot: rgba(255, 255, 255, 0.8);
+  --tex-op: 0.02;
+}
